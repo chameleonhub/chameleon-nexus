@@ -6,7 +6,7 @@ from .base import env
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = True
+DEBUG = env("DJANGO_DEBUG")
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env(
     "DJANGO_SECRET_KEY",
@@ -56,24 +56,3 @@ TEMPLATES[0]["OPTIONS"]["debug"] = True  # type: ignore # noqa: F405
 # ------------------------------------------------------------------------------
 # https://django-extensions.readthedocs.io/en/latest/installation_instructions.html#configuration
 INSTALLED_APPS += ["django_extensions"]  # noqa: F405
-
-SESSION_ENGINE = 'redis_sessions.session'
-redis_session_url = env.cache_url(
-    'REDIS_SESSION_URL', default='redis://redis_cache:6380/2'
-)
-SESSION_REDIS = {
-    'url': redis_session_url['LOCATION'],
-    'prefix': env.str('REDIS_SESSION_PREFIX', 'session'),
-    'socket_timeout': env.int('REDIS_SESSION_SOCKET_TIMEOUT', 1),
-}
-
-CACHES = {
-    # Set CACHE_URL to override
-    'default': env.cache_url(default='redis://redis_cache:6380/3'),
-    'enketo_redis_main': env.cache_url(
-        'ENKETO_REDIS_MAIN_URL', default='redis://change-me.invalid/0'
-    ),
-}
-
-SESSION_COOKIE_NAME = env('DJANGO_SESSION_COOKIE_NAME')
-SESSION_COOKIE_DOMAIN = env('DJANGO_SESSION_COOKIE_DOMAIN')

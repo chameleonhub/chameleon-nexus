@@ -1,19 +1,19 @@
 import * as React from 'react';
 import {styled} from '@mui/material/styles';
 import {
-    unstable_useTreeItem2 as useTreeItem2,
-    UseTreeItem2Parameters,
-} from '@mui/x-tree-view/useTreeItem2';
+    useTreeItem as useTreeItem2,
+    UseTreeItemParameters as UseTreeItem2Parameters,
+} from '@mui/x-tree-view/useTreeItem';
 import {
-    TreeItem2Content,
-    TreeItem2IconContainer,
-    TreeItem2GroupTransition,
-    TreeItem2Label,
-    TreeItem2Root,
-    TreeItem2Checkbox,
-} from '@mui/x-tree-view/TreeItem2';
-import {TreeItem2Icon} from '@mui/x-tree-view/TreeItem2Icon';
-import {TreeItem2Provider} from '@mui/x-tree-view/TreeItem2Provider';
+    TreeItemContent as TreeItem2Content,
+    TreeItemIconContainer as TreeItem2IconContainer,
+    TreeItemGroupTransition as TreeItem2GroupTransition,
+    TreeItemLabel as TreeItem2Label,
+    TreeItemRoot as TreeItem2Root,
+    TreeItemCheckbox as TreeItem2Checkbox,
+} from '@mui/x-tree-view/TreeItem';
+import {TreeItemIcon as TreeItem2Icon} from '@mui/x-tree-view/TreeItemIcon';
+import {TreeItemProvider as TreeItem2Provider} from '@mui/x-tree-view/TreeItemProvider';
 import {FilterMultiUser, FilterType, UserPermissionTreeType, UserPermissionType} from "./Permission.model.ts";
 import {Autocomplete, Stack} from "@mui/material";
 import {PARTIAL_PERMIT, selectPermissionTreeData, setPermissionTreeData} from "./permissionSlice.ts";
@@ -123,7 +123,7 @@ export const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(
     }
 
     return (
-        <TreeItem2Provider itemId={itemId}>
+        <TreeItem2Provider id="ad" itemId={itemId}>
             <TreeItem2Root {...getRootProps(other)}>
                 <PermissionTreeItemContent {...getContentProps()}>
                     <TreeItem2IconContainer {...getIconContainerProps()}>

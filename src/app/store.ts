@@ -7,6 +7,7 @@ import {formSlice} from "../features/forms/formSlice.ts";
 import {permissionSlice} from "../features/permissions/permissionSlice.ts";
 import {userSlice} from "../features/users/userSlice.ts";
 import {userApiSlice} from "../features/users/userApiSlice.ts";
+import {baseApi} from "./baseApi.ts";
 
 
 // `combineSlices` automatically combines the reducers using
@@ -22,13 +23,7 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
         reducer: rootReducer,
         // Adding the api middleware enables caching, invalidation, polling,
         // and other useful features of `rtk-query`.
-        middleware: getDefaultMiddleware => {
-            return getDefaultMiddleware().concat(
-                permissionApiSlice.middleware,
-                formApiSlice.middleware,
-                userApiSlice.middleware,
-            )
-        },
+        middleware: getDefaultMiddleware => getDefaultMiddleware().concat(baseApi.middleware),
         preloadedState,
     })
     // configure listeners using the provided defaults

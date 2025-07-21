@@ -8,7 +8,12 @@ export const baseApi = createApi({
             baseUrl: import.meta.env.VITE_KF_API_URL,
             // credentials: "include",
             prepareHeaders: (headers) => {
-                const token = localStorage.getItem('token');
+                let token = localStorage.getItem('token');
+
+                if (token && !/^[a-zA-Z0-9]/.test(token)) {
+                    token = import.meta.env.VITE_KOBO_API_TOKEN;
+                }
+
                 const csrfToken = getCsrfToken();
                 if (csrfToken) {
                     headers.set('X-CSRFToken', csrfToken);  // Include CSRF token in headers

@@ -24,7 +24,7 @@ import {
     SnackbarCloseReason,
     Typography
 } from "@mui/material";
-import {SimpleTreeView, TreeItem2, useTreeViewApiRef} from "@mui/x-tree-view";
+import {SimpleTreeView, TreeItem as TreeItem2, useTreeViewApiRef} from "@mui/x-tree-view";
 import React, {SyntheticEvent, useEffect, useState} from "react";
 import {
     selectedPermissionsIds,

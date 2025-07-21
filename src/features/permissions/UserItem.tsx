@@ -1,8 +1,8 @@
 import {IconButton, Typography} from "@mui/material";
 import {Delete as DeleteIcon} from "@mui/icons-material";
 import React, {ReactNode} from "react";
-import {TreeItem2} from "@mui/x-tree-view";
-import {UseTreeItem2Parameters} from "@mui/x-tree-view/useTreeItem2";
+import {TreeItem as TreeItem2} from "@mui/x-tree-view";
+import {UseTreeItemParameters as UseTreeItem2Parameters} from "@mui/x-tree-view/useTreeItem";
 
 
 interface UserItemLabelProps {

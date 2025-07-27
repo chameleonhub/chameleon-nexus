@@ -4,11 +4,12 @@ import App from './App.tsx'
 import './index.scss'
 import {StoreProvider} from "./StoreProvider.tsx";
 import {BrowserRouter} from "react-router";
+import {config} from "./config.ts";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <StoreProvider>
-            <BrowserRouter basename="/static/frontend">
+            <BrowserRouter basename={config.baseUrl}>
                 <App/>
             </BrowserRouter>
         </StoreProvider>

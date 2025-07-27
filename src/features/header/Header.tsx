@@ -20,7 +20,8 @@ const kfAdminUrl = `${kfUrl.protocol}//${kfUrl.host}/admin`;
 const pages = [
     {title: 'Home', link: '/'},
     {title: 'Admin', link: '/admin'},
-    {title: 'Forms Admin', link: kfAdminUrl}
+    {title: 'Forms Admin', link: kfAdminUrl},
+    {title: 'Dashboard', link: '/dash/home'}
 ];
 const settings = ['Logout'];
 

@@ -19,7 +19,7 @@ export const kcFormApiSlice = createApi({
         },
     ),
     endpoints: (builder) => ({
-        getFormList: builder.query<XForm[], void>({
+        getForms: builder.query<XForm[], void>({
             query: () => ({
                 url: 'formlist',
                 method: 'GET',
@@ -28,13 +28,13 @@ export const kcFormApiSlice = createApi({
             transformResponse: (response: string): XForm[] => {
                 const parser = new XMLParser();
                 const parsedData = parser.parse(response) as XFormsResponse;
-                // Ensure xform is always an array
                 return Array.isArray(parsedData.xforms.xform)
                     ? parsedData.xforms.xform
                     : [parsedData.xforms.xform];
             },
-        }),
+        })
+
     }),
 });
 
-export const {useGetFormListQuery} = kcFormApiSlice;
+export const { useGetFormsQuery} = kcFormApiSlice;

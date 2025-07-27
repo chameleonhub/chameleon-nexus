@@ -43,6 +43,8 @@ urlpatterns += [
     # Taxonomies urls
     path("taxonomy/", include("nexus.taxonomies.urls")),
     path("o/", include("oauth2_provider.urls", namespace="oauth2_provider")),
+
+    path('api/dashboard/', include('dashboard.urls')),
 ]
 
 if settings.DEBUG:

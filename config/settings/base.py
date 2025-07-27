@@ -58,8 +58,23 @@ DATABASES = {
         'OPTIONS': {
             'options': '-c search_path=management,public'
         }
+    },
+    'kobocat': {
+        'ENGINE': 'django.db.backends.postgresql',
+        "HOST": env("KOBO_HOST"),
+        "PORT": env("KOBO_PORT"),
+        "NAME": env("KC_DB"),
+        "USER": env("KOBO_USER"),
+        "PASSWORD": env("KOBO_PASSWORD"),
+        'CONN_MAX_AGE': 60,
+        'OPTIONS': {
+            'options': '-c default_transaction_read_only=on',
+        },
     }
 }
+
+DATABASE_ROUTERS = ['dashboard.db_routers.KobocatRouter']
+
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

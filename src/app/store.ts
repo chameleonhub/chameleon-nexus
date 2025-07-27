@@ -9,12 +9,20 @@ import {userSlice} from "../features/users/userSlice.ts";
 import {userApiSlice} from "../features/users/userApiSlice.ts";
 import {baseApi} from "./baseApi.ts";
 import {kcFormApiSlice} from "../features/dashboard/kcFormApiSlice.ts";
-
+import {kfApiSlice} from "../features/dashboard/kfApiSlice.ts";
 
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-const rootReducer: Reducer = combineSlices( formSlice, permissionSlice, userSlice, permissionApiSlice, formApiSlice, userApiSlice, kcFormApiSlice);
+const rootReducer: Reducer = combineSlices(
+    formSlice,
+    permissionSlice,
+    userSlice,
+    permissionApiSlice,
+    formApiSlice,
+    userApiSlice,
+    kcFormApiSlice,
+    kfApiSlice);
 // Infer the `RootState` type from the root reducers
 export type RootState = ReturnType<typeof rootReducer>
 
@@ -25,7 +33,9 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
         reducer: rootReducer,
         // Adding the api middleware enables caching, invalidation, polling,
         // and other useful features of `rtk-query`.
-        middleware: getDefaultMiddleware => getDefaultMiddleware().concat(baseApi.middleware, kcFormApiSlice.middleware),
+        middleware: getDefaultMiddleware => getDefaultMiddleware().concat(
+            baseApi.middleware,
+            kcFormApiSlice.middleware),
         preloadedState,
     })
     // configure listeners using the provided defaults

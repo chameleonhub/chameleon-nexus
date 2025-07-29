@@ -113,3 +113,38 @@ class AssetWithPermissionsSerializer(AssetSerializer):
             if perm:
                 return AssetUserPartialPermissionSerializer(perm).data
         return None
+
+
+class AssetViewPermissionSerializer(serializers.ModelSerializer):
+    asset = serializers.PrimaryKeyRelatedField(queryset=Asset.objects.all())
+    permissions = serializers.SerializerMethodField()
+
+    def get_permissions(self, obj):
+        """
+        Return only the view_submissions permissions in the expected structure
+        """
+        original_permissions = obj.permissions
+        if not isinstance(original_permissions, dict):
+            return {}
+
+        view_perms = original_permissions.get('view_submissions', [])
+        return {'view_submissions': view_perms} if view_perms else {}
+
+
+    class Meta:
+        model = AssetUserPartialPermission
+        fields = [
+            'id',
+            'asset',
+            'user',
+            'permissions',
+        ]
+        read_only_fields = ['id', 'user',]
+
+
+class SubmissionCountSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    username = serializers.CharField()
+    form_id = serializers.IntegerField(source="asset_id")
+    form_name = serializers.CharField()
+    submission_count = serializers.IntegerField()

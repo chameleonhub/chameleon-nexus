@@ -148,3 +148,16 @@ class SubmissionCountSerializer(serializers.Serializer):
     form_id = serializers.IntegerField(source="asset_id")
     form_name = serializers.CharField()
     submission_count = serializers.IntegerField()
+
+
+
+class UserSubmissionSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    username = serializers.CharField()
+    submission_count = serializers.IntegerField()
+
+class FormSubmissionSerializer(serializers.Serializer):
+    form_id = serializers.IntegerField()
+    form_name = serializers.CharField()
+    total_submission_count = serializers.IntegerField()
+    users = UserSubmissionSerializer(many=True)

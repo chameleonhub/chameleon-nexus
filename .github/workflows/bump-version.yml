@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v2
       - name: bump
         id: bump
-        uses: TriPSs/conventional-changelog-action@v3
+        uses: TriPSs/conventional-changelog-action@v6
         with:
           github-token: ${{ secrets.ROBOT_TOKEN }}
           git-user-name: road86-robot

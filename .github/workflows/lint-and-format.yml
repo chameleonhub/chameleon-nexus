@@ -11,7 +11,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
       - name: black and flake8
-        uses: 654wak654/python-lint@1.6.2
+        uses: 654wak654/python-lint@1.6.3
         with:
           use-pylint: false
           use-pycodestyle: false

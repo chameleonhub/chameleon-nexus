@@ -28,7 +28,7 @@ requests-oauthlib = "==2.0.0"
 django-redis-sessions = "*"
 
 [dev-packages]
-werkzeug = {version = "==3.0.1", extras = ["watchdog"]}
+werkzeug = {version = "==3.0.6", extras = ["watchdog"]}
 watchfiles = "==0.21.0"
 sphinx = "==7.2.6"
 sphinx-autobuild = "==2021.3.14"

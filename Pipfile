@@ -12,7 +12,7 @@ redis = "==5.0.1"
 hiredis = "==2.3.2"
 uvicorn = {version = "==0.24.0.post1", extras = ["standard"]}
 gunicorn = "==21.2.0"
-psycopg = {version = "==3.2.9", extras = ["c"]}
+psycopg = "==3.2.9"
 django = "~=5.2.4"
 django-environ = "~=0.12.0"
 django-model-utils = "==4.3.1"
@@ -26,6 +26,7 @@ django-materializecss-form = "~=1.1"
 django-filter = "~=23.5"
 requests-oauthlib = "==2.0.0"
 django-redis-sessions = "*"
+django-debug-toolbar = "*"
 
 [dev-packages]
 werkzeug = {version = "==3.0.1", extras = ["watchdog"]}

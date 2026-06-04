@@ -1,19 +1,22 @@
 {% load static %}
-<header>
+<header class="bahis-site-header">
     {% if not user.is_authenticated %}
         <script>
             localStorage.removeItem('token')
         </script>
     {% endif %}
-    <nav class="white">
+    <nav class="bahis-nav">
         <div class="nav-wrapper container">
             <a href="{% url 'home' %}" class="brand-logo">
-                <div class="valign-wrapper">
+                <div class="valign-wrapper bahis-brand">
                     <img src="{% static 'img/logo.png' %}" alt="logo"/>
-                    <span>BAHIS3 Management Portal</span>
+                    <span>
+                        <strong>BAHIS</strong>
+                        <small>Management Portal</small>
+                    </span>
                 </div>
             </a>
-            <ul id="nav-mobile" class="right">
+            <ul id="nav-mobile" class="right bahis-nav-links">
                 <li>
                     <a href="{% url 'home' %}">
                         <i class="material-symbols-outlined left">home</i>
@@ -30,7 +33,10 @@
                     <li>
                         <form action="{% url 'users:logout' %}" method="post">
                             {% csrf_token %}
-                            <button style="cursor: pointer" type="submit">Log Out</button>
+                            <button class="bahis-logout" type="submit">
+                                <i class="material-symbols-outlined left">logout</i>
+                                Log Out
+                            </button>
                         </form>
                     </li>
                 {% else %}

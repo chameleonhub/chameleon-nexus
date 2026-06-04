@@ -2,6 +2,127 @@
   height: 64px;
 }
 
+.bahis-site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.bahis-site-header .bahis-nav {
+  height: auto;
+  min-height: 78px;
+  line-height: normal;
+  background:
+    radial-gradient(circle at 8% 20%, rgba(217, 154, 40, 0.22), transparent 18rem),
+    linear-gradient(135deg, #5f1713 0%, #8f241d 48%, #6f3f22 100%);
+  border-bottom: 1px solid rgba(255, 243, 223, 0.22);
+  box-shadow: 0 18px 48px rgba(63, 36, 21, 0.24);
+  font-family: "Noto Sans", "Segoe UI", sans-serif;
+}
+
+.bahis-site-header .nav-wrapper {
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+}
+
+.bahis-site-header .brand-logo {
+  position: relative;
+  left: auto;
+  transform: none;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  color: #fff3df;
+}
+
+.bahis-site-header .bahis-brand {
+  gap: 12px;
+}
+
+.bahis-site-header .bahis-brand img {
+  height: 52px;
+  width: auto;
+  padding: 8px;
+  border: 1px solid rgba(255, 243, 223, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 12px 28px rgba(63, 36, 21, 0.2);
+}
+
+.bahis-site-header .bahis-brand span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1;
+}
+
+.bahis-site-header .bahis-brand strong {
+  color: #ffffff;
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+
+.bahis-site-header .bahis-brand small {
+  color: rgba(255, 243, 223, 0.72);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.bahis-site-header .bahis-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  margin-left: auto;
+}
+
+.bahis-site-header .bahis-nav-links > li {
+  display: flex;
+  align-items: center;
+}
+
+.bahis-site-header .bahis-nav-links a,
+.bahis-site-header .bahis-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 42px;
+  padding: 0 15px;
+  border: 1px solid rgba(255, 243, 223, 0.18);
+  border-radius: 999px;
+  color: #fff3df;
+  background: rgba(255, 243, 223, 0.1);
+  font-weight: 850;
+  line-height: 1;
+  transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.bahis-site-header .bahis-nav-links a:hover,
+.bahis-site-header .bahis-nav-links a:focus,
+.bahis-site-header .bahis-logout:hover,
+.bahis-site-header .bahis-logout:focus {
+  color: #fff3df;
+  background: rgba(255, 243, 223, 0.18);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(63, 36, 21, 0.22);
+}
+
+.bahis-site-header .bahis-nav-links i,
+.bahis-site-header .bahis-logout i {
+  height: auto;
+  margin-right: 0;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.bahis-site-header .bahis-logout {
+  cursor: pointer;
+  font: inherit;
+}
+
 nav.white ul > li > a,
 nav.white .brand-logo {
   color: #000000;
@@ -15,6 +136,85 @@ nav.white .brand-logo {
 
 .page-footer .funders img {
   height: 64px;
+}
+
+.bahis-site-footer {
+  margin-top: 42px;
+  padding: 34px 0;
+  color: #fff3df;
+  background:
+    radial-gradient(circle at 85% 0%, rgba(217, 154, 40, 0.28), transparent 22rem),
+    linear-gradient(135deg, #3f2415 0%, #5f1713 52%, #6f3f22 100%);
+  border-top: 1px solid rgba(255, 243, 223, 0.2);
+  box-shadow: 0 -18px 48px rgba(63, 36, 21, 0.16);
+  font-family: "Noto Sans", "Segoe UI", sans-serif;
+}
+
+.bahis-footer-inner {
+  width: min(1180px, calc(100% - 28px));
+}
+
+.bahis-footer-main {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) auto;
+  gap: 24px;
+  align-items: center;
+}
+
+.bahis-footer-copy {
+  max-width: 680px;
+}
+
+.bahis-footer-kicker {
+  display: inline-flex;
+  margin-bottom: 8px;
+  color: #ffc35a;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.bahis-footer-copy p {
+  margin: 0;
+  color: rgba(255, 243, 223, 0.76);
+  line-height: 1.65;
+}
+
+.bahis-footer-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.bahis-footer-logo-card {
+  min-height: 86px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 243, 223, 0.18);
+  border-radius: 22px;
+  background: rgba(255, 243, 223, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+.bahis-footer-logo-card span {
+  max-width: 120px;
+  color: rgba(255, 243, 223, 0.78);
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.page-footer .bahis-footer-logo-card.funders img {
+  max-width: 170px;
+  height: 54px;
+  object-fit: contain;
+  padding: 6px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
 }
 
 table > tbody > tr > td > label > input[type="checkbox"] + span:not(.lever) {
@@ -83,4 +283,62 @@ form > div > p.help-block {
     color: #ee6e73;
     font-size: 7rem;
     display: block;
+}
+
+@media (max-width: 992px) {
+  .bahis-site-header .brand-logo {
+    font-size: 1rem;
+  }
+
+  .bahis-site-header .bahis-brand strong {
+    font-size: 1.1rem;
+  }
+
+  .bahis-site-header .bahis-brand small {
+    display: none;
+  }
+
+  .bahis-site-header .bahis-nav-links a,
+  .bahis-site-header .bahis-logout {
+    padding: 0 11px;
+    font-size: 0.88rem;
+  }
+
+  .bahis-footer-main {
+    grid-template-columns: 1fr;
+  }
+
+  .bahis-footer-logos {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 700px) {
+  .bahis-site-header .nav-wrapper {
+    min-height: 124px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .bahis-site-header .brand-logo,
+  .bahis-site-header .bahis-nav-links {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .bahis-site-header .bahis-nav-links {
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .bahis-site-header .bahis-nav-links i {
+    display: none;
+  }
+
+  .bahis-footer-logo-card {
+    width: 100%;
+    justify-content: space-between;
+  }
 }

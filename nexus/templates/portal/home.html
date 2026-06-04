@@ -1,99 +1,482 @@
 {% extends "base.html" %}
 
+{% block css %}
+    {{ block.super }}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bahis-red: #cf8278;
+            --bahis-red-dark: #a85d53;
+            --bahis-brown: #b89579;
+            --bahis-brown-dark: #8d684d;
+            --bahis-gold: #efc982;
+            --bahis-cream: #fffdf8;
+            --bahis-soft: #fff2de;
+            --bahis-ink: #4d3528;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at 12% 12%, rgba(239, 201, 130, 0.12), transparent 28rem),
+                radial-gradient(circle at 88% 18%, rgba(207, 130, 120, 0.07), transparent 30rem),
+                linear-gradient(135deg, #fffefd 0%, #fff4e6 46%, #faead9 100%);
+            color: var(--bahis-ink);
+            font-family: "Noto Sans", "Segoe UI", sans-serif;
+        }
+
+        main.container {
+            width: min(1180px, calc(100% - 28px));
+            max-width: 1180px;
+        }
+
+        .bahis-home {
+            position: relative;
+            padding: 34px 24px 64px 24px;
+            overflow: hidden;
+        }
+
+        .bahis-home::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(95, 23, 19, 0.055) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(95, 23, 19, 0.055) 1px, transparent 1px);
+            background-size: 42px 42px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, .72), transparent 72%);
+            z-index: -1;
+        }
+
+        .home-hero {
+            position: relative;
+            overflow: hidden;
+            border-radius: 34px;
+            padding: clamp(28px, 5vw, 58px);
+            background:
+                linear-gradient(135deg, rgba(95, 23, 19, .95), rgba(111, 63, 34, .92)),
+                radial-gradient(circle at top right, rgba(217, 154, 40, .5), transparent 24rem);
+            box-shadow: 0 30px 80px rgba(63, 36, 21, .28);
+            color: var(--bahis-cream);
+        }
+
+        .home-hero::after {
+            content: "";
+            position: absolute;
+            right: -130px;
+            top: -120px;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle, rgba(217, 154, 40, .48), transparent 64%),
+                radial-gradient(circle at 40% 60%, rgba(255, 243, 223, .18), transparent 38%);
+            animation: warm-float 8s ease-in-out infinite;
+        }
+
+        .home-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 13px;
+            border: 1px solid rgba(255, 243, 223, .24);
+            border-radius: 999px;
+            background: rgba(255, 243, 223, .12);
+            color: #ffe1a7;
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+
+        .home-title {
+            max-width: 780px;
+            margin: 24px 0 16px;
+            font-family: "Noto Sans", "Segoe UI", sans-serif;
+            font-size: clamp(2.6rem, 7vw, 6rem);
+            font-weight: 800;
+            line-height: .92;
+            letter-spacing: -.015em;
+        }
+
+        .home-title span {
+            color: #ffc35a;
+        }
+
+        .home-subtitle {
+            max-width: 660px;
+            color: rgba(255, 243, 223, .78);
+            font-size: clamp(1rem, 1.6vw, 1.22rem);
+            font-weight: 600;
+            line-height: 1.7;
+        }
+
+        .home-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .home-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 999px;
+            padding: 13px 18px;
+            color: var(--bahis-red-dark);
+            background: #ffd98a;
+            font-weight: 900;
+            box-shadow: 0 14px 30px rgba(0, 0, 0, .14);
+            transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+        }
+
+        .home-action.secondary {
+            color: var(--bahis-cream);
+            background: rgba(255, 243, 223, .12);
+            border: 1px solid rgba(255, 243, 223, .28);
+            box-shadow: none;
+        }
+
+        .home-action:hover,
+        .home-action:focus {
+            color: var(--bahis-red-dark);
+            transform: translateY(-2px);
+            background: #ffe4a8;
+            box-shadow: 0 18px 36px rgba(0, 0, 0, .18);
+        }
+
+        .home-action.secondary:hover,
+        .home-action.secondary:focus {
+            color: var(--bahis-cream);
+            background: rgba(255, 243, 223, .2);
+        }
+
+        .home-user-card {
+            position: absolute;
+            right: clamp(22px, 5vw, 54px);
+            bottom: clamp(20px, 4vw, 42px);
+            z-index: 1;
+            width: min(320px, calc(100% - 44px));
+            padding: 18px;
+            border: 1px solid rgba(255, 243, 223, .22);
+            border-radius: 24px;
+            background: rgba(255, 243, 223, .12);
+            backdrop-filter: blur(14px);
+        }
+
+        .home-user-card strong {
+            display: block;
+            margin-top: 4px;
+            color: #fff7e8;
+            font-size: 1.18rem;
+        }
+
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 18px;
+            margin-top: 24px;
+        }
+
+        .portal-card {
+            position: relative;
+            grid-column: span 4;
+            min-height: 270px;
+            overflow: hidden;
+            border: 1px solid rgba(111, 63, 34, .16);
+            border-radius: 28px;
+            background: rgba(255, 250, 240, .76);
+            box-shadow: 0 22px 58px rgba(111, 63, 34, .16);
+            backdrop-filter: blur(16px);
+            transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+        }
+
+        .portal-card.featured {
+            grid-column: span 6;
+        }
+
+        .portal-card:hover,
+        .portal-card:focus-within {
+            transform: translateY(-6px);
+            border-color: rgba(143, 36, 29, .34);
+            box-shadow: 0 30px 76px rgba(95, 23, 19, .22);
+        }
+
+        .portal-card a {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .portal-card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 24px 24px 12px;
+        }
+
+        .portal-icon {
+            display: grid;
+            place-items: center;
+            width: 62px;
+            height: 62px;
+            border-radius: 20px;
+            color: #fff3df;
+            background: linear-gradient(135deg, var(--bahis-red), var(--bahis-brown-dark));
+            box-shadow: 0 16px 30px rgba(143, 36, 29, .24);
+        }
+
+        .portal-icon i {
+            font-size: 34px;
+        }
+
+        .portal-chip {
+            border-radius: 999px;
+            padding: 7px 11px;
+            color: var(--bahis-red-dark);
+            background: rgba(217, 154, 40, .2);
+            font-size: .72rem;
+            font-weight: 900;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .portal-card-body {
+            padding: 0 24px 24px;
+            flex: 1;
+        }
+
+        .portal-card h2 {
+            margin: 10px 0 10px;
+            color: var(--bahis-ink);
+            font-size: clamp(1.55rem, 2vw, 2.2rem);
+            font-family: "Noto Sans", "Segoe UI", sans-serif;
+            font-weight: 900;
+            line-height: 1.05;
+        }
+
+        .portal-card p {
+            color: #6d5547;
+            font-size: 1rem;
+            line-height: 1.62;
+        }
+
+        .portal-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding: 18px 24px;
+            border-top: 1px solid rgba(111, 63, 34, .12);
+            color: var(--bahis-red-dark);
+            background: rgba(255, 243, 223, .62);
+            font-weight: 900;
+        }
+
+        .portal-card-footer i {
+            transition: transform .2s ease;
+        }
+
+        .portal-card:hover .portal-card-footer i {
+            transform: translateX(5px);
+        }
+
+        .home-note {
+            margin-top: 24px;
+            padding: 18px 20px;
+            border: 1px solid rgba(143, 36, 29, .16);
+            border-radius: 22px;
+            background: rgba(255, 250, 240, .64);
+            color: #6d5547;
+        }
+
+        @keyframes warm-float {
+            0%, 100% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+            50% {
+                transform: translate3d(-18px, 14px, 0) scale(1.05);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .home-user-card {
+                position: relative;
+                right: auto;
+                bottom: auto;
+                margin-top: 28px;
+            }
+
+            .portal-card,
+            .portal-card.featured {
+                grid-column: span 6;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .bahis-home {
+                padding-top: 18px;
+            }
+
+            .home-hero {
+                border-radius: 26px;
+            }
+
+            .portal-card,
+            .portal-card.featured {
+                grid-column: 1 / -1;
+            }
+        }
+    </style>
+{% endblock css %}
+
 {% block content %}
-    <h1>Welcome to BAHIS Management</h1>
-
-    <div class="row">
-        {% if user.is_superuser %}
-            <div class="col s12 m6 l4">
-                <a href="{% url 'frontend:permissions' %}">
-                    <div class="portal-menu card">
-                        <div class="card-content center">
-                            <i class="material-symbols-outlined">manage_accounts</i>
-                            <span class="card-title">BAHIS Users</span>
-                            <p>Manage BAHIS user accounts and profiles, including assigning roles.</p>
-                        </div>
-                        <div class="card-action">
-                            Manage Users
-                        </div>
-                    </div>
+    <section class="bahis-home">
+        <div class="home-hero">
+            <h1 class="home-title">BAHIS <span>Management</span> Portal</h1>
+            <p class="home-subtitle">
+                A focused control room for livestock health operations, field forms, desktop modules, and reference data.
+                Built for fast movement between the tools your team actually uses.
+            </p>
+            <div class="home-actions">
+                {% if user.is_superuser %}
+                    <a class="home-action" href="{% url 'frontend:permissions' %}">
+                        <i class="material-symbols-outlined">manage_accounts</i>
+                        Manage access
+                    </a>
+                {% endif %}
+                <a class="home-action secondary" target="_blank" href="{{ kobo_url }}">
+                    <i class="material-symbols-outlined">assignment</i>
+                    Open forms
+                </a>
+                <a class="home-action secondary" target="_blank" href="{{ dash_url }}">
+                    <i class="material-symbols-outlined">monitoring</i>
+                    View dashboard
                 </a>
             </div>
-            <div class="col s12 m6 l4">
-                <a href="{% url 'desk:list' %}">
-                    <div class="portal-menu card">
-                        <div class="card-content center">
-                            <i class="material-symbols-outlined">display_settings</i>
-                            <span class="card-title">BAHIS Desktop App</span>
-                            <p>Manage modules and workflows for the BAHIS Desktop App.</p>
+            <div class="home-user-card">
+                <span class="home-eyebrow">Signed in</span>
+                <strong>{{ user.username }}</strong>
+                <p style="margin: 8px 0 0; color: rgba(255, 243, 223, .72);">
+                    {% if user.is_superuser %}
+                        Administrator workspace
+                    {% else %}
+                        Standard portal access
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="portal-grid">
+            {% if user.is_superuser %}
+                <article class="portal-card featured">
+                    <a href="{% url 'frontend:permissions' %}">
+                        <div class="portal-card-top">
+                            <div class="portal-icon">
+                                <i class="material-symbols-outlined">manage_accounts</i>
+                            </div>
+                            <span class="portal-chip">Admin</span>
                         </div>
-                        <div class="card-action">
-                            Manage Desktop App
+                        <div class="portal-card-body">
+                            <h2>BAHIS Users</h2>
+                            <p>Manage user access, roles, and form permissions from the Nexus permissions workspace.</p>
                         </div>
+                        <div class="portal-card-footer">
+                            <span>Manage users</span>
+                            <i class="material-symbols-outlined">arrow_forward</i>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="portal-card featured">
+                    <a href="{% url 'desk:list' %}">
+                        <div class="portal-card-top">
+                            <div class="portal-icon">
+                                <i class="material-symbols-outlined">display_settings</i>
+                            </div>
+                            <span class="portal-chip">Desktop</span>
+                        </div>
+                        <div class="portal-card-body">
+                            <h2>BAHIS Desktop App</h2>
+                            <p>Configure modules and workflows used by the BAHIS desktop application.</p>
+                        </div>
+                        <div class="portal-card-footer">
+                            <span>Manage desktop app</span>
+                            <i class="material-symbols-outlined">arrow_forward</i>
+                        </div>
+                    </a>
+                </article>
+            {% endif %}
+
+            <article class="portal-card">
+                <a target="_blank" href="{{ kobo_url }}">
+                    <div class="portal-card-top">
+                        <div class="portal-icon">
+                            <i class="material-symbols-outlined">assignment</i>
+                        </div>
+                        <span class="portal-chip">Toolbox</span>
+                    </div>
+                    <div class="portal-card-body">
+                        <h2>BAHIS Forms</h2>
+                        <p>Create, deploy, and manage field forms and surveys through BAHIS Toolbox.</p>
+                    </div>
+                    <div class="portal-card-footer">
+                        <span>Open forms</span>
+                        <i class="material-symbols-outlined">open_in_new</i>
                     </div>
                 </a>
-            </div>
-        {% endif %}
-        <div class="col s12 m6 l4">
-            <a target="_blank" href="{{ kobo_url }}">
-                <div class="portal-menu card">
-                    <div class="card-content center">
-                        <i class="material-symbols-outlined">quiz</i>
-                        <span class="card-title">BAHIS Forms</span>
-                        <p>Manage BAHIS forms and surveys. Powered by KoboToolbox.</p>
-                    </div>
-                    <div class="card-action">
-                        Manage Forms with BAHIS Toolbox
-                    </div>
-                </div>
-            </a>
-        </div>
-        {% if user.is_superuser %}
-            <div class="col s12 m6 l4">
-                <a href="{% url 'taxonomies:list' %}">
-                    <div class="portal-menu card">
-                        <div class="card-content center">
-                            <i class="material-symbols-outlined">category</i>
-                            <span class="card-title">BAHIS Taxonomies</span>
-                            <p>Manage BAHIS Taxonomies such as adminsitrative regions and more.</p>
+            </article>
+
+            {% if user.is_superuser %}
+                <article class="portal-card">
+                    <a href="{% url 'taxonomies:list' %}">
+                        <div class="portal-card-top">
+                            <div class="portal-icon">
+                                <i class="material-symbols-outlined">account_tree</i>
+                            </div>
+                            <span class="portal-chip">Reference</span>
                         </div>
-                        <div class="card-action">
-                            Manage Taxonomies
+                        <div class="portal-card-body">
+                            <h2>BAHIS Taxonomies</h2>
+                            <p>Maintain administrative regions and reference lists that keep field data consistent.</p>
                         </div>
+                        <div class="portal-card-footer">
+                            <span>Manage taxonomies</span>
+                            <i class="material-symbols-outlined">arrow_forward</i>
+                        </div>
+                    </a>
+                </article>
+            {% endif %}
+
+            <article class="portal-card">
+                <a target="_blank" href="{{ dash_url }}">
+                    <div class="portal-card-top">
+                        <div class="portal-icon">
+                            <i class="material-symbols-outlined">monitoring</i>
+                        </div>
+                        <span class="portal-chip">Insights</span>
+                    </div>
+                    <div class="portal-card-body">
+                        <h2>BAHIS Dashboard</h2>
+                        <p>Open operational dashboards for livestock health signals, submissions, and field performance.</p>
+                    </div>
+                    <div class="portal-card-footer">
+                        <span>View dashboard</span>
+                        <i class="material-symbols-outlined">open_in_new</i>
                     </div>
                 </a>
-            </div>
-        {% endif %}
-        <div class="col s12 m6 l4">
-            <a target="_blank" href="{{ dash_url }}">
-                <div class="portal-menu card">
-                    <div class="card-content center">
-                        <i class="material-symbols-outlined">insights</i>
-                        <span class="card-title">BAHIS Dashboard</span>
-                        <p>Access the BAHIS Dashboard to get real insights from BAHIS data.</p>
-                    </div>
-                    <div class="card-action">
-                        Dashboard
-                    </div>
-                </div>
-            </a>
+            </article>
         </div>
 
-        <div class="col s12 m6 l4">
-            <a target="_blank" href="{{ dash_url }}">
-                <div class="portal-menu card">
-                    <div class="card-content center">
-                        <i class="material-symbols-outlined">query_stats</i>
-                        <span class="card-title">BAHIS Queries</span>
-                        <p>Access the BAHIS Metabase instance to make custom queries of the BAHIS data.</p>
-                    </div>
-                    <div class="card-action">
-                        Query Data with Metabase
-                    </div>
-
-                </div>
-            </a>
+        <div class="home-note">
+            Use this portal to move between operational tools quickly. Administrative options are shown only to users
+            with the required access.
         </div>
-
-    </div>
+    </section>
 {% endblock content %}

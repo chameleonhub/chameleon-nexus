@@ -4,11 +4,222 @@
     Login
 {% endblock %}
 
+{% block css %}
+    {{ block.super }}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background:
+                radial-gradient(circle at 12% 12%, rgba(239, 201, 130, 0.12), transparent 28rem),
+                radial-gradient(circle at 88% 18%, rgba(207, 130, 120, 0.07), transparent 30rem),
+                linear-gradient(135deg, #fffefd 0%, #fff4e6 46%, #faead9 100%);
+            color: #4d3528;
+            font-family: "Noto Sans", "Segoe UI", sans-serif;
+        }
+
+        main.container {
+            width: min(1120px, calc(100% - 28px));
+            max-width: 1120px;
+        }
+
+        .login-shell {
+            min-height: calc(100vh - 250px);
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(340px, 440px);
+            gap: 28px;
+            align-items: center;
+            padding: 44px 24px 70px;
+        }
+
+        .login-hero {
+            position: relative;
+            overflow: hidden;
+            min-height: 520px;
+            border-radius: 34px;
+            padding: clamp(30px, 5vw, 58px);
+            color: #fffdf8;
+            background:
+                linear-gradient(135deg, rgba(95, 23, 19, .95), rgba(111, 63, 34, .92)),
+                radial-gradient(circle at top right, rgba(217, 154, 40, .5), transparent 24rem);
+            box-shadow: 0 30px 80px rgba(63, 36, 21, .24);
+        }
+
+        .login-hero::after {
+            content: "";
+            position: absolute;
+            right: -110px;
+            top: -120px;
+            width: 390px;
+            height: 390px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle, rgba(217, 154, 40, .48), transparent 64%),
+                radial-gradient(circle at 40% 60%, rgba(255, 243, 223, .18), transparent 38%);
+        }
+
+        .login-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 13px;
+            border: 1px solid rgba(255, 243, 223, .24);
+            border-radius: 999px;
+            background: rgba(255, 243, 223, .12);
+            color: #ffe1a7;
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .login-title {
+            max-width: 640px;
+            margin: 24px 0 16px;
+            font-size: clamp(2.4rem, 6vw, 5rem);
+            font-weight: 900;
+            line-height: .95;
+            letter-spacing: -.018em;
+        }
+
+        .login-title span {
+            color: #ffc35a;
+        }
+
+        .login-copy {
+            max-width: 560px;
+            color: rgba(255, 243, 223, .78);
+            font-size: 1.1rem;
+            font-weight: 600;
+            line-height: 1.7;
+        }
+
+        .login-panel {
+            border: 1px solid rgba(111, 63, 34, .16);
+            border-radius: 30px;
+            padding: 30px;
+            background: rgba(255, 250, 240, .82);
+            box-shadow: 0 24px 64px rgba(111, 63, 34, .16);
+            backdrop-filter: blur(16px);
+        }
+
+        .login-panel h2 {
+            margin: 0 0 8px;
+            color: #4d3528;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -.015em;
+        }
+
+        .login-panel .login-help {
+            margin: 0 0 24px;
+            color: #6d5547;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .login-panel form p {
+            margin: 0 0 18px;
+        }
+
+        .login-panel label {
+            display: block;
+            margin-bottom: 7px;
+            color: #5f1713;
+            font-size: .86rem;
+            font-weight: 900;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+
+        .login-panel input[type="text"],
+        .login-panel input[type="password"],
+        .login-panel input[type="email"] {
+            box-sizing: border-box;
+            width: 100%;
+            height: 52px;
+            margin: 0;
+            padding: 0 16px;
+            border: 1px solid rgba(111, 63, 34, .22);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, .74);
+            color: #2c160f;
+            font: inherit;
+            box-shadow: none;
+        }
+
+        .login-panel input[type="text"]:focus,
+        .login-panel input[type="password"]:focus,
+        .login-panel input[type="email"]:focus {
+            border-color: #8f241d;
+            box-shadow: 0 0 0 4px rgba(217, 154, 40, .18);
+            outline: none;
+        }
+
+        .login-panel .helptext,
+        .login-panel ul.errorlist {
+            color: #8f241d;
+            font-size: .88rem;
+            font-weight: 700;
+        }
+
+        .login-submit {
+            width: 100%;
+            height: 52px;
+            margin-top: 6px;
+            border: 0;
+            border-radius: 999px;
+            color: #5f1713;
+            background: #ffd98a;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 900;
+            transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+        }
+
+        .login-submit:hover,
+        .login-submit:focus {
+            background: #ffe4a8;
+            box-shadow: 0 16px 34px rgba(111, 63, 34, .18);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 900px) {
+            .login-shell {
+                grid-template-columns: 1fr;
+                padding: 24px 0 48px;
+            }
+
+            .login-hero {
+                min-height: auto;
+            }
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Login">
-    </form>
+    <section class="login-shell">
+        <div class="login-hero">
+            <span class="login-kicker">
+                <i class="material-symbols-outlined tiny">lock</i>
+                Secure access
+            </span>
+            <h1 class="login-title">Sign in to <span>BAHIS</span> Management</h1>
+            <p class="login-copy">
+                Access livestock health operations, form management, desktop modules, and administrative tools from one
+                focused portal.
+            </p>
+        </div>
+
+        <div class="login-panel">
+            <h2>Login</h2>
+            <p class="login-help">Use your BAHIS account credentials to continue.</p>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="login-submit" type="submit">Login</button>
+            </form>
+        </div>
+    </section>
 {% endblock %}

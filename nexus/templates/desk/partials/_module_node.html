@@ -1,0 +1,61 @@
+{% with module=node.module child_modules=node.children %}
+    <article class="desk-node desk-node-level-{{ level }} {% if child_modules %}is-collapsed{% endif %}">
+        <div
+            class="desk-node-card {% if child_modules %}desk-tree-toggle-card{% endif %}"
+            data-search-text="{{ module.title|default:'' }} {{ module.description|default:'' }} {{ module.module_type|default:'' }}"
+        >
+            <div class="desk-node-main">
+                {% if child_modules %}
+                    <button class="desk-folder-icon has-children desk-tree-toggle" type="button" aria-expanded="false">
+                        <i class="material-symbols-outlined desk-folder-open">folder_open</i>
+                        <i class="material-symbols-outlined desk-folder-closed">folder</i>
+                    </button>
+                {% else %}
+                    <div class="desk-folder-icon">
+                        <i class="material-symbols-outlined">{{ module.icon|default:"description" }}</i>
+                    </div>
+                {% endif %}
+
+                <div class="desk-node-content">
+                    <div class="desk-node-title-row">
+                        <h2>{{ module.title }}</h2>
+                        {% if module.is_active %}
+                            <span class="desk-status active">Active</span>
+                        {% else %}
+                            <span class="desk-status inactive">Inactive</span>
+                        {% endif %}
+                    </div>
+                    <p>{{ module.description|default:"No description" }}</p>
+                    <div class="desk-node-meta">
+                    <span>{{ module.module_type }}</span>
+                        <span>Order {{ module.sort_order }}</span>
+                        {% if child_modules %}
+                            <span>{{ child_modules|length }} child module{{ child_modules|length|pluralize }}</span>
+                            <span class="desk-collapse-message">Click folder to expand</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="desk-actions">
+                <a class="desk-icon-btn tooltipped" data-tooltip="Edit" href="{% url 'desk:update' module.id %}">
+                    <i class="material-symbols-outlined">edit</i>
+                </a>
+                <a class="desk-icon-btn tooltipped" data-tooltip="Show only children" href="{% url 'desk:list' %}?title__icontains=&description__icontains=&parent_module={{ module.id }}">
+                    <i class="material-symbols-outlined">filter_alt</i>
+                </a>
+                <a class="desk-icon-btn tooltipped" data-tooltip="Delete" href="{% url 'desk:delete' module.id %}">
+                    <i class="material-symbols-outlined">delete</i>
+                </a>
+            </div>
+        </div>
+
+        {% if child_modules %}
+            <div class="desk-node-children">
+                {% for child in child_modules %}
+                    {% include 'desk/partials/_module_node.html' with node=child level=level|add:1 only %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </article>
+{% endwith %}

@@ -1,5 +1,10 @@
 {% extends 'create_form.html' %}
 
+{% block css %}
+    {{ block.super }}
+    {% include 'desk/_desk_theme.html' %}
+{% endblock css %}
+
 {% block content_title %}
 Create Desktop App Workflow
 {% endblock content_title %}

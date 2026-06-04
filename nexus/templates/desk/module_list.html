@@ -1,30 +1,112 @@
-{% extends 'list.html' %}
+{% extends 'base.html' %}
 
-{% block content_title %}
-Desktop App Modules
-{% endblock content_title %}
+{% block css %}
+    {{ block.super }}
+    {% include 'desk/_desk_theme.html' %}
+{% endblock css %}
 
-{% block table_headers %}
-    <th>ID</th>
-    <th>Module</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Parent Module</th>
-    <th>Is Active?</th>
-{% endblock table_headers %}
+{% block content %}
+    <section class="desk-shell">
+        <div class="desk-hero">
+            <div>
+                <span class="desk-kicker">Desktop app modules</span>
+                <h1 class="desk-title">Manage BAHIS Desktop App</h1>
+                <p class="desk-copy">
+                    Organize desktop modules as folders. Containers can hold forms, lists, external links, and nested
+                    modules.
+                </p>
+                <div class="desk-vet-strip">
+                    <span class="desk-vet-chip"><i class="material-symbols-outlined">pets</i> Livestock</span>
+                    <span class="desk-vet-chip"><i class="material-symbols-outlined">medical_services</i> Veterinary</span>
+                    <span class="desk-vet-chip"><i class="material-symbols-outlined">vaccines</i> Field health</span>
+                </div>
+            </div>
+            <a class="desk-create-btn" href="{% url 'desk:create' %}">
+                <i class="material-symbols-outlined">create_new_folder</i>
+                Create module
+            </a>
+        </div>
 
-{% block table_rows %}
-    <td>{{ module.id }}</td>
-    <td class="valign-wrapper left-align">
-            <span class="material-symbols-outlined">{{ module.icon }}</span> &nbsp; {{ module.title }}
-    </td>
-    <td>{{ module.module_type }}</td>
-    <td>{{ module.description }}</td>
-    <td>{{ module.parent_module_id|default_if_none:"Root" }}</td>
-    <td><label for="checkbox-for-{{ module.id }}"><input id="checkbox-for-{{ module.id }}" class="filled-in" type="checkbox" {% if module.is_active %} checked {% endif %} disabled/><span></span></label></td>
-{% endblock table_rows %}
+        <div class="desk-search">
+            <i class="material-symbols-outlined">search</i>
+            <input id="desk-tree-search" type="search" placeholder="Search modules, descriptions, or types">
+            <span id="desk-search-count">Showing all modules</span>
+        </div>
 
-{% block update_delete_buttons %}
-{{ block.super }}
-<a class="tooltipped" data-tooltip="Child modules" href="{% url request.resolver_match.app_name|add:':list' %}?title__icontains=&description__icontains=&parent_module={{ module.id }}"><i class="material-symbols-outlined">subdirectory_arrow_right</i></a>
-{% endblock update_delete_buttons %}
+        <div class="desk-tree-panel">
+            {% if module_tree %}
+                <div class="desk-tree">
+                    {% for node in module_tree %}
+                        {% include 'desk/partials/_module_node.html' with node=node level=0 only %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="desk-empty">
+                    No desktop modules found.
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock content %}
+
+{% block inline_javascript %}
+    <script>
+        $(document).ready(function(){
+            $('.collapsible').collapsible();
+            $('select').formSelect();
+            $('.tooltipped').tooltip({enterDelay: 0, exitDelay: 0, inDuration: 100, outDuration: 100, margin: 2});
+            function toggleDeskNode(node) {
+                const collapsed = node.toggleClass('is-collapsed').hasClass('is-collapsed');
+                node.children('.desk-node-card').find('.desk-tree-toggle').attr('aria-expanded', String(!collapsed));
+                node.children('.desk-node-card').find('.desk-collapse-message').text(
+                    collapsed ? 'Click folder to expand' : 'Click folder to collapse'
+                );
+            }
+
+            $('.desk-tree-toggle').on('click', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                toggleDeskNode($(this).closest('.desk-node'));
+            });
+
+            $('.desk-tree-toggle-card').on('click', function(event) {
+                if ($(event.target).closest('a, button').length) {
+                    return;
+                }
+                toggleDeskNode($(this).closest('.desk-node'));
+            });
+
+            const allNodes = $('.desk-node');
+            $('#desk-tree-search').on('input', function() {
+                const query = $(this).val().toString().trim().toLowerCase();
+                let visibleCount = 0;
+
+                if (!query) {
+                    allNodes.show().filter(function() {
+                        return $(this).children('.desk-node-children').length > 0;
+                    }).addClass('is-collapsed').children('.desk-node-card').find('.desk-collapse-message').text('Click folder to expand');
+                    allNodes.find('.desk-tree-toggle').attr('aria-expanded', 'false');
+                    $('#desk-search-count').text('Showing all modules');
+                    return;
+                }
+
+                allNodes.hide().removeClass('is-search-match');
+
+                allNodes.each(function() {
+                    const node = $(this);
+                    const card = node.children('.desk-node-card');
+                    const text = card.data('search-text').toString().toLowerCase();
+                    if (text.includes(query)) {
+                        visibleCount += 1;
+                        node.addClass('is-search-match').show();
+                        node.parents('.desk-node').show().removeClass('is-collapsed');
+                        node.parents('.desk-node').children('.desk-node-card').find('.desk-tree-toggle').attr('aria-expanded', 'true');
+                        node.parents('.desk-node').children('.desk-node-card').find('.desk-collapse-message').text('Click folder to collapse');
+                    }
+                });
+
+                $('#desk-search-count').text(`${visibleCount} result${visibleCount === 1 ? '' : 's'} found`);
+            });
+        });
+    </script>
+{% endblock inline_javascript %}

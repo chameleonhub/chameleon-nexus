@@ -1,32 +1,83 @@
-{% extends 'list.html' %}
+{% extends 'base.html' %}
 
-{% block content_title %}
-Desktop App Workflows
-{% endblock content_title %}
+{% block css %}
+    {{ block.super }}
+    {% include 'desk/_desk_theme.html' %}
+{% endblock css %}
 
-{% block create_button %}
-<a class="btn-floating btn-large waves-effect waves-light tooltipped" data-tooltip="Create" href="{% url 'desk:workflows_create' %}"><i class="material-symbols-outlined">add</i></a>
-{% endblock create_button %}
+{% block content %}
+    <section class="desk-shell">
+        <div class="desk-hero">
+            <div>
+                <span class="desk-kicker">Desktop app workflows</span>
+                <h1 class="desk-title">Manage Workflows</h1>
+                <p class="desk-copy">
+                    Configure follow-up and destination form workflows for the selected source form.
+                </p>
+            </div>
+            <a class="desk-create-btn" href="{% url 'desk:workflows_create' %}">
+                <i class="material-symbols-outlined">add</i>
+                Create workflow
+            </a>
+        </div>
 
+        <div class="desk-panel">
+            {% if object_list %}
+                <table class="desk-table responsive-table">
+                    <thead>
+                    <tr>
+                        <th>Workflow</th>
+                        <th>Source Form</th>
+                        <th>Destination Form</th>
+                        <th>Status</th>
+                        <th class="right-align">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for module in object_list %}
+                        <tr>
+                            <td>
+                                <div class="desk-module-name">
+                                    <span class="desk-module-icon material-symbols-outlined">sync_alt</span>
+                                    <span>{{ module.title }}</span>
+                                </div>
+                            </td>
+                            <td>{{ module.source_form|default:"Not set" }}</td>
+                            <td>{{ module.destination_form|default:"Not set" }}</td>
+                            <td>
+                                {% if module.is_active %}
+                                    <span class="desk-status active">Active</span>
+                                {% else %}
+                                    <span class="desk-status inactive">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="desk-actions">
+                                    <a class="desk-icon-btn tooltipped" data-tooltip="Edit" href="{% url 'desk:workflows_update' module.id %}">
+                                        <i class="material-symbols-outlined">edit</i>
+                                    </a>
+                                    <a class="desk-icon-btn tooltipped" data-tooltip="Delete" href="{% url 'desk:workflows_delete' module.id %}">
+                                        <i class="material-symbols-outlined">delete</i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="desk-empty">
+                    No workflows found for this source form.
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock content %}
 
-
-{% block table_headers %}
-    <th>ID</th>
-    <th>Title</th>
-    <th>Source Form</th>
-    <th>Destination Form</th>
-    <th>Is Active?</th>
-{% endblock table_headers %}
-
-{% block table_rows %}
-    <td>{{ module.id }}</td>
-    <td>{{ module.title }}</td>
-    <td>{{ module.source_form }}</td>
-    <td>{{ module.destination_form }}</td>
-    <td><label for="checkbox-for-{{ module.id }}"><input id="checkbox-for-{{ module.id }}" class="filled-in" type="checkbox" {% if module.is_active %} checked {% endif %} disabled/><span></span></label></td>
-{% endblock table_rows %}
-
-{% block update_delete_buttons %}
-<a class="tooltipped" data-tooltip="Edit" href="{% url 'desk:workflows_update' module.id %}"><i class="material-symbols-outlined">edit</i></a>
-<a class="tooltipped" data-tooltip="Delete" href="{% url 'desk:workflows_delete' module.id %}"><i class="material-symbols-outlined">delete</i></a>
-{% endblock update_delete_buttons %}
+{% block inline_javascript %}
+    <script>
+        $(document).ready(function(){
+            $('.tooltipped').tooltip({enterDelay: 0, exitDelay: 0, inDuration: 100, outDuration: 100, margin: 2});
+        });
+    </script>
+{% endblock inline_javascript %}

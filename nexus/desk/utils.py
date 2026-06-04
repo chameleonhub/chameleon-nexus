@@ -1,4 +1,5 @@
 import requests
+from django.core.cache import cache
 from rest_framework.authtoken.models import Token
 
 from nexus.desk.models import Module
@@ -7,10 +8,21 @@ from config.settings.base import env
 
 # get assets list for authenticated user
 def get_assets_for_user(request):
+    cache_key = f"desk:kobo-assets:{request.user.pk}"
+    cached_assets = cache.get(cache_key)
+    if cached_assets is not None:
+        return cached_assets
+
     api_url = env("KOBOTOOLBOX_KF_API_URL")
     token = Token.objects.get(user=request.user).key
-    response = requests.get(f"{api_url}assets/?format=json", headers={"Authorization": f"Token {token}"})
+    response = requests.get(
+        f"{api_url}assets/?format=json",
+        headers={"Authorization": f"Token {token}"},
+        timeout=5,
+    )
+    response.raise_for_status()
     asset_list = response.json().get("results")
+    cache.set(cache_key, asset_list, 300)
     return asset_list
 
 

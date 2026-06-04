@@ -1,5 +1,10 @@
 {% extends 'delete_form.html' %}
 
+{% block css %}
+    {{ block.super }}
+    {% include 'desk/_desk_theme.html' %}
+{% endblock css %}
+
 {% block content_title %}
 Delete Desktop App Module
 {% endblock content_title %}

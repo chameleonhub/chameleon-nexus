@@ -34,8 +34,11 @@
         margin-bottom: 22px;
         padding: 28px;
         background:
+            linear-gradient(rgba(95, 23, 19, .055) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(95, 23, 19, .055) 1px, transparent 1px),
             radial-gradient(circle at 88% 18%, rgba(217, 154, 40, .18), transparent 18rem),
             rgba(255, 250, 240, .82);
+        background-size: 38px 38px, 38px 38px, auto, auto;
     }
 
     .desk-hero::before {
@@ -155,6 +158,205 @@
         color: #5f1713;
         background: #ffe4a8;
         box-shadow: 0 14px 28px rgba(111, 63, 34, .16);
+    }
+
+    .desk-action.primary {
+        color: #fff3df;
+        background: linear-gradient(135deg, #8f241d, #6f3f22);
+    }
+
+    .desk-action.primary:hover {
+        color: #fff3df;
+        background: linear-gradient(135deg, #a43129, #7d4b2d);
+    }
+
+    .desk-action.secondary {
+        color: #5f1713;
+        background: rgba(255, 250, 240, .78);
+        border: 1px solid rgba(143, 36, 29, .14);
+    }
+
+    .desk-action.danger {
+        color: #fff3df;
+        background: linear-gradient(135deg, #9d251d, #5f1713);
+    }
+
+    .desk-form-top-actions {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .desk-crud-hero {
+        align-items: flex-start;
+    }
+
+    .desk-form-card {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(143, 36, 29, .12);
+        border-radius: 30px;
+        padding: 28px;
+        background: rgba(255, 250, 240, .84);
+        box-shadow: 0 24px 64px rgba(111, 63, 34, .14);
+        backdrop-filter: blur(16px);
+    }
+
+    .desk-form-card::before {
+        content: "";
+        position: absolute;
+        right: -72px;
+        top: -78px;
+        width: 210px;
+        height: 182px;
+        background: rgba(217, 154, 40, .12);
+        clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+        transform: rotate(18deg);
+        pointer-events: none;
+    }
+
+    .desk-form-card > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .desk-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 24px;
+        row-gap: 8px;
+    }
+
+    .desk-form-grid > .row {
+        display: grid;
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 24px;
+        row-gap: 8px;
+        margin: 0;
+    }
+
+    .desk-form-grid .input-field,
+    .desk-form-grid > p,
+    .desk-form-grid > div {
+        min-width: 0;
+    }
+
+    .desk-form-grid .input-field.col {
+        width: 100%;
+        margin-left: 0;
+        padding: 0;
+    }
+
+    .desk-form-grid .input-field:has(textarea),
+    .desk-form-grid .input-field:has(select[name="definition"]),
+    .desk-form-grid .input-field:has(input[name="external_url"]) {
+        grid-column: 1 / -1;
+    }
+
+    .desk-form-card label {
+        color: #5f1713;
+        font-weight: 900;
+    }
+
+    .desk-form-card input[type="text"],
+    .desk-form-card input[type="number"],
+    .desk-form-card input[type="url"],
+    .desk-form-card textarea,
+    .desk-form-card .select-wrapper input.select-dropdown {
+        box-sizing: border-box;
+        border: 1px solid rgba(111, 63, 34, .2);
+        border-radius: 16px;
+        padding: 0 14px;
+        background: rgba(255, 255, 255, .78);
+        color: #4d3528;
+        box-shadow: none;
+    }
+
+    .desk-form-card textarea {
+        min-height: 120px;
+        padding-top: 14px;
+    }
+
+    .desk-form-card input:focus,
+    .desk-form-card textarea:focus,
+    .desk-form-card .select-wrapper input.select-dropdown:focus {
+        border-color: #8f241d;
+        box-shadow: 0 0 0 4px rgba(217, 154, 40, .16);
+        outline: 0;
+    }
+
+    .desk-form-card [type="checkbox"] + span:not(.lever) {
+        color: #5f1713;
+        font-weight: 900;
+    }
+
+    .dropdown-content {
+        border: 1px solid rgba(143, 36, 29, .14);
+        border-radius: 18px;
+        background: rgba(255, 250, 240, .98);
+        box-shadow: 0 18px 46px rgba(111, 63, 34, .18);
+        overflow: hidden;
+    }
+
+    .dropdown-content li {
+        min-height: 42px;
+    }
+
+    .dropdown-content li > a,
+    .dropdown-content li > span {
+        color: #5f1713;
+        font-weight: 800;
+    }
+
+    .dropdown-content li:hover,
+    .dropdown-content li.active {
+        background: rgba(255, 217, 138, .32);
+    }
+
+    .select-wrapper .caret {
+        fill: #8f241d;
+    }
+
+    .desk-form-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 24px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(143, 36, 29, .1);
+    }
+
+    .desk-delete-card {
+        max-width: 720px;
+        margin: 34px auto 64px;
+        border: 1px solid rgba(143, 36, 29, .14);
+        border-radius: 32px;
+        padding: 34px;
+        background: rgba(255, 250, 240, .86);
+        box-shadow: 0 24px 64px rgba(111, 63, 34, .16);
+        text-align: center;
+        backdrop-filter: blur(16px);
+    }
+
+    .desk-delete-icon {
+        display: grid;
+        place-items: center;
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 18px;
+        border-radius: 24px;
+        color: #fff3df;
+        background: linear-gradient(135deg, #9d251d, #5f1713);
+        box-shadow: 0 16px 34px rgba(95, 23, 19, .18);
+    }
+
+    .desk-delete-icon i {
+        font-size: 38px;
     }
 
     .desk-panel {
@@ -523,6 +725,27 @@
             justify-content: flex-start;
         }
 
+        .desk-form-grid,
+        .desk-form-grid > .row {
+            grid-template-columns: 1fr;
+        }
+
+        .desk-form-card,
+        .desk-delete-card {
+            padding: 22px;
+        }
+
+        .desk-form-actions,
+        .desk-form-top-actions {
+            justify-content: stretch;
+        }
+
+        .desk-form-actions .desk-action,
+        .desk-form-actions .desk-action button,
+        .desk-form-top-actions .desk-action {
+            width: 100%;
+        }
+
         .desk-search {
             grid-template-columns: auto 1fr;
         }
@@ -532,3 +755,6 @@
         }
     }
 </style>
+<script>
+    window.deskFormsApiUrl = "/api/desk/forms/";
+</script>

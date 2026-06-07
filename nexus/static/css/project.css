@@ -3,23 +3,152 @@
 }
 
 html {
+  position: relative;
   background: #fffefd;
 }
 
+a:focus {
+  outline: unset;
+  outline-offset: unset;
+}
+
+html::before,
+html::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+}
+
+html::before {
+  right: 8vw;
+  top: 18vh;
+  width: 92px;
+  height: 80px;
+  background: rgba(217, 154, 40, .085);
+  filter:
+    drop-shadow(-64vw 19vh 0 rgba(111, 63, 34, .055))
+    drop-shadow(-18vw 54vh 0 rgba(143, 36, 29, .06));
+  transform: rotate(18deg);
+}
+
+html::after {
+  left: 50vw;
+  top: 7vh;
+  width: 54px;
+  height: 48px;
+  background: rgba(143, 36, 29, .065);
+  filter:
+    drop-shadow(36vw 34vh 0 rgba(217, 154, 40, .07))
+    drop-shadow(-42vw 61vh 0 rgba(111, 63, 34, .055));
+  transform: rotate(-24deg);
+}
+
 body {
+  position: relative;
   background:
-    linear-gradient(rgba(95, 23, 19, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(95, 23, 19, 0.055) 1px, transparent 1px),
     radial-gradient(circle at 12% 12%, rgba(239, 201, 130, 0.12), transparent 28rem),
     radial-gradient(circle at 88% 18%, rgba(207, 130, 120, 0.07), transparent 30rem),
     linear-gradient(135deg, #fffefd 0%, #fff4e6 46%, #faead9 100%);
-  background-size: 42px 42px, 42px 42px, auto, auto, auto;
+  background-position: center top;
   color: #4d3528;
+  isolation: isolate;
 }
 
-body::before {
-  content: none;
+.bahis-shape-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
+
+.bahis-shape-field .shape {
+  position: absolute;
+  display: block;
+}
+
+.bahis-shape-field .hex {
+  aspect-ratio: 1.1547;
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+}
+
+.bahis-shape-field .hex.outline {
+  padding: 4px;
+  background: rgba(143, 36, 29, .095);
+}
+
+.bahis-shape-field .hex.outline::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  background: rgba(255, 247, 236, .72);
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+}
+
+.bahis-shape-field .plus::before,
+.bahis-shape-field .plus::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border-radius: 3px;
+  background: currentColor;
+}
+
+.bahis-shape-field .plus::before {
+  width: 100%;
+  height: 34%;
+}
+
+.bahis-shape-field .plus::after {
+  width: 34%;
+  height: 100%;
+}
+
+.bahis-shape-field .h1 { left: 3vw; top: 12vh; width: 170px; background: rgba(143, 36, 29, .07); transform: rotate(-12deg); }
+.bahis-shape-field .h2 { left: 58vw; top: 10vh; width: 112px; transform: rotate(22deg); }
+.bahis-shape-field .h3 { left: 84vw; top: 18vh; width: 84px; background: rgba(217, 154, 40, .09); transform: rotate(-24deg); }
+.bahis-shape-field .h4 { left: 17vw; top: 38vh; width: 74px; background: rgba(111, 63, 34, .08); transform: rotate(8deg); }
+.bahis-shape-field .h5 { left: 48vw; top: 48vh; width: 132px; background: rgba(217, 154, 40, .07); transform: rotate(18deg); }
+.bahis-shape-field .h6 { left: 90vw; top: 54vh; width: 126px; background: rgba(143, 36, 29, .075); transform: rotate(-9deg); }
+.bahis-shape-field .h7 { left: 8vw; top: 78vh; width: 92px; background: rgba(111, 63, 34, .06); transform: rotate(28deg); }
+.bahis-shape-field .h8 { left: 34vw; top: 72vh; width: 154px; background: rgba(217, 154, 40, .075); transform: rotate(-18deg); }
+.bahis-shape-field .h9 { left: 69vw; top: 84vh; width: 68px; background: rgba(143, 36, 29, .055); transform: rotate(12deg); }
+.bahis-shape-field .h10 { left: 77vw; top: 34vh; width: 96px; background: rgba(111, 63, 34, .065); transform: rotate(-30deg); }
+
+.bahis-shape-field .p1 { left: 14vw; top: 84vh; width: 92px; height: 92px; color: rgba(143, 36, 29, .075); transform: rotate(10deg); }
+.bahis-shape-field .p2 { left: 78vw; top: 76vh; width: 66px; height: 66px; color: rgba(217, 154, 40, .13); transform: rotate(-16deg); }
+.bahis-shape-field .p3 { left: 42vw; top: 20vh; width: 58px; height: 58px; color: rgba(111, 63, 34, .07); transform: rotate(22deg); }
+.bahis-shape-field .p4 { left: 88vw; top: 35vh; width: 42px; height: 42px; color: rgba(143, 36, 29, .06); transform: rotate(-24deg); }
+.bahis-shape-field .p5 { left: 28vw; top: 43vh; width: 118px; height: 118px; color: rgba(217, 154, 40, .07); transform: rotate(34deg); }
+.bahis-shape-field .p6 { left: 61vw; top: 88vh; width: 38px; height: 38px; color: rgba(111, 63, 34, .06); transform: rotate(-8deg); }
+.bahis-shape-field .p7 { left: 6vw; top: 52vh; width: 52px; height: 52px; color: rgba(143, 36, 29, .055); transform: rotate(18deg); }
+.bahis-shape-field .p8 { left: 68vw; top: 29vh; width: 86px; height: 86px; color: rgba(217, 154, 40, .075); transform: rotate(-32deg); }
+.bahis-shape-field .p9 { left: 36vw; top: 8vh; width: 46px; height: 46px; color: rgba(111, 63, 34, .06); transform: rotate(13deg); }
+.bahis-shape-field .p10 { left: 54vw; top: 62vh; width: 72px; height: 72px; color: rgba(143, 36, 29, .05); transform: rotate(-12deg); }
+
+.bahis-shape-field .tiny {
+  opacity: .92;
+}
+
+.bahis-shape-field .th1 { left: 1.4vw; top: 9vh; width: 28px; background: rgba(143, 36, 29, .08); transform: rotate(14deg); }
+.bahis-shape-field .th2 { right: 1.8vw; top: 16vh; width: 34px; transform: rotate(-20deg); }
+.bahis-shape-field .th3 { left: 2.2vw; bottom: 8vh; width: 22px; background: rgba(217, 154, 40, .11); transform: rotate(-9deg); }
+.bahis-shape-field .th4 { right: 3vw; bottom: 11vh; width: 30px; transform: rotate(24deg); }
+.bahis-shape-field .th5 { left: .8vw; top: 23vh; width: 18px; background: rgba(111, 63, 34, .07); transform: rotate(-18deg); }
+.bahis-shape-field .th6 { right: .9vw; top: 31vh; width: 24px; transform: rotate(12deg); }
+.bahis-shape-field .th7 { left: 1.2vw; bottom: 23vh; width: 34px; background: rgba(143, 36, 29, .055); transform: rotate(27deg); }
+.bahis-shape-field .th8 { right: 1.3vw; bottom: 27vh; width: 20px; transform: rotate(-31deg); }
+.bahis-shape-field .tp1 { left: 5vw; top: 5vh; width: 24px; height: 24px; color: rgba(111, 63, 34, .07); transform: rotate(-12deg); }
+.bahis-shape-field .tp2 { right: 5vw; top: 7vh; width: 20px; height: 20px; color: rgba(217, 154, 40, .12); transform: rotate(18deg); }
+.bahis-shape-field .tp3 { left: 6vw; bottom: 4vh; width: 18px; height: 18px; color: rgba(143, 36, 29, .075); transform: rotate(31deg); }
+.bahis-shape-field .tp4 { right: 6vw; bottom: 5vh; width: 26px; height: 26px; color: rgba(111, 63, 34, .065); transform: rotate(-25deg); }
+.bahis-shape-field .tp5 { left: 2.4vw; top: 32vh; width: 16px; height: 16px; color: rgba(217, 154, 40, .1); transform: rotate(22deg); }
+.bahis-shape-field .tp6 { right: 2.8vw; top: 43vh; width: 22px; height: 22px; color: rgba(143, 36, 29, .06); transform: rotate(-18deg); }
+.bahis-shape-field .tp7 { left: 3vw; bottom: 32vh; width: 28px; height: 28px; color: rgba(111, 63, 34, .055); transform: rotate(14deg); }
+.bahis-shape-field .tp8 { right: 3.4vw; bottom: 35vh; width: 16px; height: 16px; color: rgba(217, 154, 40, .095); transform: rotate(-28deg); }
 
 .bahis-site-header {
   position: sticky;
@@ -27,45 +156,73 @@ body::before {
   z-index: 20;
 }
 
+.bahis-site-header::before {
+  content: "";
+  position: absolute;
+  left: 17%;
+  top: 10px;
+  width: 54px;
+  height: 47px;
+  background: rgba(143, 36, 29, .11);
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  filter:
+    drop-shadow(23vw -4px 0 rgba(217, 154, 40, .13))
+    drop-shadow(47vw 20px 0 rgba(111, 63, 34, .11))
+    drop-shadow(63vw 4px 0 rgba(143, 36, 29, .08));
+  transform: rotate(-18deg);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .bahis-site-header .bahis-nav {
   position: relative;
+  z-index: 1;
   overflow: hidden;
   height: auto;
   min-height: 78px;
   line-height: normal;
   background:
-    radial-gradient(circle at 8% 20%, rgba(217, 154, 40, 0.22), transparent 18rem),
-    linear-gradient(135deg, #5f1713 0%, #8f241d 48%, #6f3f22 100%);
-  border-bottom: 1px solid rgba(255, 243, 223, 0.22);
-  box-shadow: 0 18px 48px rgba(63, 36, 21, 0.24);
+    radial-gradient(circle at 7% 24%, rgba(255, 217, 138, .42), transparent 17rem),
+    radial-gradient(circle at 92% 18%, rgba(143, 36, 29, .18), transparent 18rem),
+    linear-gradient(135deg, rgba(255, 253, 248, .96) 0%, rgba(255, 243, 223, .93) 48%, rgba(242, 215, 186, .92) 100%);
+  border-bottom: 1px solid rgba(143, 36, 29, 0.14);
+  box-shadow: 0 16px 42px rgba(111, 63, 34, 0.15);
   font-family: "Noto Sans", "Segoe UI", sans-serif;
+  backdrop-filter: blur(16px);
 }
 
 .bahis-site-header .bahis-nav::before {
   content: "";
   position: absolute;
-  right: 9%;
-  top: -54px;
-  width: 180px;
-  height: 180px;
-  border-radius: 50px;
-  background:
-    radial-gradient(circle at 32% 32%, rgba(255, 217, 138, .26), transparent 34%),
-    linear-gradient(135deg, rgba(255, 243, 223, .12), rgba(255, 243, 223, .04));
+  right: 7%;
+  top: -44px;
+  width: 156px;
+  height: 135px;
+  background: rgba(143, 36, 29, .09);
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  filter:
+    drop-shadow(-105px 48px 0 rgba(217, 154, 40, .14))
+    drop-shadow(84px 38px 0 rgba(111, 63, 34, .08))
+    drop-shadow(-42vw 22px 0 rgba(143, 36, 29, .055));
   transform: rotate(14deg);
   pointer-events: none;
 }
 
 .bahis-site-header .bahis-nav::after {
-  content: "pets";
+  content: "";
   position: absolute;
-  right: calc(9% + 52px);
-  top: 17px;
-  color: rgba(255, 243, 223, .18);
-  font-family: "Material Symbols Outlined";
-  font-size: 58px;
-  font-weight: normal;
-  line-height: 1;
+  right: calc(7% + 34px);
+  top: 16px;
+  width: 118px;
+  height: 78px;
+  background:
+    linear-gradient(0deg, transparent 28%, rgba(143, 36, 29, .15) 29%, rgba(143, 36, 29, .15) 71%, transparent 72%) 0 0 / 60px 60px no-repeat,
+    linear-gradient(90deg, transparent 28%, rgba(143, 36, 29, .15) 29%, rgba(143, 36, 29, .15) 71%, transparent 72%) 0 0 / 60px 60px no-repeat,
+    linear-gradient(0deg, transparent 29%, rgba(217, 154, 40, .22) 30%, rgba(217, 154, 40, .22) 70%, transparent 71%) 72px 24px / 42px 42px no-repeat,
+    linear-gradient(90deg, transparent 29%, rgba(217, 154, 40, .22) 30%, rgba(217, 154, 40, .22) 70%, transparent 71%) 72px 24px / 42px 42px no-repeat,
+    linear-gradient(0deg, transparent 27%, rgba(111, 63, 34, .12) 28%, rgba(111, 63, 34, .12) 72%, transparent 73%) -45vw 18px / 34px 34px no-repeat,
+    linear-gradient(90deg, transparent 27%, rgba(111, 63, 34, .12) 28%, rgba(111, 63, 34, .12) 72%, transparent 73%) -45vw 18px / 34px 34px no-repeat;
+  transform: rotate(-10deg);
   pointer-events: none;
 }
 
@@ -84,7 +241,7 @@ body::before {
   display: flex;
   align-items: center;
   height: 100%;
-  color: #fff3df;
+  color: #5f1713;
 }
 
 .bahis-site-header .bahis-brand {
@@ -95,10 +252,10 @@ body::before {
   height: 52px;
   width: auto;
   padding: 8px;
-  border: 1px solid rgba(255, 243, 223, 0.2);
+  border: 1px solid rgba(143, 36, 29, 0.14);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 12px 28px rgba(63, 36, 21, 0.2);
+  box-shadow: 0 12px 28px rgba(111, 63, 34, 0.16);
 }
 
 .bahis-site-header .bahis-brand span {
@@ -109,14 +266,14 @@ body::before {
 }
 
 .bahis-site-header .bahis-brand strong {
-  color: #ffffff;
+  color: #5f1713;
   font-size: 1.45rem;
   font-weight: 900;
   letter-spacing: 0.06em;
 }
 
 .bahis-site-header .bahis-brand small {
-  color: rgba(255, 243, 223, 0.72);
+  color: #8d684d;
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -142,23 +299,30 @@ body::before {
   gap: 7px;
   min-height: 42px;
   padding: 0 15px;
-  border: 1px solid rgba(255, 243, 223, 0.18);
+  border: 1px solid rgba(143, 36, 29, 0.14);
   border-radius: 999px;
-  color: #fff3df;
-  background: rgba(255, 243, 223, 0.1);
+  color: #5f1713;
+  background: rgba(255, 250, 240, 0.7);
   font-weight: 850;
   line-height: 1;
+  outline: none;
   transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
 .bahis-site-header .bahis-nav-links a:hover,
-.bahis-site-header .bahis-nav-links a:focus,
-.bahis-site-header .bahis-logout:hover,
-.bahis-site-header .bahis-logout:focus {
+.bahis-site-header .bahis-logout:hover {
   color: #fff3df;
-  background: rgba(255, 243, 223, 0.18);
+  background: linear-gradient(135deg, #8f241d, #6f3f22);
   transform: translateY(-1px);
-  box-shadow: 0 12px 26px rgba(63, 36, 21, 0.22);
+  box-shadow: 0 12px 26px rgba(95, 23, 19, 0.18);
+}
+
+.bahis-site-header .bahis-nav-links a:focus,
+.bahis-site-header .bahis-logout:focus {
+  color: #5f1713;
+  background: rgba(255, 250, 240, 0.7);
+  box-shadow: none;
+  transform: none;
 }
 
 .bahis-site-header .bahis-nav-links i,
@@ -199,6 +363,7 @@ nav.white .brand-logo {
   border-top: 1px solid rgba(255, 243, 223, 0.2);
   box-shadow: 0 -18px 48px rgba(63, 36, 21, 0.16);
   font-family: "Noto Sans", "Segoe UI", sans-serif;
+  z-index: 10;
 }
 
 .bahis-footer-inner {
@@ -279,6 +444,8 @@ body {
 }
 
 main {
+  position: relative;
+  z-index: 1;
   flex: 1 0 auto;
 }
 

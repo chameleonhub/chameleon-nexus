@@ -1,4 +1,5 @@
-{% extends 'create_form.html' %}
+{% extends 'base.html' %}
+{% load materializecss %}
 
 {% block css %}
     {{ block.super }}
@@ -8,3 +9,91 @@
 {% block content_title %}
 Create Desktop App Workflow
 {% endblock content_title %}
+
+{% block content %}
+    <section class="desk-shell">
+        <div class="desk-hero desk-crud-hero">
+            <div>
+                <span class="desk-kicker">Desktop workflow</span>
+                <h1 class="desk-title">Create workflow</h1>
+                <p class="desk-copy">Connect source and destination forms for list-based desktop app workflows.</p>
+            </div>
+            <a class="desk-action" href="{% url 'desk:list' %}">
+                <i class="material-symbols-outlined">arrow_back</i>
+                Back to tree
+            </a>
+        </div>
+
+        <form class="desk-form-card" method="post">
+            {% csrf_token %}
+            <div class="desk-form-grid">
+                {{ form | materializecss }}
+            </div>
+            <div class="desk-form-actions">
+                <a class="desk-action secondary" href="{% url 'desk:list' %}">Cancel</a>
+                <button class="desk-action primary" type="submit">
+                    <i class="material-symbols-outlined">save</i>
+                    Save workflow
+                </button>
+            </div>
+        </form>
+    </section>
+{% endblock content %}
+
+{% block inline_javascript %}
+    {{ block.super }}
+    <script>
+        function loadDeskFormPickers() {
+            const selects = document.querySelectorAll('select[data-desk-form-picker]');
+            if (!selects.length || !window.deskFormsApiUrl) {
+                return;
+            }
+
+            fetch(window.deskFormsApiUrl, {credentials: 'same-origin'})
+                .then(function(response) {
+                    if (!response.ok) {
+                        throw new Error('Forms unavailable');
+                    }
+                    return response.json();
+                })
+                .then(function(payload) {
+                    selects.forEach(function(select) {
+                        const selectedValue = select.dataset.selectedValue || '';
+                        const options = ['<option value="">--------</option>'];
+                        let selectedValueExists = false;
+
+                        (payload.results || []).forEach(function(form) {
+                            const id = form.id || '';
+                            const label = [form.name || id, form.description || ''].filter(Boolean).join(' - ');
+                            const selected = selectedValue && selectedValue === id ? ' selected' : '';
+                            selectedValueExists = selectedValueExists || selectedValue === id;
+                            options.push('<option value="' + id + '"' + selected + '>' + label + '</option>');
+                        });
+
+                        if (selectedValue && !selectedValueExists) {
+                            options.splice(1, 0, '<option value="' + selectedValue + '" selected>' + selectedValue + ' - currently selected form</option>');
+                        }
+
+                        select.innerHTML = options.join('');
+                    });
+                    $('select').formSelect();
+                })
+                .catch(function() {
+                    selects.forEach(function(select) {
+                        const selectedValue = select.dataset.selectedValue || '';
+                        select.innerHTML = selectedValue
+                            ? '<option value="' + selectedValue + '" selected>' + selectedValue + ' - currently selected form</option><option value="">Could not load forms</option>'
+                            : '<option value="">Could not load forms</option>';
+                    });
+                    $('select').formSelect();
+                });
+        }
+
+        $(document).ready(function(){
+            $('select').formSelect();
+            loadDeskFormPickers();
+            $('.tooltipped').tooltip({enterDelay: 0, exitDelay: 0, inDuration: 100, outDuration: 100, margin: 2});
+        });
+    </script>
+{% endblock inline_javascript %}
+

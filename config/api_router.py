@@ -2,7 +2,7 @@ from django.conf import settings
 from django.urls import path
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
-from nexus.desk.api.views import ModuleTypeViewSet, ModuleViewSet, WorkflowViewSet
+from nexus.desk.api.views import FormListView, ModuleTypeViewSet, ModuleViewSet, WorkflowViewSet
 from nexus.taxonomies.api.views import (
     AdministrativeRegionCatchmentView,
     AdministrativeRegionLevelViewSet,
@@ -36,3 +36,4 @@ urlpatterns.append(
 )
 # api login endpoints
 urlpatterns.append(path("auth/", APIAuth.as_view()))
+urlpatterns.append(path("desk/forms/", FormListView.as_view()))

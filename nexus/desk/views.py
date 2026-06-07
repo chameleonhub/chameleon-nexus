@@ -12,7 +12,6 @@ from django.views.generic.list import ListView
 from django_filters.views import FilterView
 
 from nexus.desk.models import Module, Workflow
-from nexus.desk.utils import get_assets_for_user
 from nexus.permissions.permissions import IsSuperUser
 
 desk_module_entry_fields = [
@@ -49,34 +48,15 @@ def build_module_tree(modules):
     return roots
 
 
-def get_kobotoolbox_forms(request):
-    asset_list = get_assets_for_user(request)
-
-    form_options = []
-    deployed_form_list = []
-    if asset_list:
-        deployed_form_list = [asset for asset in asset_list if asset.get("has_deployment", False)]
-
-        form_options.append({"id": None, "name": "--------", "description": ""})
-    else:
-        form_options.append(
-            {
-                "id": None,
-                "name": "--------",
-                "description": "There are no forms in the BAHIS KoboToolbox instance",
-            }
-        )
-
-    for form in deployed_form_list:
-        form_options.append(
-            {
-                "id": form.get("uid"),
-                "name": form.get("name"),
-                "description": form.get("settings", dict()).get("description"),
-            }
-        )
-
-    return form_options
+def set_module_form_options(form, request, current_module=None):
+    form.fields["icon"].widget = MaterialUIIconPicker()
+    form.fields["form"].widget = KoboToolboxFormPicker(request)
+    form.fields["parent_module"].queryset = Module.objects.filter(
+        module_type__title__iexact="Container",
+    ).order_by("sort_order", "title")
+    if current_module:
+        form.fields["parent_module"].queryset = form.fields["parent_module"].queryset.exclude(pk=current_module.pk)
+    return form
 
 
 class KoboToolboxFormPicker(TextInput):
@@ -87,21 +67,25 @@ class KoboToolboxFormPicker(TextInput):
     def render(self, name, value, attrs: dict[str, Any] | None = None, **kwargs):
         super().render(name, value, attrs)
 
-        # get list of forms from kobotoolbox
-        forms = get_kobotoolbox_forms(self.request)
-
-        form_options = ""
-        for form in forms:
-            if form["id"] == value:
-                form_options += f'<option value="{form["id"]}" selected>{form["name"]}- {form["description"]}</option>'
-            else:
-                form_options += f'<option value="{form["id"]}">{form["name"]}- {form["description"]}</option>'
+        form_options = '<option value="">-------- Loading forms...</option>'
+        if value:
+            form_options = f'<option value="{value}" selected>{value} - currently selected form</option>' + form_options
 
         if attrs is not None:
             flat_attrs = flatatt(attrs)
-            html = f'  <select name="{name}" {flat_attrs}> ' + form_options + "</select>"
+            html = (
+                f'  <select name="{name}" {flat_attrs} '
+                f'data-desk-form-picker data-selected-value="{value or ""}"> '
+                + form_options
+                + "</select>"
+            )
         else:
-            html = f'  <select name="{name}"> ' + form_options + "</select>"
+            html = (
+                f'  <select name="{name}" data-desk-form-picker '
+                f'data-selected-value="{value or ""}"> '
+                + form_options
+                + "</select>"
+            )
         return mark_safe(html)
 
 
@@ -164,9 +148,7 @@ class ModuleCreate(LoginRequiredMixin, CreateView):
 
     def get_form(self, form_class: type[BaseModelForm] | None = None) -> BaseModelForm:
         form = super().get_form(form_class)
-        form.fields["icon"].widget = MaterialUIIconPicker()
-        form.fields["form"].widget = KoboToolboxFormPicker(self.request)
-        return form
+        return set_module_form_options(form, self.request)
 
     def form_valid(self, form):
         messages.success(self.request, "The module was created successfully.")
@@ -186,9 +168,7 @@ class ModuleUpdate(LoginRequiredMixin, UpdateView):
 
     def get_form(self, form_class: type[BaseModelForm] | None = None) -> BaseModelForm:
         form = super().get_form(form_class)
-        form.fields["icon"].widget = MaterialUIIconPicker()
-        form.fields["form"].widget = KoboToolboxFormPicker(self.request)
-        return form
+        return set_module_form_options(form, self.request, self.object)
 
     def form_valid(self, form):
         messages.success(self.request, "The module was updated successfully.")

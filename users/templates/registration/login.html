@@ -35,11 +35,15 @@
             min-height: 520px;
             border-radius: 34px;
             padding: clamp(30px, 5vw, 58px);
-            color: #fffdf8;
+            color: #4d3528;
             background:
-                linear-gradient(135deg, rgba(95, 23, 19, .95), rgba(111, 63, 34, .92)),
-                radial-gradient(circle at top right, rgba(217, 154, 40, .5), transparent 24rem);
-            box-shadow: 0 30px 80px rgba(63, 36, 21, .24);
+                linear-gradient(rgba(95, 23, 19, .055) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(95, 23, 19, .055) 1px, transparent 1px),
+                radial-gradient(circle at 88% 18%, rgba(217, 154, 40, .18), transparent 18rem),
+                rgba(255, 250, 240, .82);
+            background-size: 38px 38px, 38px 38px, auto, auto;
+            box-shadow: 0 24px 64px rgba(111, 63, 34, .14);
+            backdrop-filter: blur(16px);
         }
 
         .login-hero::after {
@@ -51,8 +55,8 @@
             height: 390px;
             border-radius: 50%;
             background:
-                radial-gradient(circle, rgba(217, 154, 40, .48), transparent 64%),
-                radial-gradient(circle at 40% 60%, rgba(255, 243, 223, .18), transparent 38%);
+                radial-gradient(circle, rgba(217, 154, 40, .24), transparent 64%),
+                radial-gradient(circle at 40% 60%, rgba(143, 36, 29, .08), transparent 38%);
         }
 
         .login-kicker {
@@ -60,10 +64,10 @@
             align-items: center;
             gap: 8px;
             padding: 8px 13px;
-            border: 1px solid rgba(255, 243, 223, .24);
+            border: 1px solid rgba(143, 36, 29, .14);
             border-radius: 999px;
-            background: rgba(255, 243, 223, .12);
-            color: #ffe1a7;
+            background: rgba(255, 217, 138, .36);
+            color: #a85d53;
             font-size: .78rem;
             font-weight: 800;
             letter-spacing: .12em;
@@ -80,12 +84,12 @@
         }
 
         .login-title span {
-            color: #ffc35a;
+            color: #a85d53;
         }
 
         .login-copy {
             max-width: 560px;
-            color: rgba(255, 243, 223, .78);
+            color: #6d5547;
             font-size: 1.1rem;
             font-weight: 600;
             line-height: 1.7;

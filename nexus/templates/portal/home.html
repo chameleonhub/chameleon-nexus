@@ -39,10 +39,14 @@
             border-radius: 34px;
             padding: clamp(28px, 5vw, 58px);
             background:
-                linear-gradient(135deg, rgba(95, 23, 19, .95), rgba(111, 63, 34, .92)),
-                radial-gradient(circle at top right, rgba(217, 154, 40, .5), transparent 24rem);
-            box-shadow: 0 30px 80px rgba(63, 36, 21, .28);
-            color: var(--bahis-cream);
+                linear-gradient(rgba(95, 23, 19, .055) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(95, 23, 19, .055) 1px, transparent 1px),
+                radial-gradient(circle at 88% 18%, rgba(217, 154, 40, .18), transparent 18rem),
+                rgba(255, 250, 240, .82);
+            background-size: 38px 38px, 38px 38px, auto, auto;
+            box-shadow: 0 24px 64px rgba(111, 63, 34, .14);
+            color: var(--bahis-ink);
+            backdrop-filter: blur(16px);
         }
 
         .home-hero::after {
@@ -54,8 +58,8 @@
             height: 420px;
             border-radius: 50%;
             background:
-                radial-gradient(circle, rgba(217, 154, 40, .48), transparent 64%),
-                radial-gradient(circle at 40% 60%, rgba(255, 243, 223, .18), transparent 38%);
+                radial-gradient(circle, rgba(217, 154, 40, .24), transparent 64%),
+                radial-gradient(circle at 40% 60%, rgba(143, 36, 29, .08), transparent 38%);
             animation: warm-float 8s ease-in-out infinite;
         }
 
@@ -64,10 +68,10 @@
             align-items: center;
             gap: 8px;
             padding: 8px 13px;
-            border: 1px solid rgba(255, 243, 223, .24);
+            border: 1px solid rgba(143, 36, 29, .14);
             border-radius: 999px;
-            background: rgba(255, 243, 223, .12);
-            color: #ffe1a7;
+            background: rgba(255, 217, 138, .36);
+            color: var(--bahis-red-dark);
             font-size: .78rem;
             font-weight: 800;
             letter-spacing: .14em;
@@ -85,12 +89,12 @@
         }
 
         .home-title span {
-            color: #ffc35a;
+            color: var(--bahis-red-dark);
         }
 
         .home-subtitle {
             max-width: 660px;
-            color: rgba(255, 243, 223, .78);
+            color: #6d5547;
             font-size: clamp(1rem, 1.6vw, 1.22rem);
             font-weight: 600;
             line-height: 1.7;
@@ -117,9 +121,9 @@
         }
 
         .home-action.secondary {
-            color: var(--bahis-cream);
-            background: rgba(255, 243, 223, .12);
-            border: 1px solid rgba(255, 243, 223, .28);
+            color: var(--bahis-red-dark);
+            background: rgba(143, 36, 29, .08);
+            border: 1px solid rgba(143, 36, 29, .14);
             box-shadow: none;
         }
 
@@ -133,8 +137,8 @@
 
         .home-action.secondary:hover,
         .home-action.secondary:focus {
-            color: var(--bahis-cream);
-            background: rgba(255, 243, 223, .2);
+            color: var(--bahis-red-dark);
+            background: rgba(255, 217, 138, .34);
         }
 
         .home-user-card {
@@ -144,16 +148,16 @@
             z-index: 1;
             width: min(320px, calc(100% - 44px));
             padding: 18px;
-            border: 1px solid rgba(255, 243, 223, .22);
+            border: 1px solid rgba(143, 36, 29, .14);
             border-radius: 24px;
-            background: rgba(255, 243, 223, .12);
+            background: rgba(255, 250, 240, .72);
             backdrop-filter: blur(14px);
         }
 
         .home-user-card strong {
             display: block;
             margin-top: 4px;
-            color: #fff7e8;
+            color: var(--bahis-ink);
             font-size: 1.18rem;
         }
 
@@ -346,7 +350,7 @@
             <div class="home-user-card">
                 <span class="home-eyebrow">Signed in</span>
                 <strong>{{ user.username }}</strong>
-                <p style="margin: 8px 0 0; color: rgba(255, 243, 223, .72);">
+                <p style="margin: 8px 0 0; color: #6d5547;">
                     {% if user.is_superuser %}
                         Administrator workspace
                     {% else %}

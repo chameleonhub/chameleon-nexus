@@ -1,10 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django import forms
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
+
+import django_filters
 from django_filters.views import FilterView
 
 from nexus.taxonomies.models import AdministrativeRegion, AdministrativeRegionLevel, Taxonomy
@@ -137,17 +140,108 @@ adminstrative_region_entry_fields = [
 ]
 
 
+class AdministrativeRegionForm(forms.ModelForm):
+    parent_administrative_region = forms.ModelChoiceField(
+        queryset=AdministrativeRegion.objects.all().order_by("id"),
+        required=False,
+        label="Parent region ID",
+        widget=forms.NumberInput(
+            attrs={
+                "placeholder": "Parent region ID",
+                "inputmode": "numeric",
+            }
+        ),
+    )
+
+    class Meta:
+        model = AdministrativeRegion
+        fields = adminstrative_region_entry_fields
+        labels = {
+            "id": "Region ID",
+            "administrative_region_level": "Level",
+        }
+        widgets = {
+            "id": forms.NumberInput(
+                attrs={
+                    "placeholder": "Region ID",
+                    "inputmode": "numeric",
+                }
+            ),
+            "title": forms.TextInput(
+                attrs={
+                    "placeholder": "Region name",
+                    "autocomplete": "off",
+                }
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["administrative_region_level"].queryset = AdministrativeRegionLevel.objects.all().order_by("id")
+        parent_queryset = AdministrativeRegion.objects.all().order_by("id")
+        if self.instance and self.instance.pk:
+            parent_queryset = parent_queryset.exclude(pk=self.instance.pk)
+        self.fields["parent_administrative_region"].queryset = parent_queryset
+        self.fields["parent_administrative_region"].help_text = "Enter the parent region ID instead of loading every region."
+
+
+class AdministrativeRegionFilter(django_filters.FilterSet):
+    id = django_filters.NumberFilter(
+        label="Region ID",
+        widget=forms.NumberInput(
+            attrs={
+                "placeholder": "e.g. 302641",
+                "inputmode": "numeric",
+            }
+        ),
+    )
+    title = django_filters.CharFilter(
+        field_name="title",
+        lookup_expr="icontains",
+        label="Search by region name",
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Search administrative regions",
+                "autocomplete": "off",
+            }
+        ),
+    )
+    administrative_region_level = django_filters.ModelChoiceFilter(
+        queryset=AdministrativeRegionLevel.objects.all().order_by("id"),
+        label="Level",
+        empty_label="Any level",
+    )
+    parent_administrative_region = django_filters.NumberFilter(
+        field_name="parent_administrative_region_id",
+        label="Parent region ID",
+        widget=forms.NumberInput(
+            attrs={
+                "placeholder": "Parent ID",
+                "inputmode": "numeric",
+            }
+        ),
+    )
+
+    class Meta:
+        model = AdministrativeRegion
+        fields = ["id", "title", "administrative_region_level", "parent_administrative_region"]
+
+
 class AdministrativeRegionList(LoginRequiredMixin, FilterView):
     template_name_suffix = "_list"
     model = AdministrativeRegion
-    paginate_by = 15
-    ordering = ["id"]
-    filterset_fields = {
-        "id": ["exact"],
-        "title": ["icontains"],
-        "administrative_region_level": ["exact"],
-        "parent_administrative_region": ["exact"],
-    }
+    filterset_class = AdministrativeRegionFilter
+    paginate_by = 50
+
+    def get_queryset(self):
+        return (
+            AdministrativeRegion.objects.select_related(
+                "administrative_region_level",
+                "parent_administrative_region",
+            )
+            .all()
+            .order_by("id")
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -156,6 +250,10 @@ class AdministrativeRegionList(LoginRequiredMixin, FilterView):
         for k, v in context["filter"].data.items():
             if k != "page" and v != "":
                 context["query"][k] = v
+
+        query_params = self.request.GET.copy()
+        query_params.pop("page", None)
+        context["query_string"] = query_params.urlencode()
 
         # use paginator range with ellipses for simplicity
         page = context["page_obj"]
@@ -167,7 +265,7 @@ class AdministrativeRegionList(LoginRequiredMixin, FilterView):
 class AdministrativeRegionCreate(LoginRequiredMixin, CreateView):
     template_name_suffix = "_create_form"
     model = AdministrativeRegion
-    fields = adminstrative_region_entry_fields
+    form_class = AdministrativeRegionForm
     success_url = reverse_lazy("taxonomies:adminstrative_region_list")
 
     def form_valid(self, form):
@@ -183,7 +281,7 @@ class AdministrativeRegionCreate(LoginRequiredMixin, CreateView):
 class AdministrativeRegionUpdate(LoginRequiredMixin, UpdateView):
     template_name_suffix = "_update_form"
     model = AdministrativeRegion
-    fields = adminstrative_region_entry_fields
+    form_class = AdministrativeRegionForm
     success_url = reverse_lazy("taxonomies:adminstrative_region_list")
 
     def form_valid(self, form):

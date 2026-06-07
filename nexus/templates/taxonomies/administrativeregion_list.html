@@ -29,18 +29,54 @@
             <ul class="collapsible desk-filter">
                 <li class="{% if query %}active{% endif %}">
                     <div class="collapsible-header tooltipped" data-tooltip="Search for specific administrative regions">
-                        <i class="material-symbols-outlined">search</i> Filter regions
+                        <i class="material-symbols-outlined">manage_search</i>
+                        <span>Search regions</span>
+                        {% if query %}
+                            <span class="desk-filter-count">{{ query|length }} active</span>
+                        {% endif %}
                     </div>
                     <div class="collapsible-body">
-                        <form class="desk-form-card" method="get">
-                            <div class="desk-form-grid">
-                                {{ filter.form.as_p }}
+                        <form class="desk-region-filter" method="get">
+                            <div class="desk-region-search">
+                                <i class="material-symbols-outlined">search</i>
+                                <div class="desk-filter-field">
+                                    <label for="{{ filter.form.title.id_for_label }}">{{ filter.form.title.label }}</label>
+                                    {{ filter.form.title }}
+                                </div>
+                                <button class="desk-action primary" type="submit">
+                                    <i class="material-symbols-outlined">search</i>
+                                    Search
+                                </button>
                             </div>
-                            <div class="desk-form-actions">
+
+                            <div class="desk-region-filter-grid">
+                                <div class="desk-filter-field compact">
+                                    <label for="{{ filter.form.id.id_for_label }}">{{ filter.form.id.label }}</label>
+                                    {{ filter.form.id }}
+                                </div>
+                                <div class="desk-filter-field compact">
+                                    <label for="{{ filter.form.administrative_region_level.id_for_label }}">{{ filter.form.administrative_region_level.label }}</label>
+                                    {{ filter.form.administrative_region_level }}
+                                </div>
+                                <div class="desk-filter-field compact">
+                                    <label for="{{ filter.form.parent_administrative_region.id_for_label }}">{{ filter.form.parent_administrative_region.label }}</label>
+                                    {{ filter.form.parent_administrative_region }}
+                                </div>
+                            </div>
+
+                            {% if filter.form.errors %}
+                                <div class="desk-filter-errors">{{ filter.form.errors }}</div>
+                            {% endif %}
+
+                            <div class="desk-filter-actions">
                                 <button class="desk-action primary" type="submit">
                                     <i class="material-symbols-outlined">filter_alt</i>
                                     Apply filter
                                 </button>
+                                <a class="desk-action secondary" href="{% url 'taxonomies:adminstrative_region_list' %}">
+                                    <i class="material-symbols-outlined">filter_alt_off</i>
+                                    Clear
+                                </a>
                             </div>
                         </form>
                     </div>
@@ -50,6 +86,11 @@
 
         <div class="desk-panel">
             {% if object_list %}
+                {% if page_obj %}
+                    <div class="desk-table-summary">
+                        Showing {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ page_obj.paginator.count }} administrative regions
+                    </div>
+                {% endif %}
                 <table class="desk-table responsive-table">
                     <thead>
                     <tr>
@@ -95,27 +136,31 @@
             <div class="desk-pagination">
                 <ul class="pagination">
                     <li class="waves-effect {% if not page_obj.has_previous %}disabled{% endif %}">
-                        <a href="?page=1{% for k, v in query.items %}&{{ k }}={{ v }}{% endfor %}">
+                        <a href="?page=1{% if query_string %}&{{ query_string }}{% endif %}">
                             <i class="material-symbols-outlined">first_page</i>
                         </a>
                     </li>
                     <li class="waves-effect {% if not page_obj.has_previous %}disabled{% endif %}">
-                        <a href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% endif %}{% for k, v in query.items %}&{{ k }}={{ v }}{% endfor %}">
+                        <a href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}1{% endif %}{% if query_string %}&{{ query_string }}{% endif %}">
                             <i class="material-symbols-outlined">chevron_left</i>
                         </a>
                     </li>
                     {% for page in paginator_range %}
-                        <li class="waves-effect {% if page == page_obj.number %}active{% endif %}">
-                            <a href="?page={{ page }}{% for k, v in query.items %}&{{ k }}={{ v }}{% endfor %}">{{ page }}</a>
-                        </li>
+                        {% if page == page_obj.paginator.ELLIPSIS %}
+                            <li class="disabled"><a href="#">{{ page }}</a></li>
+                        {% else %}
+                            <li class="waves-effect {% if page == page_obj.number %}active{% endif %}">
+                                <a href="?page={{ page }}{% if query_string %}&{{ query_string }}{% endif %}">{{ page }}</a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                     <li class="waves-effect {% if not page_obj.has_next %}disabled{% endif %}">
-                        <a href="?page={% if page_obj.has_next %}{{ page_obj.next_page_number }}{% endif %}{% for k, v in query.items %}&{{ k }}={{ v }}{% endfor %}">
+                        <a href="?page={% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}{{ page_obj.paginator.num_pages }}{% endif %}{% if query_string %}&{{ query_string }}{% endif %}">
                             <i class="material-symbols-outlined">chevron_right</i>
                         </a>
                     </li>
                     <li class="waves-effect {% if not page_obj.has_next %}disabled{% endif %}">
-                        <a href="?page={{ page_obj.paginator.num_pages }}{% for k, v in query.items %}&{{ k }}={{ v }}{% endfor %}">
+                        <a href="?page={{ page_obj.paginator.num_pages }}{% if query_string %}&{{ query_string }}{% endif %}">
                             <i class="material-symbols-outlined">last_page</i>
                         </a>
                     </li>

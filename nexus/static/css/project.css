@@ -214,15 +214,15 @@ body {
   top: 13px;
   width: 86px;
   height: 34px;
-  border: 1px solid rgba(143, 36, 29, .075);
+  border: 1px solid rgba(255, 217, 138, .2);
   border-radius: 999px;
   background:
-    linear-gradient(90deg, rgba(143, 36, 29, .045) 0 48%, rgba(255, 255, 255, .76) 48% 52%, rgba(217, 154, 40, .055) 52%),
-    rgba(255, 253, 249, .42);
+    linear-gradient(90deg, rgba(255, 217, 138, .22) 0 48%, rgba(255, 250, 240, .2) 48% 52%, rgba(239, 201, 130, .22) 52%),
+    rgba(255, 243, 223, .08);
   filter:
-    drop-shadow(22vw -4px 0 rgba(217, 154, 40, .075))
-    drop-shadow(49vw 20px 0 rgba(111, 63, 34, .045))
-    drop-shadow(64vw 4px 0 rgba(217, 154, 40, .06));
+    drop-shadow(22vw -4px 0 rgba(217, 154, 40, .16))
+    drop-shadow(49vw 20px 0 rgba(255, 243, 223, .08))
+    drop-shadow(64vw 4px 0 rgba(217, 154, 40, .11));
   transform: rotate(-12deg);
   pointer-events: none;
   z-index: 0;
@@ -236,11 +236,11 @@ body {
   min-height: 78px;
   line-height: normal;
   background:
-    radial-gradient(circle at 7% 24%, rgba(255, 217, 138, .2), transparent 17rem),
-    radial-gradient(circle at 92% 18%, rgba(143, 36, 29, .085), transparent 18rem),
-    linear-gradient(135deg, rgba(255, 255, 255, .98) 0%, rgba(255, 253, 248, .96) 52%, rgba(255, 246, 228, .95) 100%);
-  border-bottom: 1px solid rgba(143, 36, 29, 0.1);
-  box-shadow: 0 14px 34px rgba(111, 63, 34, 0.1);
+    radial-gradient(circle at 8% 18%, rgba(255, 217, 138, .32), transparent 17rem),
+    radial-gradient(circle at 92% 12%, rgba(239, 201, 130, .2), transparent 18rem),
+    linear-gradient(135deg, rgba(126, 76, 45, .98) 0%, rgba(153, 70, 55, .97) 52%, rgba(169, 105, 60, .96) 100%);
+  border-bottom: 1px solid rgba(255, 217, 138, 0.26);
+  box-shadow: 0 12px 30px rgba(111, 63, 34, 0.18);
   font-family: "Noto Sans", "Segoe UI", sans-serif;
   backdrop-filter: blur(16px);
 }
@@ -252,15 +252,15 @@ body {
   top: -56px;
   width: 188px;
   height: 188px;
-  border: 1px solid rgba(143, 36, 29, .08);
+  border: 1px solid rgba(255, 217, 138, .14);
   border-radius: 40% 60% 46% 54% / 58% 42% 58% 42%;
   background:
-    radial-gradient(circle at 34% 28%, rgba(255, 217, 138, .12), transparent 38%),
-    rgba(143, 36, 29, .026);
+    radial-gradient(circle at 34% 28%, rgba(255, 217, 138, .24), transparent 38%),
+    rgba(255, 243, 223, .07);
   filter:
-    drop-shadow(-105px 48px 0 rgba(217, 154, 40, .075))
-    drop-shadow(84px 38px 0 rgba(217, 154, 40, .055))
-    drop-shadow(-42vw 22px 0 rgba(143, 36, 29, .03));
+    drop-shadow(-105px 48px 0 rgba(217, 154, 40, .12))
+    drop-shadow(84px 38px 0 rgba(255, 243, 223, .06))
+    drop-shadow(-42vw 22px 0 rgba(217, 154, 40, .08));
   transform: rotate(14deg);
   pointer-events: none;
 }
@@ -273,10 +273,10 @@ body {
   width: 124px;
   height: 82px;
   background:
-    radial-gradient(ellipse 42% 52% at 28% 50%, rgba(111, 63, 34, .075) 0 48%, transparent 50%),
-    radial-gradient(ellipse 42% 52% at 62% 50%, rgba(111, 63, 34, .075) 0 48%, transparent 50%),
-    radial-gradient(circle at 84% 30%, rgba(143, 36, 29, .075) 0 13%, transparent 14%),
-    radial-gradient(circle at 90% 58%, rgba(217, 154, 40, .105) 0 12%, transparent 13%);
+    radial-gradient(ellipse 42% 52% at 28% 50%, rgba(255, 217, 138, .18) 0 48%, transparent 50%),
+    radial-gradient(ellipse 42% 52% at 62% 50%, rgba(255, 217, 138, .18) 0 48%, transparent 50%),
+    radial-gradient(circle at 84% 30%, rgba(255, 243, 223, .18) 0 13%, transparent 14%),
+    radial-gradient(circle at 90% 58%, rgba(217, 154, 40, .22) 0 12%, transparent 13%);
   transform: rotate(-13deg);
   pointer-events: none;
 }
@@ -295,10 +295,10 @@ body {
   place-items: center;
   width: 48px;
   height: 48px;
-  border: 1px solid rgba(143, 36, 29, 0.075);
+  border: 1px solid rgba(255, 217, 138, 0.14);
   border-radius: 42% 58% 52% 48% / 52% 40% 60% 48%;
-  color: rgba(143, 36, 29, 0.075);
-  background: rgba(255, 255, 255, 0.46);
+  color: rgba(255, 217, 138, 0.22);
+  background: rgba(255, 243, 223, 0.07);
   font-size: 26px;
   font-variation-settings:
     "FILL" 0,
@@ -316,14 +316,14 @@ body {
 .bahis-nav-motifs span:nth-child(2) {
   right: 29%;
   top: 31px;
-  color: rgba(111, 63, 34, 0.08);
+  color: rgba(255, 243, 223, 0.14);
   transform: rotate(12deg);
 }
 
 .bahis-nav-motifs span:nth-child(3) {
   right: 13%;
   top: 4px;
-  color: rgba(217, 154, 40, 0.12);
+  color: rgba(217, 154, 40, 0.22);
   transform: rotate(-24deg);
 }
 
@@ -342,7 +342,7 @@ body {
   display: flex;
   align-items: center;
   height: 100%;
-  color: #6f2f28;
+  color: #fff6e6;
 }
 
 .bahis-site-header .bahis-brand {
@@ -353,10 +353,10 @@ body {
   height: 52px;
   width: auto;
   padding: 8px;
-  border: 1px solid rgba(143, 36, 29, 0.1);
+  border: 1px solid rgba(255, 217, 138, 0.24);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 10px 24px rgba(111, 63, 34, 0.1);
+  background: rgba(255, 253, 248, 0.96);
+  box-shadow: 0 12px 28px rgba(33, 18, 11, 0.22);
 }
 
 .bahis-site-header .bahis-brand span {
@@ -367,14 +367,14 @@ body {
 }
 
 .bahis-site-header .bahis-brand strong {
-  color: #6f2f28;
+  color: #fff6e6;
   font-size: 1.45rem;
   font-weight: 900;
   letter-spacing: 0.06em;
 }
 
 .bahis-site-header .bahis-brand small {
-  color: #7a6a56;
+  color: rgba(255, 217, 138, 0.86);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -400,10 +400,10 @@ body {
   gap: 7px;
   min-height: 42px;
   padding: 0 15px;
-  border: 1px solid rgba(143, 36, 29, 0.11);
+  border: 1px solid rgba(255, 217, 138, 0.22);
   border-radius: 999px;
-  color: #6f2f28;
-  background: rgba(255, 255, 255, 0.74);
+  color: #fff6e6;
+  background: rgba(255, 243, 223, 0.12);
   font-weight: 850;
   line-height: 1;
   outline: none;
@@ -412,16 +412,16 @@ body {
 
 .bahis-site-header .bahis-nav-links a:hover,
 .bahis-site-header .bahis-logout:hover {
-  color: #fffaf3;
-  background: linear-gradient(135deg, #8f241d, #6f3f22);
+  color: #3f2415;
+  background: linear-gradient(135deg, #ffd98a, #efc982);
   transform: translateY(-1px);
   box-shadow: 0 12px 26px rgba(95, 23, 19, 0.18);
 }
 
 .bahis-site-header .bahis-nav-links a:focus,
 .bahis-site-header .bahis-logout:focus {
-  color: #6f2f28;
-  background: rgba(255, 255, 255, 0.74);
+  color: #fff6e6;
+  background: rgba(255, 243, 223, 0.08);
   box-shadow: none;
   transform: none;
 }

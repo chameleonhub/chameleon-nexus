@@ -4,7 +4,7 @@
 
 html {
   position: relative;
-  background: #fffefd;
+  background: #ffffff;
 }
 
 a:focus {
@@ -18,40 +18,50 @@ html::after {
   position: fixed;
   pointer-events: none;
   z-index: 0;
-  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
 }
 
 html::before {
   right: 8vw;
   top: 18vh;
-  width: 92px;
-  height: 80px;
-  background: rgba(217, 154, 40, .085);
+  width: 138px;
+  height: 138px;
+  border: 1px solid rgba(217, 154, 40, .075);
+  border-radius: 46% 54% 42% 58% / 52% 38% 62% 48%;
+  background:
+    radial-gradient(circle at 36% 32%, rgba(217, 154, 40, .12), transparent 38%),
+    rgba(255, 253, 249, .2);
   filter:
-    drop-shadow(-64vw 19vh 0 rgba(111, 63, 34, .055))
-    drop-shadow(-18vw 54vh 0 rgba(143, 36, 29, .06));
+    drop-shadow(-64vw 19vh 0 rgba(111, 63, 34, .028))
+    drop-shadow(-18vw 54vh 0 rgba(143, 36, 29, .03));
   transform: rotate(18deg);
 }
 
 html::after {
   left: 50vw;
   top: 7vh;
-  width: 54px;
-  height: 48px;
-  background: rgba(143, 36, 29, .065);
+  width: 112px;
+  height: 42px;
+  border: 1px solid rgba(143, 36, 29, .055);
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(143, 36, 29, .035) 0 48%, rgba(255, 255, 255, .72) 48% 52%, rgba(217, 154, 40, .045) 52%),
+    rgba(255, 253, 249, .2);
   filter:
-    drop-shadow(36vw 34vh 0 rgba(217, 154, 40, .07))
-    drop-shadow(-42vw 61vh 0 rgba(111, 63, 34, .055));
+    drop-shadow(36vw 34vh 0 rgba(217, 154, 40, .035))
+    drop-shadow(-42vw 61vh 0 rgba(111, 63, 34, .03));
   transform: rotate(-24deg);
 }
 
 body {
   position: relative;
   background:
-    radial-gradient(circle at 12% 12%, rgba(239, 201, 130, 0.12), transparent 28rem),
-    radial-gradient(circle at 88% 18%, rgba(207, 130, 120, 0.07), transparent 30rem),
-    linear-gradient(135deg, #fffefd 0%, #fff4e6 46%, #faead9 100%);
-  background-position: center top;
+    linear-gradient(115deg, transparent 0 58%, rgba(217, 154, 40, 0.018) 58.2%, transparent 58.6%),
+    linear-gradient(295deg, transparent 0 64%, rgba(143, 36, 29, 0.018) 64.2%, transparent 64.6%),
+    radial-gradient(circle at 12% 12%, rgba(239, 201, 130, 0.05), transparent 28rem),
+    radial-gradient(circle at 88% 18%, rgba(143, 36, 29, 0.026), transparent 30rem),
+    linear-gradient(135deg, #ffffff 0%, #fffefd 48%, #fffaf2 100%);
+  background-position: center top, center top, center top, center top, center top;
+  background-size: 360px 180px, 420px 220px, auto, auto, auto;
   color: #4d3528;
   isolation: isolate;
 }
@@ -69,86 +79,127 @@ body {
   display: block;
 }
 
-.bahis-shape-field .hex {
-  aspect-ratio: 1.1547;
-  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+.bahis-shape-field .vet-mark {
+  --mark-color: rgba(143, 36, 29, 0.1);
+  --mark-accent: rgba(217, 154, 40, 0.14);
+  color: var(--mark-color);
+  opacity: 0.72;
 }
 
-.bahis-shape-field .hex.outline {
-  padding: 4px;
-  background: rgba(143, 36, 29, .095);
+.bahis-shape-field .icon-mark {
+  display: grid;
+  place-items: center;
+  width: var(--mark-size);
+  height: var(--mark-size);
+  border: 1px solid var(--mark-accent);
+  border-radius: 38% 62% 52% 48% / 56% 38% 62% 44%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.58), transparent 2.4rem),
+    color-mix(in srgb, currentColor 10%, transparent);
 }
 
-.bahis-shape-field .hex.outline::after {
-  content: "";
-  position: absolute;
-  inset: 4px;
-  background: rgba(255, 247, 236, .72);
-  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+.bahis-shape-field .icon-mark .material-symbols-outlined {
+  color: currentColor;
+  font-size: calc(var(--mark-size) * 0.56);
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 300,
+    "GRAD" 0,
+    "opsz" 48;
+  line-height: 1;
 }
 
-.bahis-shape-field .plus::before,
-.bahis-shape-field .plus::after {
+.bahis-shape-field .hoof-mark {
+  display: flex;
+  gap: calc(var(--mark-size) * 0.08);
+  width: var(--mark-size);
+  height: calc(var(--mark-size) * 0.72);
+  padding: calc(var(--mark-size) * 0.08);
+}
+
+.bahis-shape-field .hoof-mark span {
+  width: 50%;
+  height: 100%;
+  border-radius: 58% 42% 48% 52% / 28% 28% 72% 72%;
+  background: currentColor;
+}
+
+.bahis-shape-field .cross-mark,
+.bahis-shape-field .capsule-mark,
+.bahis-shape-field .ring-mark {
+  width: var(--mark-size);
+  height: var(--mark-size);
+}
+
+.bahis-shape-field .cross-mark::before,
+.bahis-shape-field .cross-mark::after {
   content: "";
   position: absolute;
   inset: 0;
   margin: auto;
-  border-radius: 3px;
+  border-radius: 999px;
   background: currentColor;
 }
 
-.bahis-shape-field .plus::before {
+.bahis-shape-field .cross-mark::before {
   width: 100%;
-  height: 34%;
+  height: 30%;
 }
 
-.bahis-shape-field .plus::after {
-  width: 34%;
+.bahis-shape-field .cross-mark::after {
+  width: 30%;
   height: 100%;
 }
 
-.bahis-shape-field .h1 { left: 3vw; top: 12vh; width: 170px; background: rgba(143, 36, 29, .07); transform: rotate(-12deg); }
-.bahis-shape-field .h2 { left: 58vw; top: 10vh; width: 112px; transform: rotate(22deg); }
-.bahis-shape-field .h3 { left: 84vw; top: 18vh; width: 84px; background: rgba(217, 154, 40, .09); transform: rotate(-24deg); }
-.bahis-shape-field .h4 { left: 17vw; top: 38vh; width: 74px; background: rgba(111, 63, 34, .08); transform: rotate(8deg); }
-.bahis-shape-field .h5 { left: 48vw; top: 48vh; width: 132px; background: rgba(217, 154, 40, .07); transform: rotate(18deg); }
-.bahis-shape-field .h6 { left: 90vw; top: 54vh; width: 126px; background: rgba(143, 36, 29, .075); transform: rotate(-9deg); }
-.bahis-shape-field .h7 { left: 8vw; top: 78vh; width: 92px; background: rgba(111, 63, 34, .06); transform: rotate(28deg); }
-.bahis-shape-field .h8 { left: 34vw; top: 72vh; width: 154px; background: rgba(217, 154, 40, .075); transform: rotate(-18deg); }
-.bahis-shape-field .h9 { left: 69vw; top: 84vh; width: 68px; background: rgba(143, 36, 29, .055); transform: rotate(12deg); }
-.bahis-shape-field .h10 { left: 77vw; top: 34vh; width: 96px; background: rgba(111, 63, 34, .065); transform: rotate(-30deg); }
-
-.bahis-shape-field .p1 { left: 14vw; top: 84vh; width: 92px; height: 92px; color: rgba(143, 36, 29, .075); transform: rotate(10deg); }
-.bahis-shape-field .p2 { left: 78vw; top: 76vh; width: 66px; height: 66px; color: rgba(217, 154, 40, .13); transform: rotate(-16deg); }
-.bahis-shape-field .p3 { left: 42vw; top: 20vh; width: 58px; height: 58px; color: rgba(111, 63, 34, .07); transform: rotate(22deg); }
-.bahis-shape-field .p4 { left: 88vw; top: 35vh; width: 42px; height: 42px; color: rgba(143, 36, 29, .06); transform: rotate(-24deg); }
-.bahis-shape-field .p5 { left: 28vw; top: 43vh; width: 118px; height: 118px; color: rgba(217, 154, 40, .07); transform: rotate(34deg); }
-.bahis-shape-field .p6 { left: 61vw; top: 88vh; width: 38px; height: 38px; color: rgba(111, 63, 34, .06); transform: rotate(-8deg); }
-.bahis-shape-field .p7 { left: 6vw; top: 52vh; width: 52px; height: 52px; color: rgba(143, 36, 29, .055); transform: rotate(18deg); }
-.bahis-shape-field .p8 { left: 68vw; top: 29vh; width: 86px; height: 86px; color: rgba(217, 154, 40, .075); transform: rotate(-32deg); }
-.bahis-shape-field .p9 { left: 36vw; top: 8vh; width: 46px; height: 46px; color: rgba(111, 63, 34, .06); transform: rotate(13deg); }
-.bahis-shape-field .p10 { left: 54vw; top: 62vh; width: 72px; height: 72px; color: rgba(143, 36, 29, .05); transform: rotate(-12deg); }
-
-.bahis-shape-field .tiny {
-  opacity: .92;
+.bahis-shape-field .capsule-mark {
+  border: 1px solid var(--mark-accent);
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, currentColor 0 48%, rgba(255, 250, 240, 0.55) 48% 52%, color-mix(in srgb, currentColor 46%, transparent) 52%),
+    rgba(255, 250, 240, 0.36);
 }
 
-.bahis-shape-field .th1 { left: 1.4vw; top: 9vh; width: 28px; background: rgba(143, 36, 29, .08); transform: rotate(14deg); }
-.bahis-shape-field .th2 { right: 1.8vw; top: 16vh; width: 34px; transform: rotate(-20deg); }
-.bahis-shape-field .th3 { left: 2.2vw; bottom: 8vh; width: 22px; background: rgba(217, 154, 40, .11); transform: rotate(-9deg); }
-.bahis-shape-field .th4 { right: 3vw; bottom: 11vh; width: 30px; transform: rotate(24deg); }
-.bahis-shape-field .th5 { left: .8vw; top: 23vh; width: 18px; background: rgba(111, 63, 34, .07); transform: rotate(-18deg); }
-.bahis-shape-field .th6 { right: .9vw; top: 31vh; width: 24px; transform: rotate(12deg); }
-.bahis-shape-field .th7 { left: 1.2vw; bottom: 23vh; width: 34px; background: rgba(143, 36, 29, .055); transform: rotate(27deg); }
-.bahis-shape-field .th8 { right: 1.3vw; bottom: 27vh; width: 20px; transform: rotate(-31deg); }
-.bahis-shape-field .tp1 { left: 5vw; top: 5vh; width: 24px; height: 24px; color: rgba(111, 63, 34, .07); transform: rotate(-12deg); }
-.bahis-shape-field .tp2 { right: 5vw; top: 7vh; width: 20px; height: 20px; color: rgba(217, 154, 40, .12); transform: rotate(18deg); }
-.bahis-shape-field .tp3 { left: 6vw; bottom: 4vh; width: 18px; height: 18px; color: rgba(143, 36, 29, .075); transform: rotate(31deg); }
-.bahis-shape-field .tp4 { right: 6vw; bottom: 5vh; width: 26px; height: 26px; color: rgba(111, 63, 34, .065); transform: rotate(-25deg); }
-.bahis-shape-field .tp5 { left: 2.4vw; top: 32vh; width: 16px; height: 16px; color: rgba(217, 154, 40, .1); transform: rotate(22deg); }
-.bahis-shape-field .tp6 { right: 2.8vw; top: 43vh; width: 22px; height: 22px; color: rgba(143, 36, 29, .06); transform: rotate(-18deg); }
-.bahis-shape-field .tp7 { left: 3vw; bottom: 32vh; width: 28px; height: 28px; color: rgba(111, 63, 34, .055); transform: rotate(14deg); }
-.bahis-shape-field .tp8 { right: 3.4vw; bottom: 35vh; width: 16px; height: 16px; color: rgba(217, 154, 40, .095); transform: rotate(-28deg); }
+.bahis-shape-field .ring-mark {
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.bahis-shape-field .ring-mark::after {
+  content: "";
+  position: absolute;
+  inset: 27%;
+  border: 1px solid var(--mark-accent);
+  border-radius: 46% 54% 38% 62% / 60% 42% 58% 40%;
+}
+
+.bahis-shape-field .a1 { --mark-size: 132px; --mark-color: rgba(143, 36, 29, 0.105); --mark-accent: rgba(217, 154, 40, 0.18); left: 3vw; top: 20vh; transform: rotate(-13deg); }
+.bahis-shape-field .a2 { --mark-size: 96px; --mark-color: rgba(217, 154, 40, 0.12); --mark-accent: rgba(143, 36, 29, 0.11); right: 9vw; top: 13vh; transform: rotate(12deg); }
+.bahis-shape-field .a3 { --mark-size: 76px; --mark-color: rgba(111, 63, 34, 0.1); --mark-accent: rgba(217, 154, 40, 0.16); left: 27vw; top: 66vh; transform: rotate(28deg); }
+.bahis-shape-field .a4 { --mark-size: 118px; --mark-color: rgba(143, 36, 29, 0.08); --mark-accent: rgba(217, 154, 40, 0.14); right: 19vw; top: 52vh; transform: rotate(-18deg); }
+.bahis-shape-field .a5 { --mark-size: 84px; --mark-color: rgba(217, 154, 40, 0.15); --mark-accent: rgba(111, 63, 34, 0.12); left: 70vw; top: 80vh; transform: rotate(15deg); }
+.bahis-shape-field .a6 { --mark-size: 72px; --mark-color: rgba(111, 63, 34, 0.085); --mark-accent: rgba(143, 36, 29, 0.12); left: 40vw; top: 28vh; transform: rotate(-10deg); }
+.bahis-shape-field .a7 { --mark-size: 82px; --mark-color: rgba(111, 63, 34, 0.09); left: 84vw; top: 35vh; transform: rotate(24deg); }
+.bahis-shape-field .a8 { --mark-size: 54px; --mark-color: rgba(143, 36, 29, 0.07); left: 11vw; top: 86vh; transform: rotate(-27deg); }
+.bahis-shape-field .a9 { --mark-size: 54px; --mark-color: rgba(143, 36, 29, 0.095); left: 18vw; top: 44vh; transform: rotate(18deg); }
+.bahis-shape-field .a10 { --mark-size: 34px; --mark-color: rgba(217, 154, 40, 0.095); right: 4vw; top: 72vh; transform: rotate(-12deg); }
+.bahis-shape-field .a11 { --mark-size: 92px; --mark-color: rgba(217, 154, 40, 0.12); --mark-accent: rgba(143, 36, 29, 0.1); left: 52vw; top: 78vh; transform: rotate(-24deg); }
+.bahis-shape-field .a12 { --mark-size: 46px; --mark-color: rgba(111, 63, 34, 0.085); --mark-accent: rgba(217, 154, 40, 0.11); right: 25vw; top: 24vh; transform: rotate(34deg); }
+.bahis-shape-field .a13 { --mark-size: 168px; --mark-color: rgba(217, 154, 40, 0.075); --mark-accent: rgba(143, 36, 29, 0.09); left: 47vw; top: 39vh; transform: rotate(10deg); }
+.bahis-shape-field .a14 { --mark-size: 116px; --mark-color: rgba(111, 63, 34, 0.06); --mark-accent: rgba(217, 154, 40, 0.1); left: -28px; top: 61vh; transform: rotate(-16deg); }
+.bahis-shape-field .a15 { --mark-size: 64px; --mark-color: rgba(143, 36, 29, 0.07); --mark-accent: rgba(217, 154, 40, 0.13); left: 15vw; top: 13vh; transform: rotate(24deg); }
+.bahis-shape-field .a16 { --mark-size: 58px; --mark-color: rgba(217, 154, 40, 0.09); --mark-accent: rgba(143, 36, 29, 0.1); right: 37vw; top: 16vh; transform: rotate(-17deg); }
+.bahis-shape-field .a17 { --mark-size: 48px; --mark-color: rgba(111, 63, 34, 0.075); --mark-accent: rgba(217, 154, 40, 0.12); left: 5vw; top: 46vh; transform: rotate(-31deg); }
+.bahis-shape-field .a18 { --mark-size: 70px; --mark-color: rgba(217, 154, 40, 0.11); --mark-accent: rgba(111, 63, 34, 0.1); right: 6vw; top: 48vh; transform: rotate(21deg); }
+.bahis-shape-field .a19 { --mark-size: 52px; --mark-color: rgba(143, 36, 29, 0.075); --mark-accent: rgba(111, 63, 34, 0.1); left: 34vw; top: 87vh; transform: rotate(9deg); }
+.bahis-shape-field .a20 { --mark-size: 86px; --mark-color: rgba(111, 63, 34, 0.07); --mark-accent: rgba(217, 154, 40, 0.14); right: 13vw; top: 86vh; transform: rotate(-24deg); }
+.bahis-shape-field .a21 { --mark-size: 44px; --mark-color: rgba(111, 63, 34, 0.07); left: 61vw; top: 9vh; transform: rotate(-8deg); }
+.bahis-shape-field .a22 { --mark-size: 66px; --mark-color: rgba(143, 36, 29, 0.06); right: 31vw; top: 66vh; transform: rotate(19deg); }
+.bahis-shape-field .a23 { --mark-size: 28px; --mark-color: rgba(217, 154, 40, 0.12); left: 2vw; top: 74vh; transform: rotate(16deg); }
+.bahis-shape-field .a24 { --mark-size: 42px; --mark-color: rgba(217, 154, 40, 0.08); left: 73vw; top: 24vh; transform: rotate(-21deg); }
+.bahis-shape-field .a25 { --mark-size: 64px; --mark-color: rgba(143, 36, 29, 0.06); --mark-accent: rgba(217, 154, 40, 0.1); left: 21vw; top: 28vh; transform: rotate(38deg); }
+.bahis-shape-field .a26 { --mark-size: 52px; --mark-color: rgba(217, 154, 40, 0.1); --mark-accent: rgba(111, 63, 34, 0.1); right: 2vw; top: 22vh; transform: rotate(-35deg); }
+.bahis-shape-field .a27 { --mark-size: 72px; --mark-color: rgba(111, 63, 34, 0.055); --mark-accent: rgba(143, 36, 29, 0.08); left: 56vw; top: 58vh; transform: rotate(29deg); }
+.bahis-shape-field .a28 { --mark-size: 96px; --mark-color: rgba(111, 63, 34, 0.052); --mark-accent: rgba(217, 154, 40, 0.09); right: -18px; top: 61vh; transform: rotate(14deg); }
 
 .bahis-site-header {
   position: sticky;
@@ -159,17 +210,20 @@ body {
 .bahis-site-header::before {
   content: "";
   position: absolute;
-  left: 17%;
-  top: 10px;
-  width: 54px;
-  height: 47px;
-  background: rgba(143, 36, 29, .11);
-  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  left: 14%;
+  top: 13px;
+  width: 86px;
+  height: 34px;
+  border: 1px solid rgba(143, 36, 29, .075);
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(143, 36, 29, .045) 0 48%, rgba(255, 255, 255, .76) 48% 52%, rgba(217, 154, 40, .055) 52%),
+    rgba(255, 253, 249, .42);
   filter:
-    drop-shadow(23vw -4px 0 rgba(217, 154, 40, .13))
-    drop-shadow(47vw 20px 0 rgba(111, 63, 34, .11))
-    drop-shadow(63vw 4px 0 rgba(143, 36, 29, .08));
-  transform: rotate(-18deg);
+    drop-shadow(22vw -4px 0 rgba(217, 154, 40, .075))
+    drop-shadow(49vw 20px 0 rgba(111, 63, 34, .045))
+    drop-shadow(64vw 4px 0 rgba(217, 154, 40, .06));
+  transform: rotate(-12deg);
   pointer-events: none;
   z-index: 0;
 }
@@ -182,11 +236,11 @@ body {
   min-height: 78px;
   line-height: normal;
   background:
-    radial-gradient(circle at 7% 24%, rgba(255, 217, 138, .42), transparent 17rem),
-    radial-gradient(circle at 92% 18%, rgba(143, 36, 29, .18), transparent 18rem),
-    linear-gradient(135deg, rgba(255, 253, 248, .96) 0%, rgba(255, 243, 223, .93) 48%, rgba(242, 215, 186, .92) 100%);
-  border-bottom: 1px solid rgba(143, 36, 29, 0.14);
-  box-shadow: 0 16px 42px rgba(111, 63, 34, 0.15);
+    radial-gradient(circle at 7% 24%, rgba(255, 217, 138, .2), transparent 17rem),
+    radial-gradient(circle at 92% 18%, rgba(143, 36, 29, .085), transparent 18rem),
+    linear-gradient(135deg, rgba(255, 255, 255, .98) 0%, rgba(255, 253, 248, .96) 52%, rgba(255, 246, 228, .95) 100%);
+  border-bottom: 1px solid rgba(143, 36, 29, 0.1);
+  box-shadow: 0 14px 34px rgba(111, 63, 34, 0.1);
   font-family: "Noto Sans", "Segoe UI", sans-serif;
   backdrop-filter: blur(16px);
 }
@@ -195,15 +249,18 @@ body {
   content: "";
   position: absolute;
   right: 7%;
-  top: -44px;
-  width: 156px;
-  height: 135px;
-  background: rgba(143, 36, 29, .09);
-  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  top: -56px;
+  width: 188px;
+  height: 188px;
+  border: 1px solid rgba(143, 36, 29, .08);
+  border-radius: 40% 60% 46% 54% / 58% 42% 58% 42%;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 217, 138, .12), transparent 38%),
+    rgba(143, 36, 29, .026);
   filter:
-    drop-shadow(-105px 48px 0 rgba(217, 154, 40, .14))
-    drop-shadow(84px 38px 0 rgba(111, 63, 34, .08))
-    drop-shadow(-42vw 22px 0 rgba(143, 36, 29, .055));
+    drop-shadow(-105px 48px 0 rgba(217, 154, 40, .075))
+    drop-shadow(84px 38px 0 rgba(217, 154, 40, .055))
+    drop-shadow(-42vw 22px 0 rgba(143, 36, 29, .03));
   transform: rotate(14deg);
   pointer-events: none;
 }
@@ -211,19 +268,63 @@ body {
 .bahis-site-header .bahis-nav::after {
   content: "";
   position: absolute;
-  right: calc(7% + 34px);
-  top: 16px;
-  width: 118px;
-  height: 78px;
+  right: calc(7% + 26px);
+  top: 14px;
+  width: 124px;
+  height: 82px;
   background:
-    linear-gradient(0deg, transparent 28%, rgba(143, 36, 29, .15) 29%, rgba(143, 36, 29, .15) 71%, transparent 72%) 0 0 / 60px 60px no-repeat,
-    linear-gradient(90deg, transparent 28%, rgba(143, 36, 29, .15) 29%, rgba(143, 36, 29, .15) 71%, transparent 72%) 0 0 / 60px 60px no-repeat,
-    linear-gradient(0deg, transparent 29%, rgba(217, 154, 40, .22) 30%, rgba(217, 154, 40, .22) 70%, transparent 71%) 72px 24px / 42px 42px no-repeat,
-    linear-gradient(90deg, transparent 29%, rgba(217, 154, 40, .22) 30%, rgba(217, 154, 40, .22) 70%, transparent 71%) 72px 24px / 42px 42px no-repeat,
-    linear-gradient(0deg, transparent 27%, rgba(111, 63, 34, .12) 28%, rgba(111, 63, 34, .12) 72%, transparent 73%) -45vw 18px / 34px 34px no-repeat,
-    linear-gradient(90deg, transparent 27%, rgba(111, 63, 34, .12) 28%, rgba(111, 63, 34, .12) 72%, transparent 73%) -45vw 18px / 34px 34px no-repeat;
-  transform: rotate(-10deg);
+    radial-gradient(ellipse 42% 52% at 28% 50%, rgba(111, 63, 34, .075) 0 48%, transparent 50%),
+    radial-gradient(ellipse 42% 52% at 62% 50%, rgba(111, 63, 34, .075) 0 48%, transparent 50%),
+    radial-gradient(circle at 84% 30%, rgba(143, 36, 29, .075) 0 13%, transparent 14%),
+    radial-gradient(circle at 90% 58%, rgba(217, 154, 40, .105) 0 12%, transparent 13%);
+  transform: rotate(-13deg);
   pointer-events: none;
+}
+
+.bahis-nav-motifs {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bahis-nav-motifs span {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(143, 36, 29, 0.075);
+  border-radius: 42% 58% 52% 48% / 52% 40% 60% 48%;
+  color: rgba(143, 36, 29, 0.075);
+  background: rgba(255, 255, 255, 0.46);
+  font-size: 26px;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 300,
+    "GRAD" 0,
+    "opsz" 40;
+}
+
+.bahis-nav-motifs span:nth-child(1) {
+  left: 33%;
+  top: 9px;
+  transform: rotate(-16deg);
+}
+
+.bahis-nav-motifs span:nth-child(2) {
+  right: 29%;
+  top: 31px;
+  color: rgba(111, 63, 34, 0.08);
+  transform: rotate(12deg);
+}
+
+.bahis-nav-motifs span:nth-child(3) {
+  right: 13%;
+  top: 4px;
+  color: rgba(217, 154, 40, 0.12);
+  transform: rotate(-24deg);
 }
 
 .bahis-site-header .nav-wrapper {
@@ -241,7 +342,7 @@ body {
   display: flex;
   align-items: center;
   height: 100%;
-  color: #5f1713;
+  color: #6f2f28;
 }
 
 .bahis-site-header .bahis-brand {
@@ -252,10 +353,10 @@ body {
   height: 52px;
   width: auto;
   padding: 8px;
-  border: 1px solid rgba(143, 36, 29, 0.14);
+  border: 1px solid rgba(143, 36, 29, 0.1);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 12px 28px rgba(111, 63, 34, 0.16);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 24px rgba(111, 63, 34, 0.1);
 }
 
 .bahis-site-header .bahis-brand span {
@@ -266,14 +367,14 @@ body {
 }
 
 .bahis-site-header .bahis-brand strong {
-  color: #5f1713;
+  color: #6f2f28;
   font-size: 1.45rem;
   font-weight: 900;
   letter-spacing: 0.06em;
 }
 
 .bahis-site-header .bahis-brand small {
-  color: #8d684d;
+  color: #7a6a56;
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -299,10 +400,10 @@ body {
   gap: 7px;
   min-height: 42px;
   padding: 0 15px;
-  border: 1px solid rgba(143, 36, 29, 0.14);
+  border: 1px solid rgba(143, 36, 29, 0.11);
   border-radius: 999px;
-  color: #5f1713;
-  background: rgba(255, 250, 240, 0.7);
+  color: #6f2f28;
+  background: rgba(255, 255, 255, 0.74);
   font-weight: 850;
   line-height: 1;
   outline: none;
@@ -311,7 +412,7 @@ body {
 
 .bahis-site-header .bahis-nav-links a:hover,
 .bahis-site-header .bahis-logout:hover {
-  color: #fff3df;
+  color: #fffaf3;
   background: linear-gradient(135deg, #8f241d, #6f3f22);
   transform: translateY(-1px);
   box-shadow: 0 12px 26px rgba(95, 23, 19, 0.18);
@@ -319,8 +420,8 @@ body {
 
 .bahis-site-header .bahis-nav-links a:focus,
 .bahis-site-header .bahis-logout:focus {
-  color: #5f1713;
-  background: rgba(255, 250, 240, 0.7);
+  color: #6f2f28;
+  background: rgba(255, 255, 255, 0.74);
   box-shadow: none;
   transform: none;
 }
@@ -354,19 +455,119 @@ nav.white .brand-logo {
 }
 
 .bahis-site-footer {
+  position: relative;
+  overflow: hidden;
   margin-top: 42px;
   padding: 34px 0;
-  color: #fff3df;
+  color: #fffaf3;
   background:
-    radial-gradient(circle at 85% 0%, rgba(217, 154, 40, 0.28), transparent 22rem),
-    linear-gradient(135deg, #3f2415 0%, #5f1713 52%, #6f3f22 100%);
+    radial-gradient(circle at 16% 20%, rgba(217, 154, 40, 0.24), transparent 18rem),
+    radial-gradient(circle at 86% 0%, rgba(239, 201, 130, 0.2), transparent 22rem),
+    linear-gradient(135deg, #3f2415 0%, #5f1713 50%, #6f3f22 100%);
   border-top: 1px solid rgba(255, 243, 223, 0.2);
-  box-shadow: 0 -18px 48px rgba(63, 36, 21, 0.16);
+  box-shadow: 0 -16px 42px rgba(63, 36, 21, 0.16);
   font-family: "Noto Sans", "Segoe UI", sans-serif;
   z-index: 10;
 }
 
+.bahis-site-footer::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  top: -42px;
+  width: 150px;
+  height: 150px;
+  border: 1px solid rgba(255, 217, 138, 0.18);
+  border-radius: 48% 52% 42% 58% / 58% 38% 62% 42%;
+  background: rgba(255, 243, 223, 0.045);
+  transform: rotate(-16deg);
+  pointer-events: none;
+}
+
+.bahis-site-footer::after {
+  content: "";
+  position: absolute;
+  right: 18%;
+  bottom: -22px;
+  width: 112px;
+  height: 42px;
+  border: 1px solid rgba(255, 217, 138, 0.2);
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(255, 217, 138, .16) 0 48%, rgba(255, 243, 223, .08) 48% 52%, rgba(239, 201, 130, .16) 52%),
+    rgba(255, 243, 223, 0.04);
+  transform: rotate(18deg);
+  pointer-events: none;
+}
+
+.bahis-footer-motifs {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bahis-footer-motifs .material-symbols-outlined,
+.bahis-footer-hoof {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(255, 217, 138, 0.15);
+  border-radius: 40% 60% 52% 48% / 52% 40% 60% 48%;
+  color: rgba(255, 217, 138, 0.2);
+  background: rgba(255, 243, 223, 0.045);
+}
+
+.bahis-footer-motifs .material-symbols-outlined {
+  font-size: 31px;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 300,
+    "GRAD" 0,
+    "opsz" 44;
+}
+
+.bahis-footer-motifs .material-symbols-outlined:nth-child(1) {
+  left: 34%;
+  top: 18px;
+  transform: rotate(-17deg);
+}
+
+.bahis-footer-motifs .material-symbols-outlined:nth-child(2) {
+  right: 35%;
+  top: 54px;
+  color: rgba(239, 201, 130, 0.2);
+  transform: rotate(16deg);
+}
+
+.bahis-footer-motifs .material-symbols-outlined:nth-child(3) {
+  right: 8%;
+  top: 21px;
+  color: rgba(255, 243, 223, 0.16);
+  transform: rotate(-11deg);
+}
+
+.bahis-footer-hoof {
+  left: 17%;
+  bottom: 10px;
+  display: flex;
+  gap: 5px;
+  padding: 12px;
+  transform: rotate(22deg);
+}
+
+.bahis-footer-hoof i {
+  width: 50%;
+  height: 100%;
+  border-radius: 58% 42% 48% 52% / 28% 28% 72% 72%;
+  background: rgba(255, 217, 138, 0.18);
+}
+
 .bahis-footer-inner {
+  position: relative;
+  z-index: 1;
   width: min(1180px, calc(100% - 28px));
 }
 
@@ -384,7 +585,7 @@ nav.white .brand-logo {
 .bahis-footer-kicker {
   display: inline-flex;
   margin-bottom: 8px;
-  color: #ffc35a;
+  color: #ffd98a;
   font-size: 0.76rem;
   font-weight: 900;
   letter-spacing: 0.14em;
@@ -405,15 +606,31 @@ nav.white .brand-logo {
 }
 
 .bahis-footer-logo-card {
+  position: relative;
+  overflow: hidden;
   min-height: 86px;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px 14px;
-  border: 1px solid rgba(255, 243, 223, 0.18);
-  border-radius: 22px;
-  background: rgba(255, 243, 223, 0.1);
+  border: 1px solid rgba(255, 217, 138, 0.22);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(255, 217, 138, 0.12), transparent 4.6rem),
+    rgba(255, 243, 223, 0.1);
   backdrop-filter: blur(12px);
+}
+
+.bahis-footer-logo-card::before {
+  content: "";
+  position: absolute;
+  right: -14px;
+  top: -16px;
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(217, 154, 40, 0.22);
+  border-radius: 42% 58% 48% 52% / 54% 38% 62% 46%;
+  background: rgba(217, 154, 40, 0.08);
 }
 
 .bahis-footer-logo-card span {
@@ -504,6 +721,11 @@ form > div > p.help-block {
 }
 
 @media (max-width: 992px) {
+  .bahis-nav-motifs span:nth-child(1),
+  .bahis-nav-motifs span:nth-child(2) {
+    display: none;
+  }
+
   .bahis-site-header .brand-logo {
     font-size: 1rem;
   }
@@ -529,9 +751,36 @@ form > div > p.help-block {
   .bahis-footer-logos {
     justify-content: flex-start;
   }
+
+  .bahis-footer-motifs .material-symbols-outlined:nth-child(1),
+  .bahis-footer-motifs .material-symbols-outlined:nth-child(2) {
+    display: none;
+  }
 }
 
 @media (max-width: 700px) {
+  .bahis-shape-field .vet-mark {
+    opacity: 0.65;
+  }
+
+  .bahis-shape-field .a4,
+  .bahis-shape-field .a6,
+  .bahis-shape-field .a11,
+  .bahis-shape-field .a13,
+  .bahis-shape-field .a15,
+  .bahis-shape-field .a16,
+  .bahis-shape-field .a18,
+  .bahis-shape-field .a20,
+  .bahis-shape-field .a25,
+  .bahis-shape-field .a27 {
+    display: none;
+  }
+
+  .bahis-nav-motifs,
+  .bahis-footer-motifs {
+    display: none;
+  }
+
   .bahis-site-header .nav-wrapper {
     min-height: 124px;
     flex-direction: column;

@@ -1,17 +1,109 @@
-{% extends 'list.html' %}
+{% extends 'base.html' %}
 
-{% block content_title %}
-Custom Taxonomies
-{% endblock content_title %}
+{% block css %}
+    {{ block.super }}
+    {% include 'desk/_desk_theme.html' %}
+{% endblock css %}
 
-{% block table_headers %}
-    <th>Title</th>
-    <th>Slug</th>
-    <th>CSV File</th>
-{% endblock table_headers %}
+{% block content %}
+    <section class="desk-shell">
+        <div class="desk-hero desk-crud-hero">
+            <div>
+                <span class="desk-kicker">Custom taxonomies</span>
+                <h1 class="desk-title">CSV taxonomy library</h1>
+                <p class="desk-copy">Manage custom taxonomy CSV files used as reusable BAHIS choice lists.</p>
+            </div>
+            <div class="desk-form-top-actions">
+                <a class="desk-action secondary" href="{% url 'taxonomies:index' %}">
+                    <i class="material-symbols-outlined">arrow_back</i>
+                    Taxonomy home
+                </a>
+                <a class="desk-action primary" href="{% url 'taxonomies:create' %}">
+                    <i class="material-symbols-outlined">add</i>
+                    Create taxonomy
+                </a>
+            </div>
+        </div>
 
-{% block table_rows %}
-    <td>{{ module.title }}</td>
-    <td>{{ module.slug }}</td>
-    <td><a class="tooltipped" data-tooltip="Download file" href="{{ module.csv_file.url }}">{{ module.csv_file }}</a></td>
-{% endblock table_rows %}
+        <div class="desk-panel">
+            {% if object_list %}
+                <table class="desk-table responsive-table">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Slug</th>
+                        <th>CSV File</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for taxonomy in object_list %}
+                        <tr>
+                            <td>
+                                <span class="desk-module-name">
+                                    <span class="desk-module-icon"><i class="material-symbols-outlined">description</i></span>
+                                    {{ taxonomy.title }}
+                                </span>
+                            </td>
+                            <td>{{ taxonomy.slug }}</td>
+                            <td>
+                                <a class="tooltipped" data-tooltip="Download file" href="{{ taxonomy.csv_file.url }}">
+                                    {{ taxonomy.csv_file }}
+                                </a>
+                            </td>
+                            <td>
+                                <div class="desk-actions">
+                                    <a class="desk-icon-btn tooltipped" data-tooltip="Edit" href="{% url 'taxonomies:update' taxonomy.id %}">
+                                        <i class="material-symbols-outlined">edit</i>
+                                    </a>
+                                    <a class="desk-icon-btn tooltipped" data-tooltip="Delete" href="{% url 'taxonomies:delete' taxonomy.id %}">
+                                        <i class="material-symbols-outlined">delete</i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="desk-empty">No custom taxonomies found.</div>
+            {% endif %}
+        </div>
+
+        {% if is_paginated %}
+            <div class="desk-pagination">
+                <ul class="pagination">
+                    <li class="waves-effect {% if not page_obj.has_previous %}disabled{% endif %}">
+                        <a href="?page=1"><i class="material-symbols-outlined">first_page</i></a>
+                    </li>
+                    <li class="waves-effect {% if not page_obj.has_previous %}disabled{% endif %}">
+                        <a href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% endif %}">
+                            <i class="material-symbols-outlined">chevron_left</i>
+                        </a>
+                    </li>
+                    {% for page in page_obj.paginator.page_range %}
+                        <li class="waves-effect {% if page == page_obj.number %}active{% endif %}">
+                            <a href="?page={{ page }}">{{ page }}</a>
+                        </li>
+                    {% endfor %}
+                    <li class="waves-effect {% if not page_obj.has_next %}disabled{% endif %}">
+                        <a href="?page={% if page_obj.has_next %}{{ page_obj.next_page_number }}{% endif %}">
+                            <i class="material-symbols-outlined">chevron_right</i>
+                        </a>
+                    </li>
+                    <li class="waves-effect {% if not page_obj.has_next %}disabled{% endif %}">
+                        <a href="?page={{ page_obj.paginator.num_pages }}"><i class="material-symbols-outlined">last_page</i></a>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+    </section>
+{% endblock content %}
+
+{% block inline_javascript %}
+    <script>
+        $(document).ready(function(){
+            $('.tooltipped').tooltip({enterDelay: 0, exitDelay: 0, inDuration: 100, outDuration: 100, margin: 2});
+        });
+    </script>
+{% endblock inline_javascript %}

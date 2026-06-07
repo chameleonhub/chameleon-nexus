@@ -1,6 +1,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet">
+<script>
+    window.deskFormsApiUrl = "/api/desk/forms/";
+</script>
 <style>
     body {
         color: #4d3528;
@@ -33,13 +37,14 @@
         align-items: center;
         margin-bottom: 22px;
         padding: 28px;
-        background:
-            linear-gradient(rgba(95, 23, 19, .055) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(95, 23, 19, .055) 1px, transparent 1px),
-            radial-gradient(circle at 88% 18%, rgba(217, 154, 40, .18), transparent 18rem),
-            rgba(255, 250, 240, .82);
+        background: linear-gradient(rgba(95, 23, 19, .055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(95, 23, 19, .055) 1px, transparent 1px),
+        radial-gradient(circle at 88% 18%, rgba(217, 154, 40, .18), transparent 18rem),
+        rgba(255, 250, 240, .82);
         background-size: 38px 38px, 38px 38px, auto, auto;
     }
+
+    {#
 
     .desk-hero::before {
         content: "";
@@ -50,8 +55,8 @@
         height: 170px;
         border-radius: 48px;
         background:
-            radial-gradient(circle at 28% 28%, rgba(255, 217, 138, .62), transparent 34%),
-            linear-gradient(135deg, rgba(143, 36, 29, .12), rgba(111, 63, 34, .08));
+                radial-gradient(circle at 28% 28%, rgba(255, 217, 138, .62), transparent 34%),
+                linear-gradient(135deg, rgba(143, 36, 29, .12), rgba(111, 63, 34, .08));
         transform: rotate(8deg);
         pointer-events: none;
     }
@@ -75,6 +80,8 @@
         line-height: 1;
         pointer-events: none;
     }
+
+    #}
 
     .desk-hero > * {
         position: relative;
@@ -141,9 +148,10 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
-        min-height: 42px;
+        min-height: 46px;
         border: 0;
         border-radius: 999px;
+        padding: 0 22px;
         color: #5f1713;
         background: #ffd98a;
         box-shadow: none;
@@ -755,6 +763,3 @@
         }
     }
 </style>
-<script>
-    window.deskFormsApiUrl = "/api/desk/forms/";
-</script>

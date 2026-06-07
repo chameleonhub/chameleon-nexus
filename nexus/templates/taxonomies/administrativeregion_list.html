@@ -1,28 +1,136 @@
-{% extends 'list.html' %}
+{% extends 'base.html' %}
 
-{% block content_title %}
-Adminstrative Regions
-{% endblock content_title %}
+{% block css %}
+    {{ block.super }}
+    {% include 'desk/_desk_theme.html' %}
+{% endblock css %}
 
-{% block table_headers %}
-    <th>ID</th>
-    <th>Title</th>
-    <th>Level</th>
-    <th>Parent Region</th>
-{% endblock table_headers %}
+{% block content %}
+    <section class="desk-shell">
+        <div class="desk-hero desk-crud-hero">
+            <div>
+                <span class="desk-kicker">Required taxonomy</span>
+                <h1 class="desk-title">Administrative regions</h1>
+                <p class="desk-copy">Manage geographic units and their parent-child relationships.</p>
+            </div>
+            <div class="desk-form-top-actions">
+                <a class="desk-action secondary" href="{% url 'taxonomies:index' %}">
+                    <i class="material-symbols-outlined">arrow_back</i>
+                    Taxonomy home
+                </a>
+                <a class="desk-action primary" href="{% url 'taxonomies:adminstrative_region_create' %}">
+                    <i class="material-symbols-outlined">add_location_alt</i>
+                    Create region
+                </a>
+            </div>
+        </div>
 
-{% block table_rows %}
-    <td>{{ module.id }}</td>
-    <td>{{ module.title }}</td>
-    <td>{{ module.administrative_region_level }}</td>
-    <td>{{ module.parent_administrative_region }}</td>
-{% endblock table_rows %}
+        {% if filter %}
+            <ul class="collapsible desk-filter">
+                <li class="{% if query %}active{% endif %}">
+                    <div class="collapsible-header tooltipped" data-tooltip="Search for specific administrative regions">
+                        <i class="material-symbols-outlined">search</i> Filter regions
+                    </div>
+                    <div class="collapsible-body">
+                        <form class="desk-form-card" method="get">
+                            <div class="desk-form-grid">
+                                {{ filter.form.as_p }}
+                            </div>
+                            <div class="desk-form-actions">
+                                <button class="desk-action primary" type="submit">
+                                    <i class="material-symbols-outlined">filter_alt</i>
+                                    Apply filter
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        {% endif %}
 
-{% block update_delete_buttons %}
-<a class="tooltipped" data-tooltip="Edit" href="{% url request.resolver_match.app_name|add:':adminstrative_region_update' module.id %}"><i class="material-symbols-outlined">edit</i></a>
-<a class="tooltipped" data-tooltip="Delete" href="{% url request.resolver_match.app_name|add:':adminstrative_region_delete' module.id %}"><i class="material-symbols-outlined">delete</i></a>
-{% endblock update_delete_buttons %}
+        <div class="desk-panel">
+            {% if object_list %}
+                <table class="desk-table responsive-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Level</th>
+                        <th>Parent Region</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for region in object_list %}
+                        <tr>
+                            <td>{{ region.id }}</td>
+                            <td>
+                                <span class="desk-module-name">
+                                    <span class="desk-module-icon"><i class="material-symbols-outlined">map</i></span>
+                                    {{ region.title }}
+                                </span>
+                            </td>
+                            <td>{{ region.administrative_region_level }}</td>
+                            <td>{{ region.parent_administrative_region|default:"-" }}</td>
+                            <td>
+                                <div class="desk-actions">
+                                    <a class="desk-icon-btn tooltipped" data-tooltip="Edit" href="{% url 'taxonomies:adminstrative_region_update' region.id %}">
+                                        <i class="material-symbols-outlined">edit</i>
+                                    </a>
+                                    <a class="desk-icon-btn tooltipped" data-tooltip="Delete" href="{% url 'taxonomies:adminstrative_region_delete' region.id %}">
+                                        <i class="material-symbols-outlined">delete</i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="desk-empty">No administrative regions found.</div>
+            {% endif %}
+        </div>
 
-{% block cancel_button %}
-<a class="btn tooltipped" data-tooltip="Go back" href="{% url request.resolver_match.app_name|add:':index' %}">Cancel</a>
-{% endblock cancel_button %}
+        {% if is_paginated %}
+            <div class="desk-pagination">
+                <ul class="pagination">
+                    <li class="waves-effect {% if not page_obj.has_previous %}disabled{% endif %}">
+                        <a href="?page=1{% for k, v in query.items %}&{{ k }}={{ v }}{% endfor %}">
+                            <i class="material-symbols-outlined">first_page</i>
+                        </a>
+                    </li>
+                    <li class="waves-effect {% if not page_obj.has_previous %}disabled{% endif %}">
+                        <a href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% endif %}{% for k, v in query.items %}&{{ k }}={{ v }}{% endfor %}">
+                            <i class="material-symbols-outlined">chevron_left</i>
+                        </a>
+                    </li>
+                    {% for page in paginator_range %}
+                        <li class="waves-effect {% if page == page_obj.number %}active{% endif %}">
+                            <a href="?page={{ page }}{% for k, v in query.items %}&{{ k }}={{ v }}{% endfor %}">{{ page }}</a>
+                        </li>
+                    {% endfor %}
+                    <li class="waves-effect {% if not page_obj.has_next %}disabled{% endif %}">
+                        <a href="?page={% if page_obj.has_next %}{{ page_obj.next_page_number }}{% endif %}{% for k, v in query.items %}&{{ k }}={{ v }}{% endfor %}">
+                            <i class="material-symbols-outlined">chevron_right</i>
+                        </a>
+                    </li>
+                    <li class="waves-effect {% if not page_obj.has_next %}disabled{% endif %}">
+                        <a href="?page={{ page_obj.paginator.num_pages }}{% for k, v in query.items %}&{{ k }}={{ v }}{% endfor %}">
+                            <i class="material-symbols-outlined">last_page</i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+    </section>
+{% endblock content %}
+
+{% block inline_javascript %}
+    <script>
+        $(document).ready(function(){
+            $('.collapsible').collapsible();
+            $('select').formSelect();
+            $('.tooltipped').tooltip({enterDelay: 0, exitDelay: 0, inDuration: 100, outDuration: 100, margin: 2});
+        });
+    </script>
+{% endblock inline_javascript %}

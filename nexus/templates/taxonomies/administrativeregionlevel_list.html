@@ -1,24 +1,103 @@
-{% extends 'list.html' %}
+{% extends 'base.html' %}
 
-{% block content_title %}
-Adminstrative Region Levels
-{% endblock content_title %}
+{% block css %}
+    {{ block.super }}
+    {% include 'desk/_desk_theme.html' %}
+{% endblock css %}
 
-{% block table_headers %}
-    <th>ID</th>
-    <th>Title</th>
-{% endblock table_headers %}
+{% block content %}
+    <section class="desk-shell">
+        <div class="desk-hero desk-crud-hero">
+            <div>
+                <span class="desk-kicker">Required taxonomy</span>
+                <h1 class="desk-title">Administrative region levels</h1>
+                <p class="desk-copy">Define the hierarchy used to organize administrative regions.</p>
+            </div>
+            <div class="desk-form-top-actions">
+                <a class="desk-action secondary" href="{% url 'taxonomies:index' %}">
+                    <i class="material-symbols-outlined">arrow_back</i>
+                    Taxonomy home
+                </a>
+                <a class="desk-action primary" href="{% url 'taxonomies:adminstrative_region_level_create' %}">
+                    <i class="material-symbols-outlined">add</i>
+                    Create level
+                </a>
+            </div>
+        </div>
 
-{% block table_rows %}
-    <td>{{ module.id }}</td>
-    <td>{{ module.title }}</td>
-{% endblock table_rows %}
+        <div class="desk-panel">
+            {% if object_list %}
+                <table class="desk-table responsive-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for level in object_list %}
+                        <tr>
+                            <td>{{ level.id }}</td>
+                            <td>
+                                <span class="desk-module-name">
+                                    <span class="desk-module-icon"><i class="material-symbols-outlined">layers</i></span>
+                                    {{ level.title }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="desk-actions">
+                                    <a class="desk-icon-btn tooltipped" data-tooltip="Edit" href="{% url 'taxonomies:adminstrative_region_level_update' level.id %}">
+                                        <i class="material-symbols-outlined">edit</i>
+                                    </a>
+                                    <a class="desk-icon-btn tooltipped" data-tooltip="Delete" href="{% url 'taxonomies:adminstrative_region_level_delete' level.id %}">
+                                        <i class="material-symbols-outlined">delete</i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="desk-empty">No administrative region levels found.</div>
+            {% endif %}
+        </div>
 
-{% block update_delete_buttons %}
-<a class="tooltipped" data-tooltip="Edit" href="{% url request.resolver_match.app_name|add:':adminstrative_region_level_update' module.id %}"><i class="material-symbols-outlined">edit</i></a>
-<a class="tooltipped" data-tooltip="Delete" href="{% url request.resolver_match.app_name|add:':adminstrative_region_level_delete' module.id %}"><i class="material-symbols-outlined">delete</i></a>
-{% endblock update_delete_buttons %}
+        {% if is_paginated %}
+            <div class="desk-pagination">
+                <ul class="pagination">
+                    <li class="waves-effect {% if not page_obj.has_previous %}disabled{% endif %}">
+                        <a href="?page=1"><i class="material-symbols-outlined">first_page</i></a>
+                    </li>
+                    <li class="waves-effect {% if not page_obj.has_previous %}disabled{% endif %}">
+                        <a href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% endif %}">
+                            <i class="material-symbols-outlined">chevron_left</i>
+                        </a>
+                    </li>
+                    {% for page in page_obj.paginator.page_range %}
+                        <li class="waves-effect {% if page == page_obj.number %}active{% endif %}">
+                            <a href="?page={{ page }}">{{ page }}</a>
+                        </li>
+                    {% endfor %}
+                    <li class="waves-effect {% if not page_obj.has_next %}disabled{% endif %}">
+                        <a href="?page={% if page_obj.has_next %}{{ page_obj.next_page_number }}{% endif %}">
+                            <i class="material-symbols-outlined">chevron_right</i>
+                        </a>
+                    </li>
+                    <li class="waves-effect {% if not page_obj.has_next %}disabled{% endif %}">
+                        <a href="?page={{ page_obj.paginator.num_pages }}"><i class="material-symbols-outlined">last_page</i></a>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+    </section>
+{% endblock content %}
 
-{% block cancel_button %}
-<a class="btn tooltipped" data-tooltip="Go back" href="{% url request.resolver_match.app_name|add:':index' %}">Cancel</a>
-{% endblock cancel_button %}
+{% block inline_javascript %}
+    <script>
+        $(document).ready(function(){
+            $('.tooltipped').tooltip({enterDelay: 0, exitDelay: 0, inDuration: 100, outDuration: 100, margin: 2});
+        });
+    </script>
+{% endblock inline_javascript %}

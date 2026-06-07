@@ -1,5 +1,36 @@
-{% extends 'delete_form.html' %}
+{% extends 'base.html' %}
 
-{% block content_title %}
-Delete Custom Taxonomy
-{% endblock content_title %}
+{% block css %}
+    {{ block.super }}
+    {% include 'desk/_desk_theme.html' %}
+{% endblock css %}
+
+{% block content %}
+    <section class="desk-shell">
+        <form class="desk-delete-card" method="post">
+            {% csrf_token %}
+            <span class="desk-delete-icon"><i class="material-symbols-outlined">delete</i></span>
+            <span class="desk-kicker">Custom taxonomy</span>
+            <h1 class="desk-title">Delete taxonomy</h1>
+            <p class="desk-copy" style="margin-left: auto; margin-right: auto;">
+                Are you sure you want to delete "{{ object }}"? This removes the taxonomy record from BAHIS.
+            </p>
+            {{ form }}
+            <div class="desk-form-actions">
+                <a class="desk-action secondary" href="{% url 'taxonomies:list' %}">Cancel</a>
+                <button class="desk-action danger" type="submit">
+                    <i class="material-symbols-outlined">delete_forever</i>
+                    Confirm delete
+                </button>
+            </div>
+        </form>
+    </section>
+{% endblock content %}
+
+{% block inline_javascript %}
+    <script>
+        $(document).ready(function(){
+            $('.tooltipped').tooltip({enterDelay: 0, exitDelay: 0, inDuration: 100, outDuration: 100, margin: 2});
+        });
+    </script>
+{% endblock inline_javascript %}

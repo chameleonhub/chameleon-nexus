@@ -1,9 +1,46 @@
-{% extends 'update_form.html' %}
+{% extends 'base.html' %}
+{% load materializecss %}
 
-{% block content_title %}
-Update Adminstrative Region Level
-{% endblock content_title %}
+{% block css %}
+    {{ block.super }}
+    {% include 'desk/_desk_theme.html' %}
+{% endblock css %}
 
-{% block cancel_button %}
-<a class="btn tooltipped" data-tooltip="Go back" href="{% url request.resolver_match.app_name|add:':adminstrative_region_level_list' %}">Cancel</a>
-{% endblock cancel_button %}
+{% block content %}
+    <section class="desk-shell">
+        <div class="desk-hero desk-crud-hero">
+            <div>
+                <span class="desk-kicker">Administrative level</span>
+                <h1 class="desk-title">Update region level</h1>
+                <p class="desk-copy">Revise the label for an administrative geography level.</p>
+            </div>
+            <a class="desk-action" href="{% url 'taxonomies:adminstrative_region_level_list' %}">
+                <i class="material-symbols-outlined">arrow_back</i>
+                Back to levels
+            </a>
+        </div>
+
+        <form class="desk-form-card" method="post">
+            {% csrf_token %}
+            <div class="desk-form-grid">
+                {{ form | materializecss }}
+            </div>
+            <div class="desk-form-actions">
+                <a class="desk-action secondary" href="{% url 'taxonomies:adminstrative_region_level_list' %}">Cancel</a>
+                <button class="desk-action primary" type="submit">
+                    <i class="material-symbols-outlined">save</i>
+                    Update level
+                </button>
+            </div>
+        </form>
+    </section>
+{% endblock content %}
+
+{% block inline_javascript %}
+    <script>
+        $(document).ready(function(){
+            $('select').formSelect();
+            $('.tooltipped').tooltip({enterDelay: 0, exitDelay: 0, inDuration: 100, outDuration: 100, margin: 2});
+        });
+    </script>
+{% endblock inline_javascript %}

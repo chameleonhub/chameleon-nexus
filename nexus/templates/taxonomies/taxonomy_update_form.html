@@ -1,9 +1,46 @@
-{% extends 'create_form.html' %}
+{% extends 'base.html' %}
+{% load materializecss %}
 
-{% block content_title %}
-Update Custom Taxonomy
-{% endblock content_title %}
+{% block css %}
+    {{ block.super }}
+    {% include 'desk/_desk_theme.html' %}
+{% endblock css %}
 
-{% block declare_form %}
-<form enctype="multipart/form-data" method="post">
-{% endblock declare_form %}
+{% block content %}
+    <section class="desk-shell">
+        <div class="desk-hero desk-crud-hero">
+            <div>
+                <span class="desk-kicker">Custom taxonomy</span>
+                <h1 class="desk-title">Update taxonomy</h1>
+                <p class="desk-copy">Replace or revise the uploaded CSV taxonomy file.</p>
+            </div>
+            <a class="desk-action" href="{% url 'taxonomies:list' %}">
+                <i class="material-symbols-outlined">arrow_back</i>
+                Back to taxonomies
+            </a>
+        </div>
+
+        <form class="desk-form-card" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <div class="desk-form-grid">
+                {{ form | materializecss }}
+            </div>
+            <div class="desk-form-actions">
+                <a class="desk-action secondary" href="{% url 'taxonomies:list' %}">Cancel</a>
+                <button class="desk-action primary" type="submit">
+                    <i class="material-symbols-outlined">upload_file</i>
+                    Update taxonomy
+                </button>
+            </div>
+        </form>
+    </section>
+{% endblock content %}
+
+{% block inline_javascript %}
+    <script>
+        $(document).ready(function(){
+            $('select').formSelect();
+            $('.tooltipped').tooltip({enterDelay: 0, exitDelay: 0, inDuration: 100, outDuration: 100, margin: 2});
+        });
+    </script>
+{% endblock inline_javascript %}

@@ -1,65 +1,135 @@
 {% extends "base.html" %}
 
+{% block css %}
+    {{ block.super }}
+    {% include 'desk/_desk_theme.html' %}
+{% endblock css %}
+
 {% block content %}
-<h1>Taxonomies</h1>
-
-<p>These taxonomies can be used by the BAHIS Desktop App and the <kbd>cloudUser</kbd> and </kbd>search(cloudCSV)</kbd> tags in BAHIS Forms.</p>
-
-<h2>Required Taxonomies</h2>
-
-<div class="row">
-    <div class="col s12 m6">
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">Administrative Region Levels</span>
-          <p>This taxonomy is used to define administrative region levels, e.g. Divison, District, etc.
-            Administrative regions / units / divisions, subnational entities, or constituent states
-            (as well as many similar generic terms) are geographical areas into which a state is divided.</p>
-        </div>
-        <div class="card-action">
-          <a href="{% url 'taxonomies:adminstrative_region_level_list' %}">View Administrative Levels</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s12 m6">
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">Administrative Regions</span>
-          <p>This taxonomy is used to define administrative regions, e.g. specifics divisons, etc.
-            Administrative regions / units / divisions, subnational entities, or constituent states
-            (as well as many similar generic terms) are geographical areas into which a state is divided.</p>
-        </div>
-        <div class="card-action">
-          <a href="{% url 'taxonomies:adminstrative_region_list' %}">View Administrative Regions</a>
-        </div>
-      </div>
-    </div>
-</div>
-
-<h2>Custom Taxonomies</h2>
-
-<div class="row">
-    <div class="col s12 right-align">
-        <a href="{% url 'taxonomies:create' %}" class="btn-floating btn-large waves-effect waves-light"><i class="material-symbols-outlined">add</i></a>
-    </div>
-</div>
-
-<div class="row">
-    {% for taxonomy in taxonomies %}
-        <div class="col s12 m6">
-        <div class="card">
-            <div class="card-content">
-            <span class="card-title">{{ taxonomy.title }}</span>
-            <p>Unique slug: {{ taxonomy.slug }}</p>
+    <section class="desk-shell">
+        <div class="desk-hero">
+            <div>
+                <span class="desk-kicker">Taxonomy management</span>
+                <h1 class="desk-title">Manage BAHIS taxonomies</h1>
+                <p class="desk-copy">
+                    Maintain administrative geography and CSV-backed custom taxonomies used by the BAHIS Desktop App
+                    and BAHIS Forms.
+                </p>
+                <div class="desk-vet-strip">
+                    <span class="desk-vet-chip"><i class="material-symbols-outlined">account_tree</i> Regions</span>
+                    <span class="desk-vet-chip"><i class="material-symbols-outlined">table_chart</i> CSV choices</span>
+                    <span class="desk-vet-chip"><i class="material-symbols-outlined">cloud_sync</i> Form lookup</span>
+                </div>
             </div>
-            <div class="card-action">
-            <a href="{% url 'taxonomies:update' taxonomy.id %}">Upload new {{ taxonomy.title }} CSV</a>
+            <a href="{% url 'taxonomies:create' %}" class="desk-create-btn">
+                <i class="material-symbols-outlined">add</i>
+                Create taxonomy
+            </a>
+        </div>
+
+        <div class="desk-tree-panel">
+            <div class="desk-tree">
+                <div class="desk-node">
+                    <div class="desk-node-card">
+                        <div class="desk-node-main">
+                            <span class="desk-folder-icon"><i class="material-symbols-outlined">layers</i></span>
+                            <div class="desk-node-content">
+                                <div class="desk-node-title-row">
+                                    <h2>Administrative Region Levels</h2>
+                                </div>
+                                <p>
+                                    Define the hierarchy for administrative regions, for example Division, District,
+                                    Upazila, and other local levels.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="desk-actions">
+                            <a class="desk-action secondary" href="{% url 'taxonomies:adminstrative_region_level_list' %}">
+                                View levels
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desk-node">
+                    <div class="desk-node-card">
+                        <div class="desk-node-main">
+                            <span class="desk-folder-icon"><i class="material-symbols-outlined">map</i></span>
+                            <div class="desk-node-content">
+                                <div class="desk-node-title-row">
+                                    <h2>Administrative Regions</h2>
+                                </div>
+                                <p>
+                                    Manage the actual geographic units and their parent-child relationships across
+                                    configured administrative levels.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="desk-actions">
+                            <a class="desk-action secondary" href="{% url 'taxonomies:adminstrative_region_list' %}">
+                                View regions
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div class="desk-hero desk-crud-hero" style="margin-top: 22px;">
+            <div>
+                <span class="desk-kicker">Custom taxonomies</span>
+                <h1 class="desk-title">CSV-backed choice lists</h1>
+                <p class="desk-copy">
+                    Upload custom CSV taxonomies that follow the XLSForm choices specification.
+                </p>
+            </div>
+            <a class="desk-action" href="{% url 'taxonomies:list' %}">
+                <i class="material-symbols-outlined">list</i>
+                View all
+            </a>
         </div>
-    {% endfor %}
-</div>
 
-<p>See <a href="{% url 'taxonomies:list' %}">all custom taxonomies</a>.</p>
-
+        <div class="desk-tree-panel">
+            {% if taxonomies %}
+                <div class="desk-tree">
+                    {% for taxonomy in taxonomies %}
+                        <div class="desk-node">
+                            <div class="desk-node-card">
+                                <div class="desk-node-main">
+                                    <span class="desk-folder-icon"><i class="material-symbols-outlined">description</i></span>
+                                    <div class="desk-node-content">
+                                        <div class="desk-node-title-row">
+                                            <h2>{{ taxonomy.title }}</h2>
+                                        </div>
+                                        <div class="desk-node-meta">
+                                            <span>Slug: {{ taxonomy.slug }}</span>
+                                            <span>{{ taxonomy.csv_file }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="desk-actions">
+                                    <a class="desk-icon-btn tooltipped" data-tooltip="Upload new CSV" href="{% url 'taxonomies:update' taxonomy.id %}">
+                                        <i class="material-symbols-outlined">upload_file</i>
+                                    </a>
+                                    <a class="desk-icon-btn tooltipped" data-tooltip="Delete" href="{% url 'taxonomies:delete' taxonomy.id %}">
+                                        <i class="material-symbols-outlined">delete</i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="desk-empty">No custom taxonomies found.</div>
+            {% endif %}
+        </div>
+    </section>
 {% endblock content %}
+
+{% block inline_javascript %}
+    <script>
+        $(document).ready(function(){
+            $('.tooltipped').tooltip({enterDelay: 0, exitDelay: 0, inDuration: 100, outDuration: 100, margin: 2});
+        });
+    </script>
+{% endblock inline_javascript %}

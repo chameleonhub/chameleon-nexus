@@ -1,5 +1,28 @@
-{% extends 'delete_form.html' %}
+{% extends 'base.html' %}
 
-{% block content_title %}
-Delete Adminstrative Region Level
-{% endblock content_title %}
+{% block css %}
+    {{ block.super }}
+    {% include 'desk/_desk_theme.html' %}
+{% endblock css %}
+
+{% block content %}
+    <section class="desk-shell">
+        <form class="desk-delete-card" method="post">
+            {% csrf_token %}
+            <span class="desk-delete-icon"><i class="material-symbols-outlined">delete</i></span>
+            <span class="desk-kicker">Administrative level</span>
+            <h1 class="desk-title">Delete region level</h1>
+            <p class="desk-copy" style="margin-left: auto; margin-right: auto;">
+                Are you sure you want to delete "{{ object }}"? Regions may depend on this level.
+            </p>
+            {{ form }}
+            <div class="desk-form-actions">
+                <a class="desk-action secondary" href="{% url 'taxonomies:adminstrative_region_level_list' %}">Cancel</a>
+                <button class="desk-action danger" type="submit">
+                    <i class="material-symbols-outlined">delete_forever</i>
+                    Confirm delete
+                </button>
+            </div>
+        </form>
+    </section>
+{% endblock content %}

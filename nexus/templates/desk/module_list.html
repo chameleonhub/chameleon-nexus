@@ -17,7 +17,8 @@
                 </p>
                 <div class="desk-vet-strip">
                     <span class="desk-vet-chip"><i class="material-symbols-outlined">pets</i> Livestock</span>
-                    <span class="desk-vet-chip"><i class="material-symbols-outlined">medical_services</i> Veterinary</span>
+                    <span class="desk-vet-chip"><i
+                            class="material-symbols-outlined">medical_services</i> Veterinary</span>
                     <span class="desk-vet-chip"><i class="material-symbols-outlined">vaccines</i> Field health</span>
                 </div>
             </div>
@@ -37,7 +38,9 @@
             {% if module_tree %}
                 <div class="desk-tree">
                     {% for node in module_tree %}
-                        {% include 'desk/partials/_module_node.html' with node=node level=0 only %}
+                        {% with level=0 %}
+                            {% include 'desk/partials/_module_node.html' %}
+                        {% endwith %}
                     {% endfor %}
                 </div>
             {% else %}
@@ -51,10 +54,11 @@
 
 {% block inline_javascript %}
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.collapsible').collapsible();
             $('select').formSelect();
             $('.tooltipped').tooltip({enterDelay: 0, exitDelay: 0, inDuration: 100, outDuration: 100, margin: 2});
+
             function toggleDeskNode(node) {
                 const collapsed = node.toggleClass('is-collapsed').hasClass('is-collapsed');
                 node.children('.desk-node-card').find('.desk-tree-toggle').attr('aria-expanded', String(!collapsed));
@@ -63,13 +67,13 @@
                 );
             }
 
-            $('.desk-tree-toggle').on('click', function(event) {
+            $('.desk-tree-toggle').on('click', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 toggleDeskNode($(this).closest('.desk-node'));
             });
 
-            $('.desk-tree-toggle-card').on('click', function(event) {
+            $('.desk-tree-toggle-card').on('click', function (event) {
                 if ($(event.target).closest('a, button').length) {
                     return;
                 }
@@ -77,12 +81,12 @@
             });
 
             const allNodes = $('.desk-node');
-            $('#desk-tree-search').on('input', function() {
+            $('#desk-tree-search').on('input', function () {
                 const query = $(this).val().toString().trim().toLowerCase();
                 let visibleCount = 0;
 
                 if (!query) {
-                    allNodes.show().filter(function() {
+                    allNodes.show().filter(function () {
                         return $(this).children('.desk-node-children').length > 0;
                     }).addClass('is-collapsed').children('.desk-node-card').find('.desk-collapse-message').text('Click folder to expand');
                     allNodes.find('.desk-tree-toggle').attr('aria-expanded', 'false');
@@ -92,7 +96,7 @@
 
                 allNodes.hide().removeClass('is-search-match');
 
-                allNodes.each(function() {
+                allNodes.each(function () {
                     const node = $(this);
                     const card = node.children('.desk-node-card');
                     const text = card.data('search-text').toString().toLowerCase();

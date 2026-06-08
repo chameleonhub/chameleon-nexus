@@ -2,7 +2,7 @@ from rest_framework import permissions, response, views, viewsets
 
 from nexus.desk.api.serializers import ModuleSerializer, ModuleTypeSerializer, WorkflowSerializer
 from nexus.desk.models import Module, ModuleType, Workflow
-from nexus.desk.utils import get_assets_for_user, get_modules_for_user
+from nexus.desk.utils import get_modules_for_user, search_assets_for_user
 
 
 class ModuleTypeViewSet(viewsets.ModelViewSet):
@@ -47,13 +47,26 @@ class FormListView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, format=None):
+        query = request.query_params.get("q", "")
+        selected = request.query_params.get("selected", "")
+        limit = request.query_params.get("limit", 100)
+        try:
+            limit = int(limit)
+        except (TypeError, ValueError):
+            limit = 100
+
         results = [
             {
                 "id": asset.get("uid"),
                 "name": asset.get("name") or asset.get("uid"),
                 "description": asset.get("settings", {}).get("description") or "",
             }
-            for asset in get_assets_for_user(request)
+            for asset in search_assets_for_user(
+                request,
+                query=query,
+                selected=selected,
+                limit=limit,
+            )
         ]
         return response.Response(
             {

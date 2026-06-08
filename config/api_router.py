@@ -37,3 +37,4 @@ urlpatterns.append(
 # api login endpoints
 urlpatterns.append(path("auth/", APIAuth.as_view()))
 urlpatterns.append(path("desk/forms/", FormListView.as_view()))
+urlpatterns.append(path("kobo/forms/", FormListView.as_view()))

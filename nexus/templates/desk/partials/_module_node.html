@@ -53,7 +53,9 @@
         {% if child_modules %}
             <div class="desk-node-children">
                 {% for child in child_modules %}
-                    {% include 'desk/partials/_module_node.html' with node=child level=level|add:1 only %}
+                    {% with node=child level=level|add:1 %}
+                        {% include 'desk/partials/_module_node.html' %}
+                    {% endwith %}
                 {% endfor %}
             </div>
         {% endif %}

@@ -49,7 +49,16 @@ Update Desktop App Workflow
                 return;
             }
 
-            fetch(window.deskFormsApiUrl, {credentials: 'same-origin'})
+            const url = new URL(window.deskFormsApiUrl, window.location.origin);
+            url.searchParams.set('limit', '50');
+            const selectedValues = Array.from(selects)
+                .map(function(select) { return select.dataset.selectedValue || ''; })
+                .filter(Boolean);
+            if (selectedValues.length) {
+                url.searchParams.set('selected', selectedValues[0]);
+            }
+
+            fetch(url, {credentials: 'same-origin'})
                 .then(function(response) {
                     if (!response.ok) {
                         throw new Error('Forms unavailable');

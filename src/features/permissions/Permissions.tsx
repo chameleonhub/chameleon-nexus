@@ -1,5 +1,4 @@
 import {useDispatch, useSelector} from "react-redux";
-import {selectForms} from "../forms/formSlice.ts";
 import {
     convertTreeToPermissions,
     getBlankPermission,
@@ -25,7 +24,7 @@ import {
     Typography
 } from "@mui/material";
 import {SimpleTreeView, TreeItem as TreeItem2, useTreeViewApiRef} from "@mui/x-tree-view";
-import React, {SyntheticEvent, useEffect, useState} from "react";
+import React, {SyntheticEvent, useEffect, useMemo, useState} from "react";
 import {
     selectedPermissionsIds,
     selectLocalPermissions,
@@ -33,7 +32,7 @@ import {
     setPermissionTreeData,
     setSelectedPermissionsIds
 } from "./permissionSlice.ts";
-import {useGetGroupsQuery, useGetUsersByGroupQuery, useGetUsersQuery} from "../users/userApiSlice.ts";
+import {useGetGroupsQuery, useGetUsersByGroupQuery, useLazyGetUsersQuery} from "../users/userApiSlice.ts";
 import {
     GroupAdd as GroupAddIcon,
     GroupRemove as GroupRemoveIcon,
@@ -43,6 +42,8 @@ import {useSubmitBulkPermissionMutation} from "./permissionApiSlice.ts";
 import TextField from "@mui/material/TextField";
 import {UserItem} from "./UserItem.tsx";
 import {UserType} from "../users/User.model.ts";
+import {useGetFormPermissionsQuery} from "../forms/formApiSlice.ts";
+import {skipToken} from "@reduxjs/toolkit/query";
 
 interface PermissionProps {
     formId: string
@@ -51,7 +52,6 @@ interface PermissionProps {
 
 export const Permissions = (props: PermissionProps) => {
     const TEM_PERMISSION_ID = "tmpPermissions";
-    const forms: FormType[] = useSelector(selectForms);
     const selectedPermit: [] = useSelector(selectedPermissionsIds);
     const localPermission: LocalPermissionType[] = useSelector(selectLocalPermissions);
     const permissionTreeData: UserPermissionTreeType = useSelector(selectPermissionTreeData);
@@ -62,13 +62,17 @@ export const Permissions = (props: PermissionProps) => {
     const [owner, setOwner] = useState<string>()
     const [selectedUser, setSelectedUser] = useState('')
     const [selectedGroup, setSelectedGroup] = useState('')
-    const [expandedItems, setExpandedItems] = useState([])
+    const [expandedItems, setExpandedItems] = useState<string[]>([])
     const [toastOpen, setToastOpen] = React.useState(false);
     const [toastMessage, setToastMessage] = React.useState('');
 
-    const {data: userList} = useGetUsersQuery()
+    const [fetchUsers, {data: userList, isFetching: isUsersFetching}] = useLazyGetUsersQuery()
     const {data: groupList} = useGetGroupsQuery()
     const {data: groupUserList} = useGetUsersByGroupQuery(selectedGroup, {skip: selectedGroup === ''})
+    const {
+        data: selectedForm,
+        refetch: refetchSelectedForm,
+    } = useGetFormPermissionsQuery(props.formId ? props.formId : skipToken)
 
 
     const [submitBulkPermission, {
@@ -78,17 +82,59 @@ export const Permissions = (props: PermissionProps) => {
     }] = useSubmitBulkPermissionMutation()
 
     const dispatch = useDispatch()
+    const permissionTemplate = React.useMemo(
+        () => getPermissionsTree(localPermission),
+        [localPermission],
+    );
+    const permissionTemplateItems = useMemo(
+        () => Object.values(permissionTemplate),
+        [permissionTemplate],
+    );
+    const assignedUsers = useMemo(
+        () => Object.keys(permissionTreeData),
+        [permissionTreeData],
+    );
+    const assignedUserSet = useMemo(
+        () => new Set(assignedUsers),
+        [assignedUsers],
+    );
+    const expandedUserSet = useMemo(
+        () => new Set(expandedItems),
+        [expandedItems],
+    );
+    const visibleUsers = useMemo(
+        () => assignedUsers.filter(user => user !== owner),
+        [assignedUsers, owner],
+    );
+    const partialPermissionUserOptions = useMemo(
+        () => (userList || [])
+            .filter(user => user?.username !== owner && user.id > 0)
+            .map(user => user.username),
+        [userList, owner],
+    );
+    const handleOpenUserOptions = () => {
+        if (!userList && !isUsersFetching) {
+            fetchUsers()
+        }
+    }
 
     useEffect(() => {
+        if (!selectedForm) {
+            dispatch(setPermissionTreeData({}))
+            setSelectedPermissions(new Set())
+            setOwner(undefined)
+            return;
+        }
+
         const {
             permissionTree,
             currentPermissions,
             owner
-        } = getLocalPermissionsPerUser(forms, localPermission, props.formId)
+        } = getLocalPermissionsPerUser([selectedForm as FormType], localPermission, props.formId)
         dispatch(setPermissionTreeData(permissionTree))
         setSelectedPermissions(currentPermissions)
         setOwner(owner)
-    }, [dispatch, forms, localPermission, props.formId])
+    }, [dispatch, selectedForm, localPermission, props.formId])
 
     useEffect(() => {
         dispatch(setSelectedPermissionsIds(Array.from(selectedPermissions)))
@@ -112,25 +158,23 @@ export const Permissions = (props: PermissionProps) => {
     const addBlankUser = (userList: string[]) => {
 
         let blankPermission: UserPermissionTreeType = {};
-        userList.map(user => {
-            const perm = []
+        const permissionsToAdd: string[] = [];
+        userList.forEach(user => {
             selectedGroupPermissions.forEach(permission => {
                 if (permission != TEM_PERMISSION_ID) {
-                    perm.push(`${user}.${permission}`)
+                    permissionsToAdd.push(`${user}.${permission}`)
                 }
-            })
-            setSelectedPermissions(prev => {
-                return new Set<string>([...prev, ...perm])
             })
 
             blankPermission = {...getBlankPermission(user, localPermission), ...blankPermission}
         })
+        setSelectedPermissions(prev => new Set<string>([...prev, ...permissionsToAdd]))
         dispatch(setPermissionTreeData({...blankPermission, ...permissionTreeData}))
     }
     const removeUser = (userList: string[]) => {
         const newPermissionTreeData: UserPermissionTreeType = {...permissionTreeData}
         const itemsToRemove = []
-        userList.map(user => {
+        userList.forEach(user => {
             selectedPermissions.forEach(permission => {
                 if (permission.startsWith(user)) {
                     itemsToRemove.push(permission)
@@ -143,21 +187,21 @@ export const Permissions = (props: PermissionProps) => {
     }
     const getAllPermissions = (): string[] => {
         const allPermissions = []
-        Object.keys(permissionTreeData).map(user => {
-            Object.keys(getPermissionsTree(localPermission)).map(permission => {
+        assignedUsers.forEach(user => {
+            Object.keys(permissionTemplate).forEach(permission => {
                 allPermissions.push(`${user}.${permission}`)
             })
         })
         return allPermissions
     }
     const getAllUsers = (): string[] => {
-        return Object.keys(permissionTreeData)
+        return assignedUsers
     }
 
     const handleChangePermission = (event: SyntheticEvent, itemId: string, isSelected: boolean) => {
         if (isSelected) {
             // if item is user
-            if (Object.keys(permissionTreeData).includes(itemId)) {
+            if (assignedUserSet.has(itemId)) {
                 setSelectedPermissions(prev => {
                     return new Set<string>([...prev, ...Object.values(permissionTreeData[itemId]).map(permit => permit.id), itemId])
                 })
@@ -169,7 +213,7 @@ export const Permissions = (props: PermissionProps) => {
 
         } else {
             // if item is user
-            if (Object.keys(permissionTreeData).includes(itemId)) {
+            if (assignedUserSet.has(itemId)) {
                 const itemsToRemove = [...Object.values(permissionTreeData[itemId]).map(permit => permit.id), itemId]
                 setSelectedPermissions(prev => new Set([...prev].filter(permit => !itemsToRemove.includes(permit))))
             } else {
@@ -181,7 +225,7 @@ export const Permissions = (props: PermissionProps) => {
         if (isSelected) {
             if (itemId === TEM_PERMISSION_ID) {
                 setSelectedGroupPermissions(new Set([
-                    ...(Object.values(getPermissionsTree(localPermission)) || []).map(prm => prm.id),
+                    ...permissionTemplateItems.map(prm => prm.id),
                     TEM_PERMISSION_ID,
                 ]));
             } else {
@@ -203,6 +247,8 @@ export const Permissions = (props: PermissionProps) => {
     const handleChangeUser = (_evt, newUser: UserType) => {
         if (newUser) {
             setSelectedUser(newUser.username);
+        } else {
+            setSelectedUser('');
         }
     }
     const handleAddUser = () => {
@@ -229,10 +275,12 @@ export const Permissions = (props: PermissionProps) => {
     }
     const handleSavePermission = () => {
         const bulkPermission = convertTreeToPermissions(permissionTreeData, selectedPermissions)
-        submitBulkPermission({bulkPermission, formId: props.formId})
+        submitBulkPermission({bulkPermission, formId: props.formId}).unwrap().then(() => {
+            refetchSelectedForm()
+        }).catch(() => undefined)
     }
     const handleChangeGroup = (evt: SelectChangeEvent) => {
-        setSelectedGroup(evt.target.value);
+        setSelectedGroup(evt.target.value || '');
     }
     const handleDelete = (item) => {
         removeUser([item])
@@ -250,6 +298,9 @@ export const Permissions = (props: PermissionProps) => {
         setExpandedItems([])
     }
     const handleSearch = (evt: SyntheticEvent, newValue) => {
+        if (!newValue) {
+            return;
+        }
         treeRef.current?.focusItem(evt, newValue);
         setExpandedItems(prev => ([...prev, newValue]))
     }
@@ -279,12 +330,12 @@ export const Permissions = (props: PermissionProps) => {
     }
 
     return (
-        <Paper sx={{px: '1rem', my: '1rem'}} elevation={0} variant="outlined">
+        <Paper sx={{px: {xs: 2, md: 3}, py: 2.5, my: '1rem'}} variant="outlined">
             <Typography variant="h5" gutterBottom sx={{my: '1rem'}}>
                 Assign User Permissions
             </Typography>
             <div className={"flex flex-col"}>
-                <Paper sx={{p: '1rem'}} elevation={0} variant="outlined">
+                <Paper sx={{p: {xs: 2, md: 2.5}}} variant="outlined">
                     <SimpleTreeView
                         selectedItems={[...selectedGroupPermissions]}
                         onItemSelectionToggle={handleChangeGroupPermission}
@@ -294,7 +345,7 @@ export const Permissions = (props: PermissionProps) => {
                         <TreeItem2
                             itemId={TEM_PERMISSION_ID}
                             label='Permissions'>
-                            {Object.values(getPermissionsTree(localPermission))?.map(permission => (
+                            {permissionTemplateItems.map(permission => (
                                 <TreeItem2
                                     key={permission.id}
                                     label={permission.label}
@@ -304,7 +355,7 @@ export const Permissions = (props: PermissionProps) => {
                         </TreeItem2>
                     </SimpleTreeView>
 
-                    <Paper sx={{p: '.5rem', mt: '1rem'}} elevation={1}>
+                    <Paper sx={{p: {xs: 1.5, md: 2}, mt: '1rem'}} variant="outlined">
                         <Box display="flex"
                              alignItems="center"
                              className={'my-5'}
@@ -315,10 +366,10 @@ export const Permissions = (props: PermissionProps) => {
                                     <Select
                                         labelId="group-list-label"
                                         label="Group List"
-                                        value={selectedGroup}
+                                        value={selectedGroup || ''}
                                         onChange={handleChangeGroup}>
                                         {groupList?.map((group) => (
-                                            (group.id !== -1 && !Object.keys(permissionTreeData).includes(group.name)) &&
+                                            (group.id !== -1 && !assignedUserSet.has(group.name)) &&
                                             <MenuItem key={group.id}
                                                       value={group.name}>{group.name}</MenuItem>
                                         ))}
@@ -329,12 +380,14 @@ export const Permissions = (props: PermissionProps) => {
                                     <Button variant='contained'
                                             onClick={handleAddGroup}
                                             startIcon={<GroupAddIcon/>}
+                                            color="secondary"
                                             sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
                                         Assign Group
                                     </Button>
                                     <Button variant='contained'
                                             onClick={handleRemoveGroup}
                                             startIcon={<GroupRemoveIcon/>}
+                                            color="secondary"
                                             sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
                                         Remove Group
                                     </Button>
@@ -348,9 +401,10 @@ export const Permissions = (props: PermissionProps) => {
                                     clearOnEscape
                                     options={userList || []}
                                     getOptionLabel={(option) => option.username}
-                                    loading={false}
-                                    value={userList?.find(user => user.username === selectedUser) || null}
-                                    getOptionDisabled={user => !(user.id !== -1 && !Object.keys(permissionTreeData).includes(user.username))}
+                                    loading={isUsersFetching}
+                                    onOpen={handleOpenUserOptions}
+                                    value={(userList || []).find(user => user.username === selectedUser) || null}
+                                    getOptionDisabled={user => !(user.id !== -1 && !assignedUserSet.has(user.username))}
                                     onChange={handleChangeUser}
                                     renderInput={(params) => (
                                         <TextField
@@ -368,6 +422,7 @@ export const Permissions = (props: PermissionProps) => {
                                     <Button variant='contained'
                                             onClick={handleAddUser}
                                             startIcon={<PersonAddIcon/>}
+                                            color="secondary"
                                             sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
                                         Assign User
                                     </Button>
@@ -382,11 +437,11 @@ export const Permissions = (props: PermissionProps) => {
                         </Box>
                     </Paper>
                 </Paper>
-                <Paper sx={{px: '1rem', my: '1rem'}} elevation={0} variant="outlined">
-                    {Object.keys(permissionTreeData).length > 1 ?
+                <Paper sx={{px: {xs: 1.5, md: 2}, my: '1rem'}} variant="outlined">
+                    {visibleUsers.length > 0 ?
                         <>
                             <Box display='flex' justifyContent='space-between' py={1}>
-                                <ButtonGroup color='info' variant="outlined" size="small">
+                                <ButtonGroup color='primary' variant="outlined" size="small">
                                     <Button onClick={handleSelectAll}>Select All</Button>
                                     <Button onClick={handleUnselectAll}>Unselect All</Button>
                                     <Button onClick={handleExpandAll}>Expand All</Button>
@@ -395,7 +450,7 @@ export const Permissions = (props: PermissionProps) => {
                                 </ButtonGroup>
 
                                 <Autocomplete
-                                    options={getAllUsers()}
+                                    options={assignedUsers}
                                     onChange={handleSearch}
                                     size="small"
                                     sx={{minWidth: '10rem'}}
@@ -415,19 +470,20 @@ export const Permissions = (props: PermissionProps) => {
                                     onExpandedItemsChange={handleExpandedItemsChange}
                                     checkboxSelection
                                     multiSelect>
-                                    {Object.keys(permissionTreeData)?.map(user => (
-                                        user !== owner &&
+                                    {visibleUsers.map(user => (
                                         <UserItem
                                             key={user}
                                             onDelete={handleDelete}
-                                            label={user === owner ? (user + ' (Owner)') : user}
+                                            label={user}
                                             itemId={user}
-                                            disabled={user === owner}>
-                                            <Permission userPermission={permissionTreeData[user]} formOwner={owner}
-                                                        user={user}/>
+                                        >
+                                            {expandedUserSet.has(user) && (
+                                                <Permission userPermission={permissionTreeData[user]}
+                                                            user={user}
+                                                            userOptions={partialPermissionUserOptions}
+                                                            onOpenUserOptions={handleOpenUserOptions}/>
+                                            )}
                                         </UserItem>
-
-
                                     ))}
                                 </SimpleTreeView>
                                 <SaveComp/>

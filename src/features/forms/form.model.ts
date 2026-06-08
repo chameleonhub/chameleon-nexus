@@ -1,6 +1,7 @@
 import {PermissionType} from "../permissions/Permission.model.ts";
 
 export interface FormType {
+    id?: string,
     uid: string,
     name: string,
     access_types: string,

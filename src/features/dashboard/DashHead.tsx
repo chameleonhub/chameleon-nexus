@@ -10,8 +10,6 @@ import {
     MenuItem,
     Container,
     Tooltip,
-    useTheme,
-    useMediaQuery
 } from '@mui/material';
 import {
     Dashboard as DashboardIcon,
@@ -22,6 +20,8 @@ import {
     Menu as MenuIcon
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router';
+import Logo from "../../assets/logo.png";
+import MotifStrip from "../background/MotifStrip";
 
 const navigationItems = [
     {
@@ -60,8 +60,6 @@ const DashHead: React.FC = () => {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
     const location = useLocation();
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -84,10 +82,11 @@ const DashHead: React.FC = () => {
     };
 
     return (
-        <AppBar position="static" elevation={2}>
+        <AppBar position="static" elevation={0} className="bahis-header">
+            <MotifStrip variant="header" />
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    {/* Logo and Title */}
+                    <Box component='img' src={Logo} sx={{display: {xs: 'none', md: 'flex'}, mr: 1.25, height: '1.8rem'}}/>
                     <Typography
                         variant="h6"
                         noWrap
@@ -95,17 +94,15 @@ const DashHead: React.FC = () => {
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
+                            fontWeight: 900,
+                            letterSpacing: '.14rem',
                             color: 'inherit',
                             textDecoration: 'none',
                         }}
                     >
-                        BAHIS DASH
+                        BAHIS
                     </Typography>
 
-                    {/* Mobile Menu */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
@@ -145,9 +142,9 @@ const DashHead: React.FC = () => {
                                     sx={{
                                         backgroundColor: isActiveRoute(item.path) ? 'action.selected' : 'transparent',
                                         '&:hover': {
-                                            backgroundColor: 'action.hover',
+                                            backgroundColor: 'rgba(255, 217, 138, .28)',
                                         },
-                                        borderLeft: isActiveRoute(item.path) ? '3px solid #1976d2' : '3px solid transparent',
+                                        borderLeft: isActiveRoute(item.path) ? '3px solid #8f241d' : '3px solid transparent',
                                         paddingLeft: 2,
                                     }}
                                 >
@@ -165,7 +162,7 @@ const DashHead: React.FC = () => {
                         </Menu>
                     </Box>
 
-                    {/* Mobile Title */}
+                    <Box component='img' src={Logo} sx={{display: {xs: 'flex', md: 'none'}, mr: 1, height: '1.7rem'}}/>
                     <Typography
                         variant="h5"
                         noWrap
@@ -174,9 +171,8 @@ const DashHead: React.FC = () => {
                             mr: 2,
                             display: { xs: 'flex', md: 'none' },
                             flexGrow: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
+                            fontWeight: 900,
+                            letterSpacing: '.14rem',
                             color: 'inherit',
                             textDecoration: 'none',
                         }}
@@ -184,7 +180,6 @@ const DashHead: React.FC = () => {
                         BAHIS
                     </Typography>
 
-                    {/* Desktop Navigation */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: 1 }}>
                         {navigationItems.map((item) => (
                             <Tooltip key={item.title} title={item.description} arrow>
@@ -192,18 +187,18 @@ const DashHead: React.FC = () => {
                                     onClick={() => handleNavigation(item.path)}
                                     sx={{
                                         my: 2,
-                                        color: 'white',
+                                        color: '#19110d',
                                         display: 'flex',
                                         alignItems: 'center',
                                         gap: 0.5,
-                                        backgroundColor: isActiveRoute(item.path) ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+                                        backgroundColor: isActiveRoute(item.path) ? 'rgba(255, 217, 138, .22)' : 'transparent',
                                         '&:hover': {
-                                            backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                                            backgroundColor: 'rgba(143, 36, 29, .08)',
                                         },
-                                        borderRadius: 1,
+                                        borderRadius: 999,
                                         px: 2,
                                         py: 1,
-                                        border: isActiveRoute(item.path) ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid transparent',
+                                        border: isActiveRoute(item.path) ? '1px solid rgba(143, 36, 29, .2)' : '1px solid transparent',
                                         transition: 'all 0.2s ease-in-out',
                                     }}
                                     startIcon={item.icon}
@@ -212,11 +207,6 @@ const DashHead: React.FC = () => {
                                 </Button>
                             </Tooltip>
                         ))}
-                    </Box>
-
-                    {/* Right side content - can be extended with user menu, notifications, etc. */}
-                    <Box sx={{ flexGrow: 0 }}>
-                        {/* Add user menu, notifications, or other controls here */}
                     </Box>
                 </Toolbar>
             </Container>

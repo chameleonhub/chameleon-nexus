@@ -1,13 +1,19 @@
 import {baseApi} from "../../app/baseApi.ts";
+import {nexusApi} from "../../app/nexusApi.ts";
 import {GroupType, UserType} from "./User.model.ts";
 
 
-export const userApiSlice = baseApi.injectEndpoints({
+export const userApiSlice = nexusApi.injectEndpoints({
     endpoints: build => ({
         getUsers: build.query<UserType[], void>({
-            query: () => `users/?limit=10000&offset=0`,
+            query: () => `desk/users/?limit=1000`,
             transformResponse: (response: { results: UserType[] }) => response.results
-        }),
+        })
+    })
+})
+
+export const koboUserApiSlice = baseApi.injectEndpoints({
+    endpoints: build => ({
         getUsersByGroup: build.query<UserType[], string>({
             query: (groupName) => `utils/groups/${groupName}/users/?limit=10000&offset=0`,
             transformResponse: (response: { results: UserType[] }) => response.results
@@ -19,4 +25,5 @@ export const userApiSlice = baseApi.injectEndpoints({
     })
 })
 
-export const {useGetUsersQuery, useGetGroupsQuery, useGetUsersByGroupQuery} = userApiSlice
+export const {useGetUsersQuery, useLazyGetUsersQuery} = userApiSlice
+export const {useGetGroupsQuery, useGetUsersByGroupQuery} = koboUserApiSlice

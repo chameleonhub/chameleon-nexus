@@ -7,19 +7,21 @@ import {PARTIAL_SUBMIT} from "./permissionSlice.ts";
 type PermissionProps = {
     userPermission: { [key: string]: UserPermissionType, }
     user: string,
-    formOwner?: string
+    userOptions: string[]
+    onOpenUserOptions: () => void
 }
 
 
-export const Permission = ({userPermission, user, formOwner}: PermissionProps) => {
+export const Permission = ({userPermission, user, userOptions, onOpenUserOptions}: PermissionProps) => {
     return (
         <>
             {Object.keys(userPermission)?.map(permission => (
                 (permission != PARTIAL_SUBMIT) &&
                 <PermissionTreeItem
-                    formOwner={formOwner}
                     permitData={userPermission[permission]}
                     user={user}
+                    userOptions={userOptions}
+                    onOpenUserOptions={onOpenUserOptions}
                     itemId={userPermission[permission].id}
                     label={userPermission[permission].label}
                     key={userPermission[permission].id}/>

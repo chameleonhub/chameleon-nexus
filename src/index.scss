@@ -1,3 +1,350 @@
 @use "tailwindcss";
 
-@import '@fontsource/roboto/300.css';
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+:root {
+  --bahis-red: #8f241d;
+  --bahis-red-dark: #5f1713;
+  --bahis-brown: #6f3f22;
+  --bahis-gold: #ffd98a;
+  --bahis-cream: #fffaf0;
+  --bahis-soft: #fff3df;
+  --bahis-ink: #4d3528;
+  --bahis-muted: #6d5547;
+}
+
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+
+html {
+  position: relative;
+  background: #ffffff;
+}
+
+html::before,
+html::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+}
+
+html::before {
+  right: 8vw;
+  top: 18vh;
+  width: 138px;
+  height: 138px;
+  border: 1px solid rgba(217, 154, 40, .075);
+  border-radius: 46% 54% 42% 58% / 52% 38% 62% 48%;
+  background: rgba(255, 253, 249, .2);
+  filter:
+    drop-shadow(-64vw 19vh 0 rgba(111, 63, 34, .028))
+    drop-shadow(-18vw 54vh 0 rgba(143, 36, 29, .03));
+  transform: rotate(18deg);
+}
+
+html::after {
+  left: 50vw;
+  top: 7vh;
+  width: 112px;
+  height: 42px;
+  border: 1px solid rgba(143, 36, 29, .055);
+  border-radius: 999px;
+  background: rgba(255, 253, 249, .2);
+  filter:
+    drop-shadow(36vw 34vh 0 rgba(217, 154, 40, .035))
+    drop-shadow(-42vw 61vh 0 rgba(111, 63, 34, .03));
+  transform: rotate(-24deg);
+}
+
+body {
+  position: relative;
+  margin: 0;
+  isolation: isolate;
+}
+
+body {
+  background: #fffaf2;
+}
+
+.bahis-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+}
+
+.bahis-main {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+.bahis-shape-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.vet-mark {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  opacity: var(--alpha, .5);
+}
+
+.icon-mark {
+  width: var(--size, 64px);
+  height: var(--size, 64px);
+  border: 1px solid var(--border, rgba(143, 36, 29, .16));
+  border-radius: var(--radius, 20px);
+  color: var(--tone, rgba(143, 36, 29, .28));
+  background: var(--fill, rgba(255, 250, 240, .68));
+  transform: rotate(var(--rot, 0deg)) scale(var(--scale, 1));
+  box-shadow: 0 14px 34px rgba(111, 63, 34, .08);
+}
+
+.icon-mark svg {
+  font-size: calc(var(--size, 64px) * .56);
+}
+
+.hoof-mark {
+  gap: 5px;
+  transform: rotate(var(--rot, 0deg));
+}
+
+.hoof-mark i {
+  display: block;
+  width: var(--hoof-w, 16px);
+  height: var(--hoof-h, 25px);
+  border-radius: 58% 42% 48% 52% / 28% 28% 72% 72%;
+  background: var(--tone, rgba(111, 63, 34, .18));
+}
+
+.cross-mark {
+  width: var(--size, 42px);
+  height: var(--size, 42px);
+  transform: rotate(var(--rot, 0deg));
+}
+
+.cross-mark::before,
+.cross-mark::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--size, 42px) * .39) 0;
+  border-radius: 999px;
+  background: var(--tone, rgba(143, 36, 29, .18));
+}
+
+.cross-mark::after {
+  transform: rotate(90deg);
+}
+
+.capsule-mark {
+  width: var(--w, 74px);
+  height: var(--h, 28px);
+  border: 1px solid var(--border, rgba(217, 154, 40, .22));
+  border-radius: 999px;
+  background: var(--fill, rgba(255, 217, 138, .2));
+  transform: rotate(var(--rot, 0deg));
+}
+
+.ring-mark {
+  width: var(--size, 56px);
+  height: var(--size, 56px);
+  border: var(--thick, 8px) solid var(--tone, rgba(111, 63, 34, .11));
+  border-radius: 999px;
+}
+
+.a1 { left: 4vw; top: 15vh; --size: 72px; --rot: -12deg; --alpha: .7; --tone: rgba(143, 36, 29, .34); }
+.a2 { right: 8vw; top: 13vh; --size: 42px; --rot: 10deg; --alpha: .44; --tone: rgba(111, 63, 34, .24); --fill: rgba(255, 247, 234, .54); }
+.a3 { left: 20vw; top: 47vh; --size: 112px; --rot: 18deg; --alpha: .3; --tone: rgba(217, 154, 40, .34); --fill: rgba(255, 217, 138, .12); }
+.a4 { right: 18vw; top: 45vh; --size: 64px; --rot: -8deg; --alpha: .54; --tone: rgba(25, 17, 13, .22); --fill: rgba(255, 250, 240, .62); }
+.a5 { left: 8vw; bottom: 14vh; --size: 38px; --rot: 8deg; --alpha: .5; --tone: rgba(40, 91, 51, .25); --fill: rgba(234, 246, 229, .34); }
+.a6 { right: 7vw; bottom: 18vh; --size: 96px; --rot: -16deg; --alpha: .34; --tone: rgba(143, 36, 29, .28); --fill: rgba(255, 243, 223, .5); }
+.a7 { left: 42vw; top: 19vh; --rot: 18deg; --alpha: .38; --hoof-w: 14px; --hoof-h: 22px; --tone: rgba(111, 63, 34, .2); }
+.a8 { right: 35vw; bottom: 12vh; --rot: -18deg; --alpha: .3; --hoof-w: 28px; --hoof-h: 42px; --tone: rgba(143, 36, 29, .14); }
+.a9 { left: 56vw; top: 62vh; --size: 58px; --rot: 14deg; --alpha: .34; --tone: rgba(143, 36, 29, .16); }
+.a10 { right: 26vw; top: 28vh; --size: 24px; --rot: -12deg; --alpha: .5; --tone: rgba(40, 91, 51, .2); }
+.a11 { left: 31vw; bottom: 22vh; --w: 124px; --h: 34px; --rot: -22deg; --alpha: .42; --fill: rgba(255, 217, 138, .2); }
+.a12 { right: 45vw; top: 76vh; --w: 48px; --h: 20px; --rot: 18deg; --alpha: .36; --fill: rgba(143, 36, 29, .08); --border: rgba(143, 36, 29, .16); }
+.a13 { left: 15vw; top: 72vh; --size: 88px; --alpha: .22; --tone: rgba(111, 63, 34, .1); }
+.a14 { right: 13vw; top: 66vh; --size: 36px; --thick: 5px; --alpha: .4; --tone: rgba(217, 154, 40, .16); }
+.a15 { left: 50vw; top: 9vh; --size: 52px; --rot: -20deg; --alpha: .46; --tone: rgba(143, 36, 29, .26); --fill: rgba(255, 250, 240, .58); }
+.a16 { right: 33vw; top: 56vh; --size: 132px; --rot: 12deg; --alpha: .2; --tone: rgba(217, 154, 40, .32); --fill: rgba(255, 217, 138, .1); }
+.a17 { left: 72vw; top: 24vh; --size: 84px; --rot: 20deg; --alpha: .3; --tone: rgba(111, 63, 34, .24); --fill: rgba(255, 250, 240, .48); }
+.a18 { left: 12vw; top: 36vh; --size: 32px; --rot: -8deg; --alpha: .48; --tone: rgba(40, 91, 51, .24); --fill: rgba(234, 246, 229, .28); }
+.a19 { left: 64vw; bottom: 9vh; --w: 142px; --h: 38px; --rot: 24deg; --alpha: .26; --fill: rgba(217, 154, 40, .14); }
+.a20 { right: 3vw; top: 38vh; --w: 58px; --h: 22px; --rot: -28deg; --alpha: .48; --fill: rgba(143, 36, 29, .07); --border: rgba(143, 36, 29, .17); }
+
+.MuiAppBar-root {
+  color: #19110d !important;
+  background: #fff3df !important;
+  box-shadow: 0 12px 30px rgba(111, 63, 34, 0.14) !important;
+}
+
+.bahis-header {
+  position: relative;
+  overflow: hidden;
+}
+
+.bahis-header > .MuiContainer-root,
+.bahis-footer > .MuiContainer-root {
+  position: relative;
+  z-index: 1;
+}
+
+.motif-strip {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.strip-icon,
+.strip-capsule,
+.strip-cross {
+  position: absolute;
+  opacity: var(--alpha, .2);
+}
+
+.strip-icon {
+  color: var(--tone, rgba(143, 36, 29, .36));
+  transform: rotate(var(--rot, 0deg));
+}
+
+.strip-icon svg {
+  font-size: var(--size, 42px);
+}
+
+.strip-capsule {
+  width: var(--w, 80px);
+  height: var(--h, 26px);
+  border: 1px solid var(--border, rgba(143, 36, 29, .18));
+  border-radius: 999px;
+  background: var(--fill, rgba(255, 217, 138, .2));
+  transform: rotate(var(--rot, 0deg));
+}
+
+.strip-cross {
+  width: var(--size, 34px);
+  height: var(--size, 34px);
+  transform: rotate(var(--rot, 0deg));
+}
+
+.strip-cross::before,
+.strip-cross::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--size, 34px) * .39) 0;
+  border-radius: 999px;
+  background: var(--tone, rgba(143, 36, 29, .22));
+}
+
+.strip-cross::after {
+  transform: rotate(90deg);
+}
+
+.motif-strip.header .s1 { left: 8%; top: 14px; --size: 36px; --rot: -12deg; --alpha: .24; --tone: rgba(143, 36, 29, .34); }
+.motif-strip.header .s2 { left: 26%; top: -12px; --size: 68px; --rot: 14deg; --alpha: .18; --tone: rgba(111, 63, 34, .28); }
+.motif-strip.header .s3 { right: 31%; top: 18px; --size: 28px; --rot: -18deg; --alpha: .26; --tone: rgba(217, 154, 40, .52); }
+.motif-strip.header .s4 { right: 12%; top: -4px; --size: 76px; --rot: 12deg; --alpha: .14; --tone: rgba(40, 91, 51, .24); }
+.motif-strip.header .s5 { left: 55%; bottom: -8px; --size: 42px; --rot: 18deg; --alpha: .2; --tone: rgba(143, 36, 29, .26); }
+.motif-strip.header .s6 { right: 3%; bottom: 4px; --size: 54px; --rot: -10deg; --alpha: .18; --tone: rgba(111, 63, 34, .24); }
+.motif-strip.header .s7 { left: 40%; top: 16px; --w: 126px; --h: 32px; --rot: -18deg; --alpha: .2; --fill: rgba(255, 217, 138, .22); }
+.motif-strip.header .s8 { right: 20%; bottom: 8px; --w: 52px; --h: 20px; --rot: 22deg; --alpha: .2; --fill: rgba(143, 36, 29, .08); }
+.motif-strip.header .s9 { left: 17%; bottom: 6px; --size: 22px; --rot: 12deg; --alpha: .24; --tone: rgba(40, 91, 51, .2); }
+.motif-strip.header .s10 { right: 43%; top: 4px; --size: 36px; --rot: -14deg; --alpha: .16; --tone: rgba(143, 36, 29, .18); }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.bahis-shell {
+  width: min(1180px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 34px 0 64px;
+}
+
+.bahis-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 34px;
+  padding: clamp(24px, 4vw, 40px);
+  background: rgba(255, 250, 240, .82);
+  box-shadow: 0 24px 64px rgba(111, 63, 34, .14);
+  backdrop-filter: blur(16px);
+}
+
+.bahis-kicker {
+  display: inline-flex;
+  margin-bottom: 8px;
+  color: #a85d53;
+  font-size: .76rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.bahis-title {
+  margin: 0;
+  color: var(--bahis-ink);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 900;
+  letter-spacing: -.02em;
+  line-height: 1.05;
+}
+
+.bahis-copy {
+  max-width: 700px;
+  margin: 10px 0 0;
+  color: var(--bahis-muted);
+  font-size: 1.04rem;
+  font-weight: 600;
+  line-height: 1.65;
+}
+
+.bahis-footer {
+  position: relative;
+  overflow: hidden;
+  margin-top: auto;
+  padding: 26px 0;
+  color: #fffaf3;
+  background: #fff3df;
+  box-shadow: 0 -16px 42px rgba(63, 36, 21, 0.16);
+  z-index: 1;
+}
+
+.bahis-footer {
+  color: #19110d;
+}
+
+.motif-strip.footer .s1 { left: 5%; top: 8px; --size: 58px; --rot: 14deg; --alpha: .16; --tone: rgba(143, 36, 29, .28); }
+.motif-strip.footer .s2 { left: 28%; bottom: -16px; --size: 82px; --rot: -14deg; --alpha: .12; --tone: rgba(111, 63, 34, .26); }
+.motif-strip.footer .s3 { right: 30%; top: 10px; --size: 30px; --rot: 16deg; --alpha: .24; --tone: rgba(217, 154, 40, .48); }
+.motif-strip.footer .s4 { right: 8%; bottom: -14px; --size: 92px; --rot: -18deg; --alpha: .1; --tone: rgba(40, 91, 51, .24); }
+.motif-strip.footer .s5 { left: 63%; top: 4px; --size: 40px; --rot: 12deg; --alpha: .19; --tone: rgba(143, 36, 29, .24); }
+.motif-strip.footer .s6 { right: 45%; bottom: 6px; --size: 24px; --rot: -12deg; --alpha: .26; --tone: rgba(111, 63, 34, .24); }
+.motif-strip.footer .s7 { left: 14%; bottom: 10px; --w: 118px; --h: 32px; --rot: 20deg; --alpha: .16; --fill: rgba(255, 217, 138, .18); }
+.motif-strip.footer .s8 { right: 18%; top: 8px; --w: 54px; --h: 22px; --rot: -20deg; --alpha: .22; --fill: rgba(143, 36, 29, .08); }
+.motif-strip.footer .s9 { left: 44%; top: 8px; --size: 40px; --rot: 12deg; --alpha: .14; --tone: rgba(40, 91, 51, .18); }
+.motif-strip.footer .s10 { right: 3%; top: 16px; --size: 22px; --rot: -12deg; --alpha: .24; --tone: rgba(143, 36, 29, .22); }
+
+@media (max-width: 800px) {
+  .bahis-shell {
+    width: min(100%, calc(100% - 20px));
+    padding: 22px 0 48px;
+  }
+
+  .bahis-hero {
+    border-radius: 26px;
+  }
+}

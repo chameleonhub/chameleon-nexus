@@ -10,6 +10,12 @@ export default defineConfig(({mode}) => ({
     plugins: [react()],
     server: {
         proxy: {
+            '/nexus-api': {
+                target: 'http://localhost:8000/',
+                changeOrigin: true,
+                secure: false,
+                rewrite: path => path.replace(/^\/nexus-api/, '/api'),
+            },
             '/api': {
                 target: 'http://kf.sharful.me/',
                 changeOrigin: true,

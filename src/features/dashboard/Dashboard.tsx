@@ -8,21 +8,28 @@ import { useGetFormsQuery } from './kcFormApiSlice';
 
 const DashboardContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
-    height: '100vh',
-    padding: theme.spacing(2),
-    gap: theme.spacing(2),
+    minHeight: 'calc(100vh - 64px)',
+    padding: theme.spacing(4, 3),
+    gap: theme.spacing(2.5),
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+        padding: theme.spacing(2),
+    },
 }));
 
 const Sidebar = styled(Paper)(({ theme }) => ({
     width: '30%',
-    padding: theme.spacing(2),
-    backgroundColor: theme.palette.background.paper,
+    minWidth: 320,
+    padding: theme.spacing(3),
+    [theme.breakpoints.down('md')]: {
+        width: '100%',
+        minWidth: 0,
+    },
 }));
 
 const MainContent = styled(Box)(({ theme }) => ({
     flex: 1,
-    padding: theme.spacing(2),
-    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing(3),
 }));
 
 const PAGE_SIZE = 10;
@@ -65,7 +72,7 @@ const Dashboard: React.FC = () => {
     return (
         <DashboardContainer>
             <Sidebar elevation={3}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h5" gutterBottom>
                     Form List
                 </Typography>
                 {formsLoading && <CircularProgress />}
@@ -115,7 +122,7 @@ const Dashboard: React.FC = () => {
                 )}
             </Sidebar>
             <MainContent>
-                <Typography variant="h4">Dashboard</Typography>
+                <Typography variant="h4" gutterBottom>Dashboard</Typography>
                 {selectedForm ? (
                     <>
                         <Typography variant="h6" gutterBottom>Form Data</Typography>

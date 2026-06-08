@@ -1,15 +1,16 @@
 import {baseApi} from "../../app/baseApi.ts";
+import {nexusApi} from "../../app/nexusApi.ts";
 
-export const formApiSlice = baseApi.injectEndpoints({
+export const formApiSlice = nexusApi.injectEndpoints({
     endpoints: build => ({
         getForms: build.query({
             query: () => {
-                return `assets/?format=json`
+                return `desk/forms/`
             }
         }),
         getFormPermissions: build.query({
             query: (fromId) => {
-                return `assets/${fromId}/`
+                return `desk/forms/${fromId}/permissions/`
             }
         })
     })

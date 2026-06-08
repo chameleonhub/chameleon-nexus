@@ -152,14 +152,15 @@ export function getLocalPermissionsPerUser(forms: FormType[], localPermissions: 
         })
 
         //update the label and add new that not selected
-        localPermissions?.map(({permission, label}) => {
+        localPermissions?.map(({permission, label, type}) => {
             if (!permissionTree[user][permission]) {
 
                 permissionTree[user][permission] = getUserPermission(user, permission, label,
-                    PARTIAL_PERMIT, false, undefined, undefined, user === owner)
+                    type, false, undefined, undefined, user === owner)
 
             } else {
                 permissionTree[user][permission].label = label
+                permissionTree[user][permission].type = type
             }
 
         })

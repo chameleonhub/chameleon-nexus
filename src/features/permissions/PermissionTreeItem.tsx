@@ -18,11 +18,8 @@ import {FilterMultiUser, FilterType, UserPermissionTreeType, UserPermissionType}
 import {Autocomplete, Stack} from "@mui/material";
 import {PARTIAL_PERMIT, selectPermissionTreeData, setPermissionTreeData} from "./permissionSlice.ts";
 import TextField from "@mui/material/TextField";
-import {useGetUsersQuery} from "../users/userApiSlice.ts";
-import {UserType} from "../users/User.model.ts";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import user from "../users/User.tsx";
 
 const PermissionTreeItemContent = styled(TreeItem2Content)(({theme}) => ({
     padding: theme.spacing(1, 1),
@@ -37,7 +34,8 @@ interface PermissionTreeItemProps
         Omit<React.HTMLAttributes<HTMLLIElement>, 'onFocus'> {
     permitData: UserPermissionType,
     user: string,
-    formOwner?: string
+    userOptions: string[]
+    onOpenUserOptions: () => void
 }
 
 export const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(
@@ -45,7 +43,7 @@ export const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(
     ref: React.Ref<HTMLLIElement>,
 ) {
 
-    const {id, itemId, label, disabled, children, permitData, user: currentUser, formOwner, ...other} = props;
+    const {id, itemId, label, disabled, children, permitData, user: currentUser, userOptions, onOpenUserOptions, ...other} = props;
     const {
         getRootProps,
         getContentProps,
@@ -56,17 +54,13 @@ export const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(
         status,
     } = useTreeItem2({id, itemId, children, label, disabled, rootRef: ref});
 
-    const {data: userList} = useGetUsersQuery()
-
     const [userValues, setUserValues] = useState<string[]>([])
-    const [owner, setOwner] = useState<UserType>({} as UserType)
-    const [otherUsers, setOtherUsers] = useState<string[]>([])
     const permissionTreeData: UserPermissionTreeType = useSelector(selectPermissionTreeData);
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const submittedBy: string | FilterMultiUser = permitData.filters?.filter(fltr => fltr._submitted_by)[0]._submitted_by
+        const submittedBy: string | FilterMultiUser | undefined = permitData.filters?.find(fltr => fltr._submitted_by)?._submitted_by
 
         let defaultUserValue: Set<string> = new Set<string>([]);
         if (typeof submittedBy === 'string') {
@@ -77,24 +71,15 @@ export const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(
             }
         }
 
-        const own = userList?.find(user => user.username === currentUser) as UserType;
-        if (own) {
-            defaultUserValue.add(own.username)
-        }
-        setOwner(own)
+        defaultUserValue.add(currentUser)
         setUserValues([...defaultUserValue])
-        setOtherUsers(getUsers())
 
-    }, [permitData.filters, props.user, userList]);
+    }, [permitData.filters, currentUser]);
 
-
-    const getUsers = () => {
-        return userList?.filter(user => user?.username !== formOwner && user.id > 0).map(user => user.username) || []
-    }
     const changeUserValue = (event, newValue) => {
         const newUsers = [
-            owner.username,
-            ...newValue.filter(option => option !== owner.username),
+            currentUser,
+            ...newValue.filter(option => option !== currentUser),
         ]
         setUserValues(newUsers);
 
@@ -137,8 +122,9 @@ export const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(
                                 multiple
                                 size={'small'}
                                 value={userValues}
-                                options={otherUsers}
+                                options={userOptions}
                                 disabled={!getCheckboxProps().checked}
+                                onOpen={onOpenUserOptions}
                                 onChange={changeUserValue}
                                 renderInput={(params) => (
                                     <TextField

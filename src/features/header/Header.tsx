@@ -9,9 +9,10 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import Logo from "../../assets/logo-white.png"
+import Logo from "../../assets/logo.png"
 import {Person as PersonIcon} from "@mui/icons-material";
 import {MouseEvent, useState} from "react";
+import MotifStrip from "../background/MotifStrip";
 
 
 const kfUrl = new URL(import.meta.env.VITE_KF_API_URL);
@@ -50,10 +51,11 @@ function Header() {
 
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" elevation={0} className="bahis-header">
+            <MotifStrip variant="header" />
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <Box component='img' src={Logo} sx={{display: {xs: 'none', md: 'flex'}, mr: 1, height: '1.5rem'}}/>
+                    <Box component='img' src={Logo} sx={{display: {xs: 'none', md: 'flex'}, mr: 1.25, height: '1.8rem'}}/>
                     <Typography
                         variant="h6"
                         noWrap
@@ -62,9 +64,8 @@ function Header() {
                         sx={{
                             mr: 2,
                             display: {xs: 'none', md: 'flex'},
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
+                            fontWeight: 900,
+                            letterSpacing: '.16rem',
                             color: 'inherit',
                             textDecoration: 'none',
                         }}
@@ -100,13 +101,13 @@ function Header() {
                             sx={{display: {xs: 'block', md: 'none'}}}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page.title} onClick={handleCloseNavMenu}>
+                                <MenuItem key={page.title} component="a" href={page.link} onClick={handleCloseNavMenu}>
                                     <Typography sx={{textAlign: 'center'}}>{page.title}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
                     </Box>
-                    <Box component='img' src={Logo} sx={{display: {xs: 'flex', md: 'none'}, mr: 1, height: '1.5rem'}}/>
+                    <Box component='img' src={Logo} sx={{display: {xs: 'flex', md: 'none'}, mr: 1, height: '1.7rem'}}/>
                     <Typography
                         variant="h5"
                         noWrap
@@ -116,9 +117,8 @@ function Header() {
                             mr: 2,
                             display: {xs: 'flex', md: 'none'},
                             flexGrow: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
+                            fontWeight: 900,
+                            letterSpacing: '.14rem',
                             color: 'inherit',
                             textDecoration: 'none',
                         }}
@@ -129,19 +129,26 @@ function Header() {
                         {pages.map((page) => (
                             <Button
                                 key={page.title}
+                                component="a"
+                                href={page.link}
                                 onClick={handleCloseNavMenu}
-                                sx={{my: 2, color: 'white', display: 'block'}}
+                                sx={{
+                                    my: 2,
+                                    color: '#19110d',
+                                    display: 'block',
+                                    px: 2,
+                                    backgroundColor: 'transparent',
+                                    '&:hover': {backgroundColor: 'rgba(143, 36, 29, .08)'}
+                                }}
                             >
-                                <a href={page.link}>
-                                    {page.title}
-                                </a>
+                                {page.title}
                             </Button>
                         ))}
                     </Box>
                     <Box sx={{flexGrow: 0}}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                <PersonIcon className="text-white"/>
+                                <PersonIcon sx={{color: 'inherit'}}/>
                             </IconButton>
                         </Tooltip>
                         <Menu
